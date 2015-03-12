@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{02C6622F-2440-4EC4-8457-391A87F6FE97}</ProjectGuid>
+    <RootNamespace>DQBIXEngine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>depends\freeglut\include;depends\SDL12\include;depends\LuaBridge;depends\Lua52\include;depends\libdrawtext\include;depends\bass\src;depends\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\glew\lib;depends\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;glew32s.lib;libdrawtext.lib;bass.lib;bass_fx.lib;lua52.lib;freeglut.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>depends\freeglut\lib;depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SOIL.lib;SDL.lib;SDLmain.lib;lua52.lib;libdrawtext.lib;freeglut.lib;bass.lib;bass_fx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "depends\SDL12\lib\*.dll" "$(OutDir)"
+xcopy /y /d "depends\Lua52\*.dll" "$(OutDir)"
+xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>depends\freeglut\include;depends\SDL12\include;depends\LuaBridge;depends\Lua52\include;depends\libdrawtext\include;depends\bass\src;depends\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\glew\lib;depends\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;glew32s.lib;libdrawtext.lib;bass.lib;bass_fx.lib;lua52.lib;freeglut.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>depends\freeglut\lib;depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SOIL.lib;SDL.lib;SDLmain.lib;lua52.lib;libdrawtext.lib;freeglut.lib;bass.lib;bass_fx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "depends\SDL12\lib\*.dll" "$(OutDir)"
+xcopy /y /d "depends\Lua52\*.dll" "$(OutDir)"
+xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="animation.h" />
+    <ClInclude Include="audio.h" />
+    <ClInclude Include="audio_backend.h" />
+    <ClInclude Include="collisiondetection.h" />
+    <ClInclude Include="color.h" />
+    <ClInclude Include="font.h" />
+    <ClInclude Include="graphics.h" />
+    <ClInclude Include="image.h" />
+    <ClInclude Include="imageResource.h" />
+    <ClInclude Include="light.h" />
+    <ClInclude Include="lua.hpp" />
+    <ClInclude Include="LuaEngine.hpp" />
+    <ClInclude Include="Matrices.h" />
+    <ClInclude Include="occluder.h" />
+    <ClInclude Include="renderer.h" />
+    <ClInclude Include="resource2.h" />
+    <ClInclude Include="Screen.h" />
+    <ClInclude Include="sdl_backend.h" />
+    <ClInclude Include="point.hpp" />
+    <ClInclude Include="shader.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Stopwatch.hpp" />
+    <ClInclude Include="tileset.h" />
+    <ClInclude Include="Vectors.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="audio.cpp" />
+    <ClCompile Include="collisiondetection.cpp" />
+    <ClCompile Include="color.cpp" />
+    <ClCompile Include="font.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="imageResource.cpp" />
+    <ClCompile Include="light.cpp" />
+    <ClCompile Include="LuaEngine.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Matrices.cpp" />
+    <ClCompile Include="occluder.cpp" />
+    <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="shader.cpp" />
+    <ClCompile Include="tileset.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
