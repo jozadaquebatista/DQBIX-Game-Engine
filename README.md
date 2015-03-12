@@ -26,4 +26,5 @@ Since this is not perfect, here's a todo list. I really want some help!
   - Add a physics engine (Box2D, Chipmunk or whatever...)
   - Particle systems
   - More advanced collision detection
+  - A way to export your game for Windows and Android
   - uhmm... any suggestions?
