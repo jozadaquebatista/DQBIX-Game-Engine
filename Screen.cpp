@@ -361,22 +361,25 @@ void screen_mgr::cls()
 
 			if (light->getCastshadow())
 			{
-				glStencilMask(1);
+				glClearStencil(0);
+				glClear(GL_STENCIL_BUFFER_BIT);
+
 				glEnable(GL_STENCIL_TEST);
-				glStencilFunc(GL_ALWAYS, 1, 1);
+				glStencilFunc(GL_ALWAYS, 0x1, 0x1);
 				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 				glColorMask(false, false, false, false);
 
-				glClear(GL_STENCIL_BUFFER_BIT);
+				glColor4f(1, 1, 1, 0.5f);
+
 				for (auto &roccluder : occluders)
 				{
 					boxoccluder* occluder = roccluder.second;
 					int count = 4;
 					Vector2 verts[4] = {
 						Vector2(occluder->getX(), occluder->getY()),
-						Vector2(occluder->getX(), occluder->getY() + occluder->getH()),
-						Vector2(occluder->getX() + occluder->getW(), occluder->getY() + occluder->getH()),
 						Vector2(occluder->getX() + occluder->getW(), occluder->getY()),
+						Vector2(occluder->getX() + occluder->getW(), occluder->getY() + occluder->getH()),
+						Vector2(occluder->getX(), occluder->getY() + occluder->getH()),
 					};
 					for (int i = 0; i < count; i++)
 					{
@@ -401,7 +404,7 @@ void screen_mgr::cls()
 					}
 				}
 				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-				glStencilFunc(GL_EQUAL, 0, 1);
+				glStencilFunc(GL_EQUAL, 0x0, 0x1);
 				glColorMask(true, true, true, true);
 			}
 			
@@ -481,6 +484,7 @@ void screen_mgr::init(int w, int h, int bpp, const char* title)
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	win->flags = SDL_OPENGL;
