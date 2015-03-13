@@ -150,40 +150,6 @@ void image::use(int sampler_slot)
 	m_resource->use(0);
 }
 
-void image::make_transparent(color* key)
-{
-	unsigned char* ndata = new unsigned char[m_resource->getWidth() * m_resource->getHeight() * 4];
-	int j = 0;
-	for (int i = 0; i < m_resource->getWidth() * m_resource->getHeight() * 3; i+=3)
-	{
-		ndata[j] = m_resource->getData()[0][i];
-		ndata[j+1] = m_resource->getData()[0][i+1];
-		ndata[j+2] = m_resource->getData()[0][i+2];
-
-		if (m_resource->getData()[0][i]     == 255 * key->r &&
-			m_resource->getData()[0][i + 1] == 255 * key->g &&
-			m_resource->getData()[0][i + 2] == 255 * key->b)
-			ndata[i + 3] = 0;
-		else
-			ndata[i + 3] = 1;
-	}
-
-	int w = m_resource->getWidth();
-	int h = m_resource->getHeight();
-	int target = m_resource->getTarget();
-
-	delete m_resource;
-	m_resource = new imageResource(target, w, h, 1, new unsigned char*[]{ndata},
-		new int[] {filter}, new int[] {GL_RGBA},
-		new int[] {GL_RGBA}, false, new int[] {GL_COLOR_ATTACHMENT0});
-	m_loadedImages[filename] = m_resource;
-	
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0);
-
-	stbi_image_free(ndata);
-}
-
 void image::draw_full(int x, int y, float sx, float sy, float a)
 {
 	glPushMatrix();

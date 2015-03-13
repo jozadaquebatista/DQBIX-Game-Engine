@@ -13,6 +13,8 @@
 
 #include <cstdio>
 
+#define DEBUG_SCRIPT
+
 class argv_range {
 public:
 	argv_range(int argc, const char * const argv[])
@@ -59,23 +61,21 @@ bool isbind = false;
 //    TEST
 int Fmain(int argc, char *argv[])
 {
-	/*screen_mgr::init(320, 240, 32, "Test");
-	image* im = new image("tiles.png");
+	screen_mgr::init(320, 240, 32, "Test");
+	image* im = new image("data/player.png");
+	animation* ani = new animation(new image("data/player.png"), 1, 4, 0.4f, true);
 	int key = 0;
 
 	while (key != 27)
 	{
-	screen_mgr::poll();
-	screen_mgr::cls();
-	key = screen_mgr::getkey();
+		screen_mgr::poll();
+		screen_mgr::cls();
+		key = screen_mgr::getkey();
 
-	renderer::blit(im, 10, 10);
+		renderer::blits(ani->step(), 10, 10, 3.0f, 3.0f);
 
-	screen_mgr::flip();
-	}*/
-
-	int a[5] = { 0, 1, 2, 3, 4 };
-	
+		screen_mgr::flip();
+	}
 
 	return 0;
 }
@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
 	tileset::lua_reg(eng->getLuaState());
 	renderer::lua_reg(eng->getLuaState());
 
+#ifndef DEBUG_SCRIPT
 	if (!isbind)
 	{
 		std::string script_path(argv[1]);
@@ -159,6 +160,10 @@ int main(int argc, char *argv[])
 		eng->RunScript("C:/tmp_scr.tmp");
 	}
 	remove("C:/tmp_scr.tmp");
+#else
+	std::string script_path("test.lua");
+	eng->RunScript(script_path.c_str());
+#endif
 
 	SAFE_DELETE(eng);
 	return 0;

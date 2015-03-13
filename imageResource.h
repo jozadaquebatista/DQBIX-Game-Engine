@@ -41,8 +41,6 @@ public:
 	void addReference();
 	bool removeReference();
 	
-	unsigned char** getData() const { return data; }
-
 	int getID();
 
 	inline static void lua_reg(lua_State* L)
@@ -71,8 +69,6 @@ private:
 	
 	int* genTextures(int count);
 
-	unsigned char** data;
-	
 	imageResource(imageResource& other) {}
 	void operator=(imageResource& other) {}
 };

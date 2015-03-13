@@ -9,8 +9,6 @@ imageResource::imageResource(int target, int width, int height, int numtex, unsi
 	this->m_height = height;
 	this->m_fbo = 0;
 
-	this->data = data;
-
 	this->initTextures(data, filter, internalFormats, formats, clamp);
 	this->initRenderTargets(attachments);
 }

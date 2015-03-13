@@ -1,15 +1,24 @@
 screen(320, 240, 32, "Test")
-lighting(true)
+lighting(false)
 
 local key = 0
 local tset_img = image("data/tile1.png")
-local tset = tileset(tset_img, 3, 6, "abcdefghijklmnopqr")
+local tset = tileset(tset_img, 4, 4, "abcdefghijklmnop")
+
+player = {
+	pos = point(0.0, 0.0),
+	walk = animation(image("data/player.png"), 1, 4, 0.4, true),
+	stand = image("data/stand.png"),
+}
+walk = animation(image("data/player.png"), 1, 4, 0.4, true)
 
 map = {
-	{"p","g","g","g","g","o"},
-	{"q","d","c","d","d","r"},
-	{"q","d","d","d","d","r"},
-	{"q","d","d","d","d","r"}
+	{"g","g","g","g","g","g","g","g"},
+	{"g","g","g","g","g","g","g","g"},
+	{"g","g","g","g","g","g","g","g"},
+	{"g","g","g","g","g","g","g","g"},
+	{"g","g","g","g","g","g","g","g"},
+	{"g","g","g","g","g","g","g","g"}
 }
 
 while key ~= 27 do
@@ -17,19 +26,14 @@ while key ~= 27 do
 	cls()
 	key = getkey()
 	
-	for i = 1, #map do
-		for j = 1, #map[1] do
-			blit(tset:tile(map[i][j]), (j-1)*16, (i-1)*16)
-		end
-	end
+	-- for i = 1, #map do
+		-- for j = 1, #map[1] do
+			-- blits(tset:tile(map[i][j]), (j-1)*48, (i-1)*48, 3.0, 3.0)
+		-- end
+	-- end
 	
-	for i = 1, #ocs do
-		rect(ocs[i].x, ocs[i].y, ocs[i].width, ocs[i].height, true)
-	end
-	
-	l5.x = mousex()
-	l5.y = mousey()
-	
+	blits(walk:step(), 20, 20, 3.0, 3.0)
+		
 	flip()
 end
 quit()
