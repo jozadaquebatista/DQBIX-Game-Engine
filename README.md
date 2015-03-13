@@ -28,3 +28,5 @@ Since this is not perfect, here's a todo list. I really want some help!
   - More advanced collision detection
   - A way to export your game for Windows and Android
   - uhmm... any suggestions?
+  
+If you want to help me, you'll need Visual Studio 2013 and a lot of coffee!
