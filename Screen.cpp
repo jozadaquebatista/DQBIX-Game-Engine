@@ -5,44 +5,13 @@ SDL_Event screen_mgr::evt;
 Matrix4 screen_mgr::projection;
 
 bool screen_mgr::lighting_enabled;
+bool screen_mgr::quit = false;
 
 std::map<std::string, boxoccluder*> screen_mgr::occluders;
 std::map<std::string, light*> screen_mgr::lights;
+
 color* screen_mgr::drawcolor = NULL;
-
-bool screen_mgr::quit = false;
-
-void screen_mgr::opengl_setup(screen* wn)
-{
-	//glEnable(GL_TEXTURE_2D);
-	glDisable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glEnable(GL_STENCIL_TEST);
-
-	glFrontFace(GL_CCW);
-
-	if (wn->backcolor == NULL)
-	{
-		wn->backcolor = new color();
-		wn->backcolor->r = 0;
-		wn->backcolor->g = 0;
-		wn->backcolor->b = 0;
-		wn->backcolor->a = 0;
-	}
-	float m[16];
-	ortho_2d(m, 0, wn->w, wn->h, 0);
-	projection.set(m);
-
-	glViewport(0, 0, wn->w, wn->h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();/*
-	gluOrtho2D(0, wn->w, wn->h, 0);*/
-	glLoadMatrixf(projection.get());
-
-	useAsRenderTarget();
-}
+shader* screen_mgr::lighting;
 
 int screen_mgr::getkey()
 {
@@ -104,7 +73,7 @@ void screen_mgr::resizewindow(int nw, int nh)
 
 point* screen_mgr::windowsize()
 {
-	return new point(win->w, win->h);
+	return new point((float)win->w, (float)win->h);
 }
 
 
@@ -129,7 +98,7 @@ image* screen_mgr::create_image(int w, int h)
 
 point* screen_mgr::image_size(image* img)
 {
-	return new point(img->getCliprect().w, img->getCliprect().h);
+	return new point((float)img->getCliprect().w, (float)img->getCliprect().h);
 }
 
 void screen_mgr::start_rendertexture(image* target)
@@ -154,8 +123,6 @@ void screen_mgr::useAsRenderTarget()
 	glViewport(0, 0, win->w, win->h);
 }
 
-shader* screen_mgr::lighting;
-
 void screen_mgr::ortho_2d(float* mat, int left, int right, int bottom, int top)
 {
 	const float zNear = -1.0f;
@@ -172,7 +139,7 @@ void screen_mgr::ortho_2d(float* mat, int left, int right, int bottom, int top)
 
 	//second
 	*mat++ = (0.0f);
-	*mat++ = (2.0*inv_y);
+	*mat++ = (2.0f*inv_y);
 	*mat++ = (0.0f);
 	*mat++ = (0.0f);
 
@@ -343,8 +310,6 @@ void screen_mgr::cls()
 		drawcolor->b = 1.0f;
 		drawcolor->a = 1.0f;
 	}
-	
-	glClearStencil(0);
 
 	glClearColor(win->backcolor->r, win->backcolor->g, win->backcolor->b, win->backcolor->a);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -369,7 +334,7 @@ void screen_mgr::cls()
 				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 				glColorMask(false, false, false, false);
 
-				glColor4f(1, 1, 1, 0.5f);
+				glColor4f(1, 1, 1, 0.7f);
 
 				for (auto &roccluder : occluders)
 				{
@@ -451,6 +416,36 @@ void screen_mgr::poll()
 			break;
 		}
 	}
+}
+
+void screen_mgr::opengl_setup(screen* wn)
+{
+	glDisable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_STENCIL_TEST);
+
+	glFrontFace(GL_CCW);
+
+	if (wn->backcolor == NULL)
+	{
+		wn->backcolor = new color();
+		wn->backcolor->r = 0;
+		wn->backcolor->g = 0;
+		wn->backcolor->b = 0;
+		wn->backcolor->a = 0;
+	}
+	float m[16];
+	ortho_2d(m, 0, wn->w, wn->h, 0);
+	projection.set(m);
+
+	glViewport(0, 0, wn->w, wn->h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glLoadMatrixf(projection.get());
+
+	useAsRenderTarget();
 }
 
 void screen_mgr::init(int w, int h, int bpp, const char* title)

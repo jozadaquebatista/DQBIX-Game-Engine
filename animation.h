@@ -3,14 +3,12 @@
 #pragma once
 
 #include <vector>
-#include <initializer_list>
 #include "image.h"
 
 class Stopwatch;
 class animation
 {
 public:
-	animation() {}
 	animation(image* sheet = NULL, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
 	
 	image* step();

@@ -16,7 +16,7 @@ animation::animation(image* sheet /*= NULL*/, int rows /*= 1*/, int cols /*= 1*/
 void animation::lua_reg(lua_State* L)
 {
 	using namespace luabridge;
-	
+
 	getGlobalNamespace(L)
 		.beginClass<animation>("animation")
 		.addConstructor<void(*)(image*, int, int, float, bool)>()

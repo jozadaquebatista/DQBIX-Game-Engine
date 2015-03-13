@@ -4,12 +4,7 @@
 #include <vector>
 #include <iostream>
 
-extern "C" {
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
-#include <LuaBridge.h>
+#include "lua.hpp"
 
 #define SAFE_DELETE(x) { if(x) delete x; x = nullptr; }
 class LuaEngine
