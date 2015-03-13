@@ -3,13 +3,14 @@
 #pragma once
 
 #include <vector>
+#include <initializer_list>
 #include "image.h"
 
 class Stopwatch;
 class animation
 {
 public:
-	animation(image* sheet = NULL, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
+	animation(image* sheet = 0, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
 	
 	image* step();
 
@@ -34,14 +35,11 @@ private:
 	int m_index;	
 	float m_speed;
 	bool m_loop;
-
 	image* m_sheet;	
-	
 	Stopwatch* sw;
 
-	animation(animation& anim) {}
+	animation(animation& anim) {}	
 	void operator=(animation texture) {}
-
 };
 
 #endif //__IX_ANIMATION__

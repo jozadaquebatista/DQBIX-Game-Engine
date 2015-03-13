@@ -27,16 +27,15 @@ void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 	m.rotateZ(a).scale(sw, sh, 1.0f).translate(x, y, 0);
 	glMultMatrixf(m.get());
 
-
 	glEnable(GL_TEXTURE_2D);
 	img->bind();
 
 	glBegin(GL_QUADS);
 
-	glTexCoord2f(crx,         cry); glVertex2f(0, 0);
-	glTexCoord2f(crx+crw,     cry); glVertex2f(1.0f, 0);
-	glTexCoord2f(crx+crw, cry+crh); glVertex2f(1.0f, 1.0f);
-	glTexCoord2f(crx,     cry+crh); glVertex2f(0, 1.0f);
+	glTexCoord2f(crx,         cry); glVertex2f(-0.5f, -0.5f);
+	glTexCoord2f(crx+crw,     cry); glVertex2f(0.5f, -0.5f);
+	glTexCoord2f(crx+crw, cry+crh); glVertex2f(0.5f, 0.5f);
+	glTexCoord2f(crx,     cry+crh); glVertex2f(-0.5f, 0.5f);
 
 	glEnd();
 

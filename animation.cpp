@@ -1,7 +1,7 @@
 #include "animation.h"
 #include "Stopwatch.hpp"
 
-animation::animation(image* sheet /*= NULL*/, int rows /*= 1*/, int cols /*= 1*/, float speed /*= 0*/, bool loop /*= false*/)
+animation::animation(image* sheet /*= 0*/, int rows /*= 1*/, int cols /*= 1*/, float speed /*= 0*/, bool loop /*= false*/)
 {
 	m_sheet = sheet;
 	m_loop = loop;
@@ -58,7 +58,7 @@ image* animation::step()
 	}
 	int i = 0;
 	i = m_index;
-
+	
 	int w = m_sheet->getResource()->getWidth() / m_cols;
 	int h = m_sheet->getResource()->getHeight() / m_rows;
 

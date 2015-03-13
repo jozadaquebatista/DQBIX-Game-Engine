@@ -142,7 +142,6 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="tileset.cpp" />
-    <ClCompile Include="vertex.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

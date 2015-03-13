@@ -57,7 +57,7 @@ bool isbind = false;
 
 //////////////////////////////////////////////////////////////////////////
 //    TEST
-int main(int argc, char *argv[])
+int Fmain(int argc, char *argv[])
 {
 	/*screen_mgr::init(320, 240, 32, "Test");
 	image* im = new image("tiles.png");
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
 //////////////////////////////////////////////////////////////////////////
 //  This is the real main =)
-int Rmain(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	std::string scr;
 	std::stringstream scr_s;
