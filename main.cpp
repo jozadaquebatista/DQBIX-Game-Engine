@@ -13,7 +13,6 @@
 
 #include <cstdio>
 
-
 class argv_range {
 public:
 	argv_range(int argc, const char * const argv[])

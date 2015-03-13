@@ -1,5 +1,5 @@
-#ifndef __IXOBJECT_DQBIX__
-#define __IXOBJECT_DQBIX__
+#ifndef __IX_LUA__
+#define __IX_LUA__
 #pragma once
 
 extern "C" {
@@ -7,6 +7,7 @@ extern "C" {
 #include "lauxlib.h"
 #include "lualib.h"
 }
+
 #include <LuaBridge.h>
 
-#endif //__IXOBJECT_DQBIX__
+#endif //__IX_LUA__

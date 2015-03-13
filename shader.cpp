@@ -242,7 +242,7 @@ std::string shader::loadShaderData(std::string filename)
 int shader::linecount(std::string t)
 {
 	int count = 0;
-	for (int i = 0; i < t.size(); i++)
+	for (unsigned int i = 0; i < t.size(); i++)
 	{
 		if (t[i] == '\n')
 		{

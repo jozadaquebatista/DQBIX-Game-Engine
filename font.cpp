@@ -24,7 +24,7 @@ void font::use()
 
 font::~font()
 {
-	if (fnth) delete fnth;
+	if (fnth) dtx_close_font(fnth);
 }
 
 font::font(std::string fontfile /*= ""*/, int sz/*=18*/)

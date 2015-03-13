@@ -8,7 +8,7 @@
 class light
 {
 public:
-	light(int _x, int _y, float r, float g, float b) 
+	light(int _x, int _y, float r=1.0f, float g=1.0f, float b=1.0f) 
 	: x(_x), y(_y)
 	{
 		_color = new color();

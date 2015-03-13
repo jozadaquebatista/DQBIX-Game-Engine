@@ -57,7 +57,6 @@ public:
 			.addFunction("removeReference", &imageResource::removeReference)
 			.addFunction("getID", &imageResource::getID)
 			.endClass();
-
 	}
 private:
 	int* m_id;

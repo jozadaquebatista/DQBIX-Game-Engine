@@ -25,7 +25,7 @@ bool collisiondetection::circle(int x1, int y1, int r1, int x2, int y2, int r2)
 
 std::string collisiondetection::side(point pos, point sz, point delta, point opos, point osz)
 {
-	return _side(pos.x, pos.y, sz.x, sz.y, delta.x, delta.y, opos.x, opos.y, osz.x, osz.y);
+	return _side((int)pos.x, (int)pos.y, (int)sz.x, (int)sz.y, (int)delta.x, (int)delta.y, (int)opos.x, (int)opos.y, (int)osz.x, (int)osz.y);
 }
 
 std::string collisiondetection::_side(int x, int y, int w, int h, int dx, int dy, int ox, int oy, int ow, int oh)

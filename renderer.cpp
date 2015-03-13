@@ -23,9 +23,6 @@ void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 	float sw = w * sx;
 	float sh = h * sy;
 
-	/*glTranslatef(x, y, 0);
-	glScalef(sw, sh, 1.0f);
-	glRotatef(a, 0, 0, 1);*/
 	Matrix4 m;
 	m.rotateZ(a).scale(sw, sh, 1.0f).translate(x, y, 0);
 	glMultMatrixf(m.get());

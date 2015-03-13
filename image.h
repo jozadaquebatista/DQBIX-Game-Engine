@@ -9,7 +9,6 @@
 #include "imageResource.h"
 #include "sdl_backend.h"
 #include "Matrices.h"
-//#include "lua.hpp"
 
 typedef struct  
 {
@@ -51,14 +50,14 @@ public:
 	{
 		using namespace luabridge;
 		getGlobalNamespace(L)
-			.beginClass<image>("image")
-			.addConstructor<void(*)(std::string)>()
-			.addProperty("filter", &image::getFilter, &image::setFilter)
-			.addFunction("setAsRenderTarget", &image::setAsRenderTarget)
-			.addFunction("bind", &image::bind)
-			.addFunction("use", &image::use)
-			.addProperty("resource", &image::getResource)
-			.endClass();
+		.beginClass<image>("image")
+		.addConstructor<void(*)(std::string)>()
+		.addProperty("filter", &image::getFilter, &image::setFilter)
+		.addFunction("setAsRenderTarget", &image::setAsRenderTarget)
+		.addFunction("bind", &image::bind)
+		.addFunction("use", &image::use)
+		.addProperty("resource", &image::getResource)
+		.endClass();
 			
 		imageResource::lua_reg(L);
 	}
