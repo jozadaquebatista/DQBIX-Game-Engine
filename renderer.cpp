@@ -46,7 +46,7 @@ void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 	glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
-	/*img->draw_full(x, y, sx, sy, a);*/
+	//img->draw_full(x, y, sx, sy, a);
 }
 
 void renderer::blits(image* img, int x, int y, float sx, float sy)

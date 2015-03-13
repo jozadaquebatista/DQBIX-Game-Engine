@@ -12,7 +12,7 @@
 #include "LuaEngine.hpp"
 
 #include <cstdio>
-#include "resource2.h"
+
 
 class argv_range {
 public:
@@ -58,35 +58,25 @@ bool isbind = false;
 
 //////////////////////////////////////////////////////////////////////////
 //    TEST
-int Fmain(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-	screen_mgr::init(320, 240, 32, "Test");
-
+	/*screen_mgr::init(320, 240, 32, "Test");
+	image* im = new image("tiles.png");
 	int key = 0;
-	image* fr = screen_mgr::load_image("torus.gif");
-	animation* anim = screen_mgr::sprite_animation(fr, 6, 10, 0.08f, true);
-	screen_mgr::is_lighting_enabled(true);
-
-	light* l = new light(25, 25, 1.0f, 1.0f, 1.0f);
-	l->setCastshadow(true);
-	screen_mgr::lights["l"] = l;
-
-	boxoccluder* oc = new boxoccluder(70, 70, 50, 50);
-	screen_mgr::occluders["oc"] = oc;
 
 	while (key != 27)
 	{
-		screen_mgr::poll();
-		screen_mgr::cls();
-		key = screen_mgr::getkey();
+	screen_mgr::poll();
+	screen_mgr::cls();
+	key = screen_mgr::getkey();
 
-		l->setX(screen_mgr::mousex());
-		l->setY(screen_mgr::mousey());
+	renderer::blit(im, 10, 10);
 
-		renderer::blits(anim->step(), 10, 10, 3.0f, 3.0f);
-		
-		screen_mgr::flip();
-	}
+	screen_mgr::flip();
+	}*/
+
+	int a[5] = { 0, 1, 2, 3, 4 };
+	
 
 	return 0;
 }
@@ -95,7 +85,7 @@ int Fmain(int argc, char *argv[])
 
 //////////////////////////////////////////////////////////////////////////
 //  This is the real main =)
-int main(int argc, char *argv[])
+int Rmain(int argc, char *argv[])
 {
 	std::string scr;
 	std::stringstream scr_s;
