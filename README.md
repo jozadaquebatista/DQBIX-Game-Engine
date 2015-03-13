@@ -19,7 +19,7 @@ HÄLP!
 Since this is not perfect, here's a todo list. I really want some help!
   - Improve shader support
   - Move everything from glMultiMatrix and glBegins/glEnds to shaders and vertex buffers
-  - Code organization
+  - Code organization/refactoring
   - Improve 2D shadows
   - Improve shader support (currently it's very hacky)
   - Add more occluder types (currently we only have box. maybe a circle, or polygon occluders...)
