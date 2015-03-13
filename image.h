@@ -9,6 +9,7 @@
 #include "imageResource.h"
 #include "sdl_backend.h"
 #include "Matrices.h"
+#include "color.h"
 
 typedef struct  
 {
@@ -39,6 +40,8 @@ public:
 		return getResource()->getID();
 	}
 
+	void make_transparent(color* key);
+
 	rect getCliprect() const { return cliprect; }
 	void setCliprect(rect val) { cliprect = val; }
 
@@ -56,6 +59,7 @@ public:
 		.addFunction("setAsRenderTarget", &image::setAsRenderTarget)
 		.addFunction("bind", &image::bind)
 		.addFunction("use", &image::use)
+		.addFunction("maketransparent", &image::make_transparent)
 		.addProperty("resource", &image::getResource)
 		.endClass();
 			
