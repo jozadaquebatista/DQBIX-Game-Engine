@@ -4,9 +4,17 @@ Builds*
 Debug*.exe
 Debug*/Debug*.exe
 Debug*/Debug*\ Libs
+Debug/*.exe
+Debug/*.dll
 *.sdf
 *.opensdf
 *.aps
 *.suo
 *.filters
 *.user
+*.obj
+*.tlog
+*.png
+*.pdb
+*.log
+*.idb
