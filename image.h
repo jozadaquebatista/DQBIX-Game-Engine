@@ -22,9 +22,10 @@ public:
 	image(const image& texture);
 	void operator=(image texture);
 
-	image(int w = 0, int h = 0, unsigned char* data = 0, int target = GL_TEXTURE_2D, int filter = GL_LINEAR, int internalFmt = 0,
+	image(int w, int h, unsigned char* data = 0, int target = GL_TEXTURE_2D, int filter = GL_LINEAR, int internalFmt = 0,
 		  int format = 0, bool clamp = false, int attachment = 0);
 	image(const std::string filename, int target, int filter);
+
 	image(std::string filename);
 
 	virtual ~image();
@@ -39,6 +40,9 @@ public:
 	{
 		return getResource()->getID();
 	}
+
+	int getWidth() const { return getCliprect().w; }
+	int getHeight() const { return getCliprect().h; }
 
 	rect getCliprect() const { return cliprect; }
 	void setCliprect(rect val) { cliprect = val; }
@@ -57,7 +61,8 @@ public:
 		.addFunction("setAsRenderTarget", &image::setAsRenderTarget)
 		.addFunction("bind", &image::bind)
 		.addFunction("use", &image::use)
-		.addProperty("resource", &image::getResource)
+		.addProperty("width", &image::getWidth)
+		.addProperty("height", &image::getHeight)
 		.endClass();
 			
 		imageResource::lua_reg(L);

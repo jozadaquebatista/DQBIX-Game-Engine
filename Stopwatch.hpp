@@ -23,13 +23,13 @@ public:
 	{
 		using namespace luabridge;
 		getGlobalNamespace(L)
-			.beginClass<Stopwatch>("Clock")
+			.beginClass<Stopwatch>("clock")
 			.addConstructor<void(*)(void)>()
 			.addFunction("start", &Stopwatch::Start)
 			.addFunction("restart", &Stopwatch::Restart)
 			.addFunction("reset", &Stopwatch::Reset)
 			.addFunction("stop", &Stopwatch::Stop)
-			.addFunction("elapsedMillis", &Stopwatch::ElapsedMillis)
+			.addFunction("elapsed", &Stopwatch::ElapsedMillis)
 			.addData("frequency", &Stopwatch::Frequency, false)
 			.addData("isHighReslution", &Stopwatch::IsHighResolution, false)
 			.endClass();

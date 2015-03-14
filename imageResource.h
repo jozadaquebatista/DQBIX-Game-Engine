@@ -48,14 +48,14 @@ public:
 		using namespace luabridge;
 		getGlobalNamespace(L)
 			.beginClass<imageResource>("imageResource")
-			.addFunction("getWidth", &imageResource::getWidth)
-			.addFunction("getHeight", &imageResource::getHeight)
-			.addFunction("getTarget", &imageResource::getTarget)
+			.addProperty("width", &imageResource::getWidth)
+			.addProperty("height", &imageResource::getHeight)
+			.addProperty("target", &imageResource::getTarget)
 			.addFunction("use", &imageResource::use)
 			.addFunction("useAsRenderTarget", &imageResource::useAsRenderTarget)
 			.addFunction("addReference", &imageResource::addReference)
 			.addFunction("removeReference", &imageResource::removeReference)
-			.addFunction("getID", &imageResource::getID)
+			.addFunction("id", &imageResource::getID)
 			.endClass();
 	}
 private:

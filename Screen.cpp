@@ -82,25 +82,6 @@ void screen_mgr::settitle(std::string newtitle)
 	SDL_WM_SetCaption(newtitle.c_str(), NULL);
 }
 
-image* screen_mgr::load_image(std::string filename)
-{
-	return new image(filename);
-}
-
-image* screen_mgr::create_image(int w, int h)
-{
-	return new image(w, h, NULL, GL_TEXTURE_2D, GL_NEAREST,
-		GL_RGBA,
-		GL_RGBA,
-		false,
-		GL_COLOR_ATTACHMENT0);
-}
-
-point* screen_mgr::image_size(image* img)
-{
-	return new point((float)img->getCliprect().w, (float)img->getCliprect().h);
-}
-
 void screen_mgr::start_rendertexture(image* target)
 {
 	target->setAsRenderTarget();
@@ -156,34 +137,6 @@ void screen_mgr::ortho_2d(float* mat, int left, int right, int bottom, int top)
 	*mat++ = (1.0f);
 }
 
-void screen_mgr::set_image_cliprect(image* img, int x, int y, int w, int h)
-{
-	if (img == NULL) return;
-	rect rec;
-
-	if (x < 0) x = 0;
-	if (y < 0) y = 0;
-	if (x >= img->getResource()->getWidth()) x = img->getResource()->getWidth();
-	if (y >= img->getResource()->getHeight()) x = img->getResource()->getHeight();
-
-	if (w < 1) w = 1;
-	if (h < 1) h = 1;
-	if (w >= img->getResource()->getWidth()) w = img->getResource()->getWidth();
-	if (h >= img->getResource()->getHeight()) h = img->getResource()->getHeight();
-
-	rec.x = x;
-	rec.y = y;
-	rec.w = w;
-	rec.h = h;
-	
-	img->setCliprect(rec);
-}
-
-animation* screen_mgr::sprite_animation(image* sheet, int rows, int cols, float speed, bool loop)
-{
-	return new animation(sheet, rows, cols, speed, loop);
-}
-
 void screen_mgr::console_visible(bool state)
 {
 	if (!state)
@@ -229,49 +182,9 @@ void screen_mgr::remove_occluder(std::string name)
 	}
 }
 
-audio* screen_mgr::load_audio(std::string filename)
+image* screen_mgr::create_rendertarget(int w, int h)
 {
-	return new audio(filename);
-}
-
-void screen_mgr::set_audio_volume(audio* au, float volume)
-{
-	if (au == NULL) return;
-	au->volume = volume;
-}
-
-void screen_mgr::set_audio_pitch(audio* au, float pitch)
-{
-	if (au == NULL) return;
-	au->pitch = pitch;
-}
-
-void screen_mgr::set_audio_pan(audio* au, float pan)
-{
-	if (au == NULL) return;
-	au->pan = pan;
-}
-
-void screen_mgr::set_audio_loop(audio* au, bool loop)
-{
-	if (au == NULL) return;
-	au->loop = loop;
-}
-
-void screen_mgr::set_audio_play_once(audio* au, bool po)
-{
-	if (au == NULL) return;
-	au->play_once = po;
-}
-
-void screen_mgr::set_audio_properties(audio* au, float vol, float pitch, float pan, bool loop, bool playonce)
-{
-	if (au == NULL) return;
-	au->volume = vol;
-	au->pitch = pitch;
-	au->pan = pan;
-	au->loop = loop;
-	au->play_once = playonce;
+	return new image(w, h, 0, GL_TEXTURE_2D, GL_NEAREST, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
 }
 
 void screen_mgr::quit_game()
