@@ -87,7 +87,7 @@ public:
 	{
 		using namespace luabridge;
 		getGlobalNamespace(L)
-			.beginClass<color>("color")
+			.beginClass<color>("colors")
 			.addData("r", &color::r)
 			.addData("g", &color::g)
 			.addData("b", &color::b)

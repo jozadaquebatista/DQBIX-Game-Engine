@@ -43,7 +43,7 @@ void imageResource::initTextures(unsigned char** data, int* filter, int* interna
 		}
 
 		glTexImage2D(getTarget(), 0, internalFormats[i], m_width, m_height, 0, formats[i], GL_UNSIGNED_BYTE, data[i]);
-		
+
 	}
 }
 
@@ -52,11 +52,11 @@ void imageResource::initRenderTargets(int* attachments)
 	if (attachments == NULL) return;
 
 	int* drawBuffers = new int[32];
-	
+
 	for (int i = 0; i < m_numTextures; i++)
 	{
 		drawBuffers[i] = attachments[i];
-		
+
 		if (m_fbo == 0)
 		{
 			glGenFramebuffers(1, (GLuint*)&m_fbo);
@@ -75,7 +75,8 @@ void imageResource::initRenderTargets(int* attachments)
 
 void imageResource::use(int ind)
 {
-	glBindTexture(getTarget(), m_id[ind]);
+	if (m_id[ind])
+		glBindTexture(getTarget(), m_id[ind]);
 }
 
 void imageResource::useAsRenderTarget()

@@ -10,16 +10,16 @@ class imageResource
 {
 public:
 
-	imageResource(int target,
-				  int width,
-				  int height,
-				  int numtex,
-				  unsigned char** data,
-				  int* filter,
-				  int* internalFormats,
-				  int* formats,
-				  bool clamp,
-				  int* attachments);
+	imageResource(int target=0,
+				  int width=1,
+				  int height=1,
+				  int numtex=1,
+				  unsigned char** data=0,
+				  int* filter=0,
+				  int* internalFormats=0,
+				  int* formats=0,
+				  bool clamp=false,
+				  int* attachments=0);
 
 	virtual ~imageResource();
 

@@ -13,7 +13,7 @@ image::image(int w, int h, unsigned char* data, int target, int filter, int inte
 		m_resource = new imageResource(GL_TEXTURE_2D, w, h,
 			1, new unsigned char*[] {data}, new int[] {filter}, new int[] {internalFmt},
 			new int[] {format}, clamp, new int[] {attachment});
-		m_loadedImages[filename] = m_resource;
+		m_loadedImages.insert({ filename, m_resource });
 	}
 	else
 	{
@@ -28,7 +28,7 @@ image::image(int w, int h, unsigned char* data, int target, int filter, int inte
 			m_resource = new imageResource(GL_TEXTURE_2D, w, h,
 				1, new unsigned char*[] {data}, new int[] {filter}, new int[] {internalFmt},
 				new int[] {format}, clamp, new int[] {attachment});
-			m_loadedImages[filename] = m_resource;
+			m_loadedImages.insert({ filename, m_resource });
 		}
 	}
 	glDisable(GL_TEXTURE_2D);
@@ -61,7 +61,7 @@ image::image(const std::string filename, int target, int filter)
 		this->m_resource = new imageResource(target, w, h, 1, new unsigned char*[]{data},
 			new int[] {filter}, new int[] {GL_RGBA},
 			new int[] {GL_RGBA}, false, new int[] {GL_COLOR_ATTACHMENT0});
-		m_loadedImages[filename] = m_resource;
+		m_loadedImages.insert({ filename, m_resource });
 
 		stbi_image_free(data);
 	}
@@ -86,7 +86,7 @@ image::image(const std::string filename, int target, int filter)
 			this->m_resource = new imageResource(target, w, h, 1, new unsigned char*[]{data},
 				new int[] {filter}, new int[] {GL_RGBA},
 				new int[] {GL_RGBA}, false, new int[] {GL_COLOR_ATTACHMENT0});
-			m_loadedImages[filename] = m_resource;
+			m_loadedImages.insert({ filename, m_resource });
 
 			stbi_image_free(data);
 		}
@@ -140,7 +140,7 @@ void image::setAsRenderTarget()
 
 void image::bind()
 {
-	m_resource->use(0);
+	this->use(0);
 }
 
 void image::use(int sampler_slot)
