@@ -13,7 +13,7 @@
 
 #include <cstdio>
 
-#define DEBUG_SCRIPT
+// #define DEBUG_SCRIPT
 
 class argv_range {
 public:
