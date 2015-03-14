@@ -123,7 +123,6 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Stopwatch.hpp" />
     <ClInclude Include="tileset.h" />
     <ClInclude Include="Vectors.h" />
-    <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation.cpp" />

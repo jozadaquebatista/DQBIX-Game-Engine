@@ -25,37 +25,49 @@ int screen_mgr::getkey()
 
 bool screen_mgr::keystatus(int key)
 {
-	return getkey() == key;
+	Uint8* state = SDL_GetKeyState(0);
+	return state[key] == 1;
 }
 
 int screen_mgr::mousex()
 {
-	if (&evt == NULL) return -1;
+	int x;
+	SDL_PumpEvents();
+	SDL_GetMouseState(&x, NULL);
+	return x;
+	/*if (&evt == NULL) return -1;
 	if (evt.type == SDL_MOUSEMOTION)
 	{
 		return evt.motion.x;
 	}
-	return -1;
+	return -1;*/
 }
 
 int screen_mgr::mousey()
 {
-	if (&evt == NULL) return -1;
+	int y;
+	SDL_PumpEvents();
+	SDL_GetMouseState(NULL, &y);
+	return y;
+	/*if (&evt == NULL) return -1;
 	if (evt.type == SDL_MOUSEMOTION)
 	{
-		return evt.motion.y;
+	return evt.motion.y;
 	}
-	return -1;
+	return -1;*/
 }
 
 int screen_mgr::getbutton()
 {
-	if (&evt == NULL) return -1;
+	SDL_PumpEvents();
+	return SDL_GetMouseState(NULL, NULL);
+	// Old code
+	/*if (&evt == NULL) return -1;
 	if (evt.type == SDL_MOUSEMOTION || evt.type == SDL_MOUSEBUTTONDOWN)
 	{
 		return evt.motion.state;
-	}
-	return -1;
+	}*/
+	//return -1;
 }
 
 bool screen_mgr::buttonstatus(int btn)
