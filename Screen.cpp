@@ -11,6 +11,13 @@ std::map<std::string, boxoccluder*> screen_mgr::occluders;
 std::map<std::string, light*> screen_mgr::lights;
 
 color* screen_mgr::drawcolor = NULL;
+
+int screen_mgr::frame = 0;
+bool screen_mgr::cap = true;
+
+int screen_mgr::lastticks;
+int screen_mgr::ticks;
+
 shader* screen_mgr::lighting;
 
 int screen_mgr::getkey()
@@ -236,6 +243,8 @@ void screen_mgr::cls()
 		drawcolor->a = 1.0f;
 	}
 
+	ticks = SDL_GetTicks();
+
 	glClearColor(win->backcolor->r, win->backcolor->g, win->backcolor->b, win->backcolor->a);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -327,6 +336,10 @@ void screen_mgr::flip()
 	{
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		SDL_GL_SwapBuffers();
+		
+		if ((ticks - lastticks) < 1000 / MAX_FRAMERATE)
+			SDL_Delay(1000 / MAX_FRAMERATE - (ticks - lastticks));
+		lastticks = ticks;
 	}
 }
 
@@ -375,6 +388,7 @@ void screen_mgr::opengl_setup(screen* wn)
 
 void screen_mgr::init(int w, int h, int bpp, const char* title)
 {
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		fprintf(stderr, "error: %s\n", SDL_GetError());
@@ -399,6 +413,7 @@ void screen_mgr::init(int w, int h, int bpp, const char* title)
 	SDL_WM_SetCaption(title, NULL);
 
 	// Set GL attributes
+	
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);

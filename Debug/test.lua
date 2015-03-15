@@ -25,7 +25,7 @@ map = {
 }
 
 -- Engine
-local gravity = 0.03
+local gravity = 8.0
 local canjump = true
 
 while key ~= 27 do
@@ -49,7 +49,7 @@ while key ~= 27 do
 	-- Player movement
 	if keystatus(32) then -- space
 		if canjump then
-			player.vel.y = -10
+			player.vel.y = -400
 			canjump = false
 		end
 	else
@@ -57,10 +57,10 @@ while key ~= 27 do
 	end
 	if keystatus(275) then -- right
 		player.dir = 1
-		player.vel.x = 0.2
+		player.vel.x = 1.5
 	elseif keystatus(276) then -- left
 		player.dir = -1
-		player.vel.x = -0.2
+		player.vel.x = -1.5
 	else
 		player.vel.x = 0
 	end
@@ -70,8 +70,8 @@ while key ~= 27 do
 	player.vel.y = player.vel.y + gravity
 	player.vel.y = player.vel.y * 0.9		
 	
-	if player.pos.y >= 96.0 then
-		player.vel.y = player.vel.y * -1
+	if player.pos.y > 96.0 then
+		player.vel.y = 0
 	end
 	if player.pos.x <= 16.0 or player.pos.x >= 304.0 then
 		player.vel.x = 0.0

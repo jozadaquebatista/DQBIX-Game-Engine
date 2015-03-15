@@ -2,6 +2,10 @@
 #define __IX_SCREEN__
 #pragma once
 
+#ifndef MAX_FRAMERATE
+#define MAX_FRAMERATE 60
+#endif
+
 #include "sdl_backend.h"
 #include "font.h"
 #include "collisiondetection.h"
@@ -118,6 +122,9 @@ public:
 		boxoccluder::lua_reg(L);
 	}
 private:
+	static int frame;
+	static bool cap;
+	static int ticks, lastticks;
 	static shader* lighting;
 	static void ortho_2d(float* mat, int left, int top, int bottom, int right);
 };
