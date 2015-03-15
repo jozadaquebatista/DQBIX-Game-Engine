@@ -99,9 +99,6 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\audio.h" />
-    <ClInclude Include="include\audio_backend.h" />
-    <ClInclude Include="include\collisiondetection.h" />
     <ClInclude Include="include\animation.h" />
     <ClInclude Include="include\color.h" />
     <ClInclude Include="include\font.h" />
@@ -115,18 +112,8 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\shader.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\tileset.h" />
-    <ClInclude Include="include\lua.hpp" />
-    <ClInclude Include="include\LuaEngine.hpp" />
-    <ClInclude Include="include\Matrices.h" />
-    <ClInclude Include="src\resource2.h" />
-    <ClInclude Include="include\Screen.h" />
-    <ClInclude Include="include\sdl_backend.h" />
-    <ClInclude Include="include\Stopwatch.h" />
-    <ClInclude Include="include\Vectors.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\audio.cpp" />
-    <ClCompile Include="src\collisiondetection.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\color.cpp" />
     <ClCompile Include="src\font.cpp" />
@@ -138,9 +125,6 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\tileset.cpp" />
     <ClCompile Include="src\LuaEngine.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Matrices.cpp" />
-    <ClCompile Include="src\Screen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
