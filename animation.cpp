@@ -1,5 +1,5 @@
 #include "animation.h"
-#include "Stopwatch.hpp"
+#include "Stopwatch.h"
 
 animation::animation(image* sheet /*= 0*/, int rows /*= 1*/, int cols /*= 1*/, float speed /*= 0*/, bool loop /*= false*/)
 {
@@ -45,7 +45,7 @@ image* animation::step()
 	if (m_cols <= 0 || m_rows <= 0) return NULL;
 
 	int fc = m_rows * m_cols;
-	if (sw->ElapsedMillis() >= (int)(100.0f * m_speed))
+	if (sw->ElapsedMillis() >= (int)(1000.0f * m_speed))
 	{
 		sw->Restart();
 		if (m_index++ >= fc - 1)

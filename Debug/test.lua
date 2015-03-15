@@ -12,7 +12,7 @@ player = {
 	pos = point(160.0, 32.0),
 	vel = point(0.0, 0.0),
 	dir = 1,
-	walk = animation(walkimg, 1, 4, 0.2, true),
+	walk = animation(walkimg, 1, 4, 0.08, true),
 	stand = image("data/stand.png")
 }
 map = {
