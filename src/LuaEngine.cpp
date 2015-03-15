@@ -1,4 +1,4 @@
-#include "include/LuaEngine.hpp"
+#include "../include/LuaEngine.hpp"
 
 void LuaEngine::err_report(int state)
 {

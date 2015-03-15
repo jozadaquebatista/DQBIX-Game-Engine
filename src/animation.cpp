@@ -1,5 +1,5 @@
-#include "include/animation.h"
-#include "include/Stopwatch.h"
+#include "../include/animation.h"
+#include "../include/Stopwatch.h"
 
 animation::animation(image* sheet /*= 0*/, int rows /*= 1*/, int cols /*= 1*/, float speed /*= 0*/, bool loop /*= false*/)
 {

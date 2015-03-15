@@ -7,9 +7,9 @@
 #include <assert.h>
 
 #include "imageResource.h"
-#include "sdl_backend.h"
-#include "Matrices.h"
-#include "color.h"
+#include "../include/sdl_backend.h"
+#include "../include/Matrices.h"
+#include "../include/color.h"
 
 typedef struct  
 {

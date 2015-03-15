@@ -2,9 +2,9 @@
 #define __IX_RENDERER__
 #pragma once
 
-#include "include/Screen.h"
-#include "include/font.h"
-#include "include/shader.h"
+#include "../include/Screen.h"
+#include "../include/font.h"
+#include "../include/shader.h"
 #include <iostream>
 
 class renderer

@@ -6,10 +6,10 @@
 #include <ios>
 #include <cmath>
 
-#include "Screen.h"
-#include "renderer.h"
-#include "tileset.h"
-#include "LuaEngine.hpp"
+#include "../include/Screen.h"
+#include "../include/renderer.h"
+#include "../include/tileset.h"
+#include "../include/LuaEngine.hpp"
 
 #include <cstdio>
 

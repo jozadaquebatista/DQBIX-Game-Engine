@@ -1,4 +1,4 @@
-#include "include/shader.h"
+#include "../include/shader.h"
 
 
 void shader::addUniform(std::string name)

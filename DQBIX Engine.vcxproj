@@ -100,13 +100,24 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\animation.h" />
+    <ClInclude Include="include\audio.h" />
+    <ClInclude Include="include\audio_backend.h" />
+    <ClInclude Include="include\collisiondetection.h" />
     <ClInclude Include="include\color.h" />
     <ClInclude Include="include\font.h" />
     <ClInclude Include="include\graphics.h" />
     <ClInclude Include="include\image.h" />
     <ClInclude Include="include\imageResource.h" />
     <ClInclude Include="include\light.h" />
+    <ClInclude Include="include\lua.hpp" />
+    <ClInclude Include="include\LuaEngine.hpp" />
+    <ClInclude Include="include\Matrices.h" />
     <ClInclude Include="include\occluder.h" />
+    <ClInclude Include="include\point.hpp" />
+    <ClInclude Include="include\Screen.h" />
+    <ClInclude Include="include\sdl_backend.h" />
+    <ClInclude Include="include\Stopwatch.h" />
+    <ClInclude Include="include\Vectors.h" />
     <ClInclude Include="src\point.hpp" />
     <ClInclude Include="include\renderer.h" />
     <ClInclude Include="include\shader.h" />
@@ -115,13 +126,18 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\animation.cpp" />
+    <ClCompile Include="src\audio.cpp" />
+    <ClCompile Include="src\collisiondetection.cpp" />
     <ClCompile Include="src\color.cpp" />
     <ClCompile Include="src\font.cpp" />
     <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\imageResource.cpp" />
     <ClCompile Include="src\light.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Matrices.cpp" />
     <ClCompile Include="src\occluder.cpp" />
     <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\tileset.cpp" />
     <ClCompile Include="src\LuaEngine.cpp" />

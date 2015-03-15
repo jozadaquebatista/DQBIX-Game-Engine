@@ -8,9 +8,9 @@
 #include <streambuf>
 #include <map>
 
-#include "include/graphics.h"
-#include "include/lua.hpp"
-#include "include/Matrices.h"
+#include "../include/graphics.h"
+#include "../include/lua.hpp"
+#include "../include/Matrices.h"
 
 struct StringHelper {
 	const char *p;

@@ -1,4 +1,4 @@
-#include "include/font.h"
+#include "../include/font.h"
 
 point* font::measure_string(std::string str)
 {

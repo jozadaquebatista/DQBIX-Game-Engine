@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "../include/audio.h"
 
 audio::audio(std::string filename)
 {

@@ -1,4 +1,4 @@
-#include "include/imageResource.h"
+#include "../include/imageResource.h"
 
 imageResource::imageResource(int target, int width, int height, int numtex, unsigned char** data, int* filter, int* internalFormats, int* formats, bool clamp, int* attachments)
 {

@@ -1,4 +1,4 @@
-#include "include/tileset.h"
+#include "../include/tileset.h"
 
 tileset::tileset(image* map /*= NULL*/, int rows /*= 1*/, int cols /*= 1*/, std::string strmap /*= ""*/)
 {

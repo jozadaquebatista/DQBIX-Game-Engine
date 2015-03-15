@@ -1,4 +1,4 @@
-#include "Screen.h"
+#include "../include/Screen.h"
 
 screen* screen_mgr::win = NULL;
 SDL_Event screen_mgr::evt;

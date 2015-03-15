@@ -1,4 +1,4 @@
-#include "include/renderer.h"
+#include "../include/renderer.h"
 
 void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 {
