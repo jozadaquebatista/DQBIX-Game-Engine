@@ -5,14 +5,12 @@
 
 image::image(int w, int h, unsigned char* data, int target, int filter, int internalFmt, int format, bool clamp, int attachment)
 {
-	glEnable(GL_TEXTURE_2D);
 	this->filename = "RENDERTEXTURE" + w + h + m_loadedImages.size();
 	std::map<std::string, imageResource*>::const_iterator pos = m_loadedImages.find(filename);
 	if (pos == m_loadedImages.end())
 	{
-		m_resource = new imageResource(GL_TEXTURE_2D, w, h,
-			1, new unsigned char*[] {data}, new int[] {filter}, new int[] {internalFmt},
-			new int[] {format}, clamp, new int[] {attachment});
+		this->m_resource = new imageResource(target, w, h, 1, data,
+			filter, internalFmt, format, false, attachment);
 		m_loadedImages.insert({ filename, m_resource });
 	}
 	else
@@ -25,25 +23,45 @@ image::image(int w, int h, unsigned char* data, int target, int filter, int inte
 		}
 		else
 		{
-			m_resource = new imageResource(GL_TEXTURE_2D, w, h,
-				1, new unsigned char*[] {data}, new int[] {filter}, new int[] {internalFmt},
-				new int[] {format}, clamp, new int[] {attachment});
+			this->m_resource = new imageResource(target, w, h, 1, data,
+				filter, internalFmt, format, false, attachment);
 			m_loadedImages.insert({ filename, m_resource });
 		}
 	}
-	glDisable(GL_TEXTURE_2D);
 
 	cliprect.x = 0;
 	cliprect.y = 0;
 	cliprect.w = m_resource->getWidth();
 	cliprect.h = m_resource->getHeight();
+	cliprect.cols = 1;
+	cliprect.rows = 1;
 
-	create_vbo();
+	create_mesh();
+	
+}
+
+void image::create_mesh()
+{
+	m_quad = new mesh();
+	std::vector<vertex> verts = {
+		vertex(vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)),
+		vertex(vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)),
+		vertex(vec3(0.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)),
+		vertex(vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)),
+		vertex(vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)),
+		vertex(vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f))
+	};
+	m_quad->addVertices(verts);
+
+	m_shader = new shader("../res/shaders/default.vert", "../res/shaders/default.frag");
+	m_shader->compile();
+	m_shader->addCommonUniforms();
+	m_shader->addUniform("image");
+	m_shader->addUniform("cliprect");
 }
 
 image::image(const std::string filename, int target, int filter)
 {
-	glEnable(GL_TEXTURE_2D);
 	this->filename = filename;
 	this->filter = filter;
 
@@ -58,9 +76,8 @@ image::image(const std::string filename, int target, int filter)
 			exit(EXIT_FAILURE);
 		}
 
-		this->m_resource = new imageResource(target, w, h, 1, new unsigned char*[]{data},
-			new int[] {filter}, new int[] {GL_RGBA},
-			new int[] {GL_RGBA}, false, new int[] {GL_COLOR_ATTACHMENT0});
+		this->m_resource = new imageResource(target, w, h, 1, data,
+			filter, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
 		m_loadedImages.insert({ filename, m_resource });
 
 		stbi_image_free(data);
@@ -83,21 +100,22 @@ image::image(const std::string filename, int target, int filter)
 				exit(EXIT_FAILURE);
 			}
 
-			this->m_resource = new imageResource(target, w, h, 1, new unsigned char*[]{data},
-				new int[] {filter}, new int[] {GL_RGBA},
-				new int[] {GL_RGBA}, false, new int[] {GL_COLOR_ATTACHMENT0});
+			this->m_resource = new imageResource(target, w, h, 1, data,
+				filter, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
 			m_loadedImages.insert({ filename, m_resource });
 
 			stbi_image_free(data);
 		}
 	}
-	glDisable(GL_TEXTURE_2D);
+
 	cliprect.x = 0;
 	cliprect.y = 0;
 	cliprect.w = m_resource->getWidth();
 	cliprect.h = m_resource->getHeight();
+	cliprect.cols = 1;
+	cliprect.rows = 1;
 
-	create_vbo();
+	create_mesh();
 }
 
 image::image(const image& texture) :
@@ -129,8 +147,8 @@ image::~image()
 
 		delete m_resource;
 	}
-	if (vbo) glDeleteBuffers(1, &vbo);
-	if (ebo) glDeleteBuffers(1, &ebo);
+	if (m_shader) delete m_shader;
+	if (m_quad) delete m_quad;
 }
 
 void image::setAsRenderTarget()
@@ -147,13 +165,11 @@ void image::use(int sampler_slot)
 {
 	assert(sampler_slot >= 0 && sampler_slot <= 31);
 	glActiveTexture(GL_TEXTURE0 + sampler_slot);
-	m_resource->use(0);
+	m_resource->use();
 }
 
-void image::draw_full(int x, int y, float sx, float sy, float a)
+void image::draw_full(int x, int y, float sx, float sy, float a, mat4 proj)
 {
-	glPushMatrix();
-
 	int w = getCliprect().w;
 	int h = getCliprect().h;
 
@@ -167,30 +183,32 @@ void image::draw_full(int x, int y, float sx, float sy, float a)
 	float sw = w * sx;
 	float sh = h * sy;
 
-	m.identity();
-	m.rotateZ(a).scale(sw, sh, 1.0f).translate(x, y, 0);
+	float ox = sw * origin.x;
+	float oy = sh * origin.y;
+
+	// Model matrix
+	m = mat4(1.0f);
+	m = translate(m, vec3((float)x, (float)y, 0.0f));
+	m = translate(m, vec3(ox, oy, 0.0f));
+	m = rotate(m, a, vec3(0.0f, 0.0f, 1.0f));
+	m = translate(m, vec3(-ox, -oy, 0.0f));
+	m = scale(m, vec3(sw, sh, 1.0f));	
 	
-	glEnable(GL_TEXTURE_2D);
+	// Bind texture
 	bind();
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
+	// Use shader
+	m_shader->use();
+	m_shader->setInt("image", 0);
+	m_shader->setVec4("cliprect", crx * cliprect.cols, cry * cliprect.rows, crw, crh);
+	m_shader->setMatrix("model", m);
+	m_shader->setMatrix("proj", proj);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(2 * sizeof(float)));
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+	// Draw a quad
+	m_quad->draw();
 
 	glUseProgram(0);
 
-	glDisable(GL_TEXTURE_2D);
-
-	glPopMatrix();
 }
 
 SDL_Surface* image::loadicon(const char* filename)
@@ -234,27 +252,4 @@ SDL_Surface* image::loadicon(const char* filename)
 	stbi_image_free(data);
 
 	return rv;
-}
-
-void image::create_vbo()
-{
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-
-	float vertices[] = {
-		0.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f
-	};
-	int indices[] = {
-		0, 1, 2, 3
-	};
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(float), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(int), indices, GL_STATIC_DRAW);
-
 }

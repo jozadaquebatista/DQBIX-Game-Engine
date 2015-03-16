@@ -8,12 +8,14 @@
 
 #include "imageResource.h"
 #include "../include/sdl_backend.h"
-#include "../include/Matrices.h"
 #include "../include/color.h"
+#include "../include/mesh.h"
+#include "../include/shader.h"
+#include "../include/point.hpp"
 
 typedef struct  
 {
-	int x, y, w, h;
+	int x, y, w, h, frame, cols, rows;
 } rect;
 
 class image
@@ -36,10 +38,14 @@ public:
 	void setAsRenderTarget();
 	void bind();
 	void use(int sampler_slot);
+
 	int id() const
 	{
 		return getResource()->getID();
 	}
+
+	void setOrigin(point ori) { origin = ori; }
+	point getOrigin() const { return origin; }
 
 	int getWidth() const { return getCliprect().w; }
 	int getHeight() const { return getCliprect().h; }
@@ -49,7 +55,7 @@ public:
 
 	imageResource* getResource() const { return m_resource; }
 	
-	void draw_full(int x, int y, float sx, float sy, float a);
+	void draw_full(int x, int y, float sx, float sy, float a, mat4 proj);
 
 	inline static void lua_reg(lua_State* L)
 	{
@@ -67,7 +73,8 @@ public:
 			
 		imageResource::lua_reg(L);
 	}
-	Matrix4 m;
+	mat4 m;
+	shader* m_shader;
 	// *sighs*
 	static SDL_Surface* loadicon(const char* filename);
 private:
@@ -76,11 +83,11 @@ private:
 	std::string filename;
 	int filter;
 	rect cliprect;
+	
+	mesh* m_quad;
+	void create_mesh();
 
-	float* vbo_verts;
-	GLuint vbo, ebo;
-
-	void create_vbo();
+	point origin;
 };
 
 #endif //__IX_IMAGE__

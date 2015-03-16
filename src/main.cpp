@@ -14,7 +14,9 @@
 #include <cstdio>
 
 // #define DEBUG_SCRIPT
+// #define TEST_PROGRAM
 
+#define PI 3.141592658
 class argv_range {
 public:
 	argv_range(int argc, const char * const argv[])
@@ -57,31 +59,34 @@ void LoadFileInResource(int name, int type, DWORD& size, const char*& data)
 
 bool isbind = false;
 
-//////////////////////////////////////////////////////////////////////////
-//    TEST
-int Fmain(int argc, char *argv[])
+#ifdef TEST_PROGRAM
+int main(int argc, char *argv[])
 {
-	screen_mgr::init(320, 240, 32, "Test");
+	screen_mgr::init(640, 480, 32, "Test");
+	image* bg = new image("data/bg2.png");
 	image* im = new image("data/player.png");
-	animation* ani = new animation(new image("data/player.png"), 1, 4, 0.4f, true);
-	int key = 0;
+	im->setOrigin(point(0.5f, 0.5f));
+	animation* anim = new animation(im, 1, 4, 0.08f, true);
 
+	int key = 0;
+	float a = 0.0f;
 	while (key != 27)
 	{
 		screen_mgr::poll();
 		screen_mgr::cls();
 		key = screen_mgr::getkey();
 
-		renderer::blits(ani->step(), 10, 10, 3.0f, 3.0f);
+		renderer::blit(bg, 0, 0);
+		renderer::blit_full(anim->step(), 100, 100, 4.0, 4.0, a);
+		
 
 		screen_mgr::flip();
+		a += 0.05f;
 	}
-
+	screen_mgr::quit_game();
 	return 0;
 }
-//////////////////////////////////////////////////////////////////////////
-
-
+#else
 //////////////////////////////////////////////////////////////////////////
 //  This is the real main =)
 int main(int argc, char *argv[])
@@ -168,3 +173,4 @@ int main(int argc, char *argv[])
 	SAFE_DELETE(eng);
 	return 0;
 }
+#endif

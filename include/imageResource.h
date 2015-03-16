@@ -14,34 +14,34 @@ public:
 				  int width=1,
 				  int height=1,
 				  int numtex=1,
-				  unsigned char** data=0,
-				  int* filter=0,
-				  int* internalFormats=0,
-				  int* formats=0,
+				  unsigned char* data=0,
+				  int filter=0,
+				  int internalFormat=0,
+				  int format=0,
 				  bool clamp=false,
-				  int* attachments=0);
+				  int attachment=0);
 
 	virtual ~imageResource();
 
-	void initTextures(unsigned char** data,
-					  int* filter,
-					  int* internalFormats,
-					  int* formats,
+	void initTextures(unsigned char* data,
+					  int filter,
+					  int internalFormat,
+					  int format,
 					  bool clamp);
-	void initRenderTargets(int* attachments);
+	void initRenderTargets(int attachment);
 
 	int getTarget() const { return m_target; }
 
 	int getWidth() const { return m_width; }
 	int getHeight() const { return m_height; }
 
-	void use(int ind);
+	void use();
 	void useAsRenderTarget();
 
 	void addReference();
 	bool removeReference();
 	
-	int getID();
+	GLuint getID();
 
 	inline static void lua_reg(lua_State* L)
 	{
@@ -59,7 +59,7 @@ public:
 			.endClass();
 	}
 private:
-	int* m_id;
+	GLuint m_id;
 	int m_fbo;
 	int m_numTextures;
 	int m_refCount;

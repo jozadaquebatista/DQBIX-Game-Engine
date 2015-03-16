@@ -1,5 +1,5 @@
 screen(320, 240, 32, "Test")
-backcolor(0.2, 0.5, 0.9, 1.0)
+backcolor(0.816, 0.9909, 0.0675, 1.0)
 
 -- Resources
 local key = 0
@@ -19,9 +19,9 @@ map = {
 	{0,0,0,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0},
-	{"a","a","a","a","a","a","a","a"},
-	{"e","e","e","e","e","e","e","e"},
-	{"e","e","e","e","e","e","e","e"}
+	{"m","m","m","m","m","m","m","m"},
+	{"g","g","g","g","g","g","g","g"},
+	{"g","g","g","g","g","g","g","g"}
 }
 
 -- Engine
@@ -32,9 +32,7 @@ while key ~= 27 do
 	poll()
 	cls()
 	key = getkey()
-	
-	color(0.0, 0.0, 0.0, 0.5)
-	blits(player.walk:step(), player.pos.x-8, player.pos.y+8, 3.0*player.dir, 3.0)
+
 	color(1.0, 1.0, 1.0, 1.0)
 	blits(player.walk:step(), player.pos.x, player.pos.y, 3.0*player.dir, 3.0)
 

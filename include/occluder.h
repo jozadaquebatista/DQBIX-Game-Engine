@@ -4,7 +4,6 @@
 
 #include <cmath>
 #include "lua.hpp"
-#include "Vectors.h"
 
 class occluder
 { };

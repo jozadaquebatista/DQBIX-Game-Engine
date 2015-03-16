@@ -49,7 +49,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>depends\freeglut\include;depends\SDL12\include;depends\Lua52\include;depends\libdrawtext\include;depends\bass\src;depends\glew\include;depends\LuaBridge</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>depends\freeglut\include;depends\SDL12\include;depends\Lua52\include;depends\libdrawtext\include;depends\bass\src;depends\glew\include;depends\LuaBridge;depends\glm</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -76,7 +76,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>depends\freeglut\include;depends\SDL12\include;depends\Lua52\include;depends\libdrawtext\include;depends\bass\src;depends\glew\include;depends\LuaBridge</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>depends\freeglut\include;depends\SDL12\include;depends\Lua52\include;depends\libdrawtext\include;depends\bass\src;depends\glew\include;depends\LuaBridge;depends\glm</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -111,13 +111,13 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\light.h" />
     <ClInclude Include="include\lua.hpp" />
     <ClInclude Include="include\LuaEngine.hpp" />
-    <ClInclude Include="include\Matrices.h" />
+    <ClInclude Include="include\mesh.h" />
     <ClInclude Include="include\occluder.h" />
     <ClInclude Include="include\point.hpp" />
     <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\sdl_backend.h" />
     <ClInclude Include="include\Stopwatch.h" />
-    <ClInclude Include="include\Vectors.h" />
+    <ClInclude Include="include\vertex.h" />
     <ClInclude Include="src\point.hpp" />
     <ClInclude Include="include\renderer.h" />
     <ClInclude Include="include\shader.h" />
@@ -134,13 +134,19 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\imageResource.cpp" />
     <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Matrices.cpp" />
+    <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\occluder.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\tileset.cpp" />
     <ClCompile Include="src\LuaEngine.cpp" />
+    <ClCompile Include="src\vertex.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\default.frag" />
+    <None Include="res\shaders\default.vert" />
+    <None Include="res\shaders\gameboy.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

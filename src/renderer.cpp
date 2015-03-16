@@ -4,7 +4,7 @@ void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 {
 	if (img == NULL) return;
 
-	glColor4f(screen_mgr::drawcolor->r,
+	/*glColor4f(screen_mgr::drawcolor->r,
 		screen_mgr::drawcolor->g,
 		screen_mgr::drawcolor->b,
 		screen_mgr::drawcolor->a);
@@ -23,7 +23,7 @@ void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 	float sw = w * sx;
 	float sh = h * sy;
 
-	Matrix4 m;
+	mat4 m;
 	m.rotateZ(a).scale(sw, sh, 1.0f).translate(x, y, 0);
 	glMultMatrixf(m.get());
 
@@ -41,7 +41,8 @@ void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 
 	glDisable(GL_TEXTURE_2D);
 
-	glPopMatrix();
+	glPopMatrix();*/
+	img->draw_full(x, y, sx, sy, a, screen_mgr::projection);
 }
 
 void renderer::blits(image* img, int x, int y, float sx, float sy)
@@ -69,10 +70,8 @@ void renderer::drawtext(std::string text, int x, int y, font* fnt)
 	glPushMatrix();
 
 	fnt->use();
-	Matrix4 m;
-	m.scale(1.0f, -1.0f, 1.0f).translate(x, y, 0);
-	glMultMatrixf(m.get());
-
+	mat4 m;
+	//TODO: Shader-based text
 	dtx_string(text.c_str());
 
 	glPopMatrix();
@@ -88,10 +87,8 @@ void renderer::drawtextr(std::string text, int x, int y, float a, font* fnt)
 	glPushMatrix();
 
 	fnt->use();
-	Matrix4 m;
-	m.rotateZ(a).scale(1.0f, -1.0f, 1.0f).translate(x, y, 0);
-	glMultMatrixf(m.get());
-
+	mat4 m;
+	//TODO: Shader-based text
 	dtx_string(text.c_str());
 
 	glPopMatrix();

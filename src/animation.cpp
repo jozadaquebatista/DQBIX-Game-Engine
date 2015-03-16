@@ -72,6 +72,8 @@ image* animation::step()
 	clip.y = ay;
 	clip.w = w;
 	clip.h = h;
+	clip.frame = i;
+	clip.cols = m_cols;
 	m_sheet->setCliprect(clip);
 	return m_sheet;
 }

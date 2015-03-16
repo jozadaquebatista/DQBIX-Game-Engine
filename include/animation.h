@@ -2,8 +2,6 @@
 #define __IX_ANIMATION__
 #pragma once
 
-#include <vector>
-#include <initializer_list>
 #include "image.h"
 
 class Stopwatch;

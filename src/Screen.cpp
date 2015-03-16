@@ -1,9 +1,42 @@
 #include "../include/Screen.h"
 
+mat4 screen_mgr::projection;
+
+void screen_mgr::ortho_2d(float* mat, int left, int right, int bottom, int top)
+{
+	const float zNear = -1.0f;
+	const float zFar = 1.0f;
+	const float inv_z = 1.0f / (zFar - zNear);
+	const float inv_y = 1.0f / (top - bottom);
+	const float inv_x = 1.0f / (right - left);
+
+	//first column
+	*mat++ = (2.0f*inv_x);
+	*mat++ = (0.0f);
+	*mat++ = (0.0f);
+	*mat++ = (0.0f);
+
+	//second
+	*mat++ = (0.0f);
+	*mat++ = (2.0f*inv_y);
+	*mat++ = (0.0f);
+	*mat++ = (0.0f);
+
+	//third
+	*mat++ = (0.0f);
+	*mat++ = (0.0f);
+	*mat++ = (-2.0f*inv_z);
+	*mat++ = (0.0f);
+
+	//fourth
+	*mat++ = (-(right + left)*inv_x);
+	*mat++ = (-(top + bottom)*inv_y);
+	*mat++ = (-(zFar + zNear)*inv_z);
+	*mat++ = (1.0f);
+}
+
 screen* screen_mgr::win = NULL;
 SDL_Event screen_mgr::evt;
-Matrix4 screen_mgr::projection;
-
 bool screen_mgr::lighting_enabled;
 bool screen_mgr::quit = false;
 
@@ -121,39 +154,6 @@ void screen_mgr::useAsRenderTarget()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, win->w, win->h);
-}
-
-void screen_mgr::ortho_2d(float* mat, int left, int right, int bottom, int top)
-{
-	const float zNear = -1.0f;
-	const float zFar = 1.0f;
-	const float inv_z = 1.0f / (zFar - zNear);
-	const float inv_y = 1.0f / (top - bottom);
-	const float inv_x = 1.0f / (right - left);
-
-	//first column
-	*mat++ = (2.0f*inv_x);
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-
-	//second
-	*mat++ = (0.0f);
-	*mat++ = (2.0f*inv_y);
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-
-	//third
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-	*mat++ = (-2.0f*inv_z);
-	*mat++ = (0.0f);
-
-	//fourth
-	*mat++ = (-(right + left)*inv_x);
-	*mat++ = (-(top + bottom)*inv_y);
-	*mat++ = (-(zFar + zNear)*inv_z);
-	*mat++ = (1.0f);
 }
 
 void screen_mgr::console_visible(bool state)
@@ -274,24 +274,24 @@ void screen_mgr::cls()
 				{
 					boxoccluder* occluder = roccluder.second;
 					int count = 4;
-					Vector2 verts[4] = {
-						Vector2(occluder->getX(), occluder->getY()),
-						Vector2(occluder->getX() + occluder->getW(), occluder->getY()),
-						Vector2(occluder->getX() + occluder->getW(), occluder->getY() + occluder->getH()),
-						Vector2(occluder->getX(), occluder->getY() + occluder->getH()),
+					vec2 verts[4] = {
+						vec2(occluder->getX(), occluder->getY()),
+						vec2(occluder->getX() + occluder->getW(), occluder->getY()),
+						vec2(occluder->getX() + occluder->getW(), occluder->getY() + occluder->getH()),
+						vec2(occluder->getX(), occluder->getY() + occluder->getH()),
 					};
 					for (int i = 0; i < count; i++)
 					{
-						Vector2 current = verts[i];
-						Vector2 next = verts[(i + 1) % count];
-						Vector2 edge = next - current;
-						Vector2 normal = Vector2(edge.y, -edge.x);
-						Vector2 lightPos = Vector2(light->getX(), light->getY());
-						Vector2 lightToCurrent = current - lightPos;
-						if (normal.dot(lightToCurrent) > 0)
+						vec2 current = verts[i];
+						vec2 next = verts[(i + 1) % count];
+						vec2 edge = next - current;
+						vec2 normal = vec2(edge.y, -edge.x);
+						vec2 lightPos = vec2(light->getX(), light->getY());
+						vec2 lightToCurrent = current - lightPos;
+						if (dot(normal, lightToCurrent) > 0)
 						{
-							Vector2 point1 = (current + (lightToCurrent)* 800);
-							Vector2 point2 = (next + (next - lightPos) * 800);
+							vec2 point1 = (current + (lightToCurrent) * 800.0f);
+							vec2 point2 = (next + (next - lightPos) * 800.0f);
 
 							glBegin(GL_QUADS);
 							glVertex2f(current.x, current.y);
@@ -358,6 +358,7 @@ void screen_mgr::poll()
 
 void screen_mgr::opengl_setup(screen* wn)
 {
+	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -376,12 +377,12 @@ void screen_mgr::opengl_setup(screen* wn)
 	}
 	float m[16];
 	ortho_2d(m, 0, wn->w, wn->h, 0);
-	projection.set(m);
+	projection = make_mat4(m);
 
 	glViewport(0, 0, wn->w, wn->h);
-	glMatrixMode(GL_PROJECTION);
+	/*glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glLoadMatrixf(projection.get());
+	glLoadMatrixf(projection.get());*/
 
 	useAsRenderTarget();
 }
@@ -468,4 +469,10 @@ void screen_mgr::init(int w, int h, int bpp, const char* title)
 	lighting->addUniform("lightColor");
 	lighting->addUniform("intensity");
 	lighting->addUniform("radius");
+}
+
+void screen_mgr::set_shader_proj(shader* s)
+{
+	s->addUniform("proj");
+	s->setMatrix("proj", projection);
 }

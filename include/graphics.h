@@ -7,4 +7,10 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
+#define GLM_FORCE_PURE
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+using namespace glm;
+
 #endif //__IX_GRAPHICS__

@@ -1,6 +1,6 @@
 #include "../include/imageResource.h"
 
-imageResource::imageResource(int target, int width, int height, int numtex, unsigned char** data, int* filter, int* internalFormats, int* formats, bool clamp, int* attachments)
+imageResource::imageResource(int target, int width, int height, int numtex, unsigned char* data, int filter, int internalFormat, int format, bool clamp, int attachment)
 {
 	this->m_numTextures = numtex;
 	this->m_refCount = 1;
@@ -9,63 +9,57 @@ imageResource::imageResource(int target, int width, int height, int numtex, unsi
 	this->m_height = height;
 	this->m_fbo = 0;
 
-	this->initTextures(data, filter, internalFormats, formats, clamp);
-	this->initRenderTargets(attachments);
+	this->initTextures(data, filter, internalFormat, format, clamp);
+	this->initRenderTargets(attachment);
 }
 
 imageResource::~imageResource()
 {
-	if (*m_id) glDeleteTextures(m_numTextures, (GLuint*)&m_id);
+	if (&m_id) glDeleteTextures(1, (GLuint*)&m_id);
 	if (m_fbo) glDeleteFramebuffers(1, (GLuint*)&m_fbo);
-	if (m_id) delete[] m_id;
 }
 
-void imageResource::initTextures(unsigned char** data, int* filter, int* internalFormats, int* formats, bool clamp)
+void imageResource::initTextures(unsigned char* data, int filter, int internalFormat, int format, bool clamp)
 {
-	this->m_id = genTextures(m_numTextures);
+	glGenTextures(1, &m_id);
 
-	for (int i = 0; i < m_numTextures; i++)
+	glBindTexture(getTarget(), m_id);
+
+	glTexParameterf(getTarget(), GL_TEXTURE_MIN_FILTER, filter);
+	glTexParameterf(getTarget(), GL_TEXTURE_MAG_FILTER, filter);
+
+	if (clamp)
 	{
-		glBindTexture(getTarget(), m_id[i]);
-
-		glTexParameterf(getTarget(), GL_TEXTURE_MIN_FILTER, filter[i]);
-		glTexParameterf(getTarget(), GL_TEXTURE_MAG_FILTER, filter[i]);
-
-		if (clamp)
-		{
-			glTexParameteri(getTarget(), GL_TEXTURE_WRAP_S, GL_CLAMP);
-			glTexParameteri(getTarget(), GL_TEXTURE_WRAP_T, GL_CLAMP);
-		}
-		else
-		{
-			glTexParameteri(getTarget(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(getTarget(), GL_TEXTURE_WRAP_T, GL_REPEAT);
-		}
-
-		glTexImage2D(getTarget(), 0, internalFormats[i], m_width, m_height, 0, formats[i], GL_UNSIGNED_BYTE, data[i]);
-
+		glTexParameteri(getTarget(), GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(getTarget(), GL_TEXTURE_WRAP_T, GL_CLAMP);
 	}
+	else
+	{
+		glTexParameteri(getTarget(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(getTarget(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+
+	glTexImage2D(getTarget(), 0, internalFormat, m_width, m_height, 0, format, GL_UNSIGNED_BYTE, data);
+
 }
 
-void imageResource::initRenderTargets(int* attachments)
+void imageResource::initRenderTargets(int attachment)
 {
-	if (attachments == NULL) return;
+	if (attachment == NULL) return;
 
-	int* drawBuffers = new int[32];
+	int* drawBuffers = new int[1];
 
-	for (int i = 0; i < m_numTextures; i++)
+	drawBuffers[0] = attachment;
+
+	if (m_fbo == 0)
 	{
-		drawBuffers[i] = attachments[i];
-
-		if (m_fbo == 0)
-		{
-			glGenFramebuffers(1, (GLuint*)&m_fbo);
-			glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-		}
-		glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[i], getTarget(), m_id[i], 0);
+		glGenFramebuffers(1, (GLuint*)&m_fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 	}
+	glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, getTarget(), m_id, 0);
+
 	if (m_fbo == 0) return;
-	glDrawBuffers(32, (const GLenum*)&drawBuffers);
+	glDrawBuffers(1, (const GLenum*)&drawBuffers);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		exit(EXIT_FAILURE);
@@ -73,15 +67,14 @@ void imageResource::initRenderTargets(int* attachments)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void imageResource::use(int ind)
+void imageResource::use()
 {
-	if (m_id[ind])
-		glBindTexture(getTarget(), m_id[ind]);
+	glBindTexture(getTarget(), m_id);
 }
 
 void imageResource::useAsRenderTarget()
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, m_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 	glViewport(0, 0, m_width, m_height);
 }
@@ -97,9 +90,9 @@ bool imageResource::removeReference()
 	return m_refCount == 0;
 }
 
-int imageResource::getID()
+GLuint imageResource::getID()
 {
-	return m_id[0];
+	return m_id;
 }
 
 int* imageResource::genTextures(int count)

@@ -26,12 +26,15 @@ typedef struct
 class screen_mgr
 {
 public:
+	static mat4 projection;
+
 	static color* drawcolor;
 	static bool quit;
 	static screen* win;
-	static SDL_Event evt;
-	static Matrix4 projection;
+	static SDL_Event evt;	
 	static bool lighting_enabled;
+
+	static void set_shader_proj(shader* s);
 
 	static std::map<std::string, boxoccluder*> occluders;
 	static std::map<std::string, light*> lights;

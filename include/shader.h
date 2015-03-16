@@ -8,9 +8,8 @@
 #include <streambuf>
 #include <map>
 
-#include "../include/graphics.h"
 #include "../include/lua.hpp"
-#include "../include/Matrices.h"
+#include "../include/graphics.h"
 
 struct StringHelper {
 	const char *p;
@@ -30,11 +29,12 @@ public:
 	void setInt(std::string name, int val);
 	void setVec2(std::string name, float x, float y);
 	void setVec3(std::string name, float x, float y, float z);
-	void setMatrix(std::string name, Matrix4 mat);
+	void setVec4(std::string name, float x, float y, float z, float w);
+	void setMatrix(std::string name, mat4 mat);
 	
 	void addUniform(std::string name);
-	void updateUniforms(Matrix4 model, Matrix4 view_proj);
-
+	void addCommonUniforms();
+	
 	virtual ~shader();
 
 	shader* fromString(std::string vs, std::string fs);
