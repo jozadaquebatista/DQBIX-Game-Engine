@@ -173,6 +173,7 @@ void screen_mgr::set_icon(const char* icon)
 	SDL_WM_SetIcon(image::loadicon(icon), NULL);
 }
 
+#ifndef NO_LIGHTING
 void screen_mgr::add_light(std::string name, light* l)
 {
 	lights[name] = l;
@@ -200,6 +201,7 @@ void screen_mgr::remove_occluder(std::string name)
 		occluders.erase(name);
 	}
 }
+#endif
 
 image* screen_mgr::create_rendertarget(int w, int h)
 {
@@ -250,6 +252,7 @@ void screen_mgr::cls()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+#ifndef NO_LIGHTING
 	if (lighting_enabled)
 	{
 		glClearStencil(0);
@@ -328,6 +331,7 @@ void screen_mgr::cls()
 			glUseProgram(0);			
 		}
 	}
+#endif
 }
 
 void screen_mgr::flip()

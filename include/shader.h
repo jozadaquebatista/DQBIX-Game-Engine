@@ -10,6 +10,7 @@
 
 #include "../include/lua.hpp"
 #include "../include/graphics.h"
+#include "../include/shaders.h"
 
 struct StringHelper {
 	const char *p;
@@ -20,7 +21,12 @@ struct StringHelper {
 class shader
 {
 public:
-	shader(std::string vs = "", std::string fs = "");
+	shader() : shader("")
+	{
+
+	}
+	shader(std::string vs, std::string fs);
+	shader(std::string fs);
 
 	void use();
 	void compile();
@@ -34,6 +40,7 @@ public:
 	
 	void addUniform(std::string name);
 	void addCommonUniforms();
+	void loadUniforms();
 	
 	virtual ~shader();
 
@@ -45,11 +52,15 @@ public:
 		getGlobalNamespace(L)
 			.beginClass<shader>("shader")
 			.addConstructor<void(*)(std::string, std::string)>()
+			.addConstructor<void(*)(std::string)>()
 			.addFunction("use", &shader::use)
+			.addFunction("loaduniforms", &shader::loadUniforms)
 			.addFunction("compile", &shader::compile)
 			.addFunction("setfloat", &shader::setFloat)
 			.addFunction("setint", &shader::setInt)
 			.addFunction("setvec2", &shader::setVec2)
+			.addFunction("setvec3", &shader::setVec3)
+			.addFunction("setvec4", &shader::setVec4)
 			.addFunction("adduniform", &shader::addUniform)
 			.endClass();
 	}

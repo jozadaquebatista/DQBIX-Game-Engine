@@ -18,11 +18,23 @@ void shader::addCommonUniforms()
 	addUniform("model");
 }
 
+void shader::loadUniforms()
+{
+	addCommonUniforms();
+	addUniform("image");
+	addUniform("cliprect");
+}
+
 shader::~shader()
 {
 	if (m_vs) glDeleteShader(m_vs);
 	if (m_fs) glDeleteShader(m_fs);
 	if (m_program) glDeleteProgram(m_program);
+}
+
+shader::shader(std::string fs)
+{
+	fromString(default_vert, loadShaderData(fs));
 }
 
 shader* shader::fromString(std::string vs, std::string fs)

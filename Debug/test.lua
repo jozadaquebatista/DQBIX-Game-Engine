@@ -5,7 +5,15 @@ local key = 0
 local tset_img = image("data/tile1.png")
 local tset = tileset(tset_img, 4, 4, "abcdefghijklmnop")
 local walkimg = image("data/player.png")
+local bg = image("data/bg2.png")
+local fnt = font("andy.ttf", 24)
 
+local bloom = shader("bloom.frag")
+bloom:compile()
+bloom:loaduniforms()
+
+local img = createtarget(320, 240)
+img.customshader = true
 -- Objects
 player = {
 	pos = point(160.0, 32.0),
@@ -32,7 +40,9 @@ while key ~= 27 do
 	cls()
 	key = getkey()
 
-	color(1.0, 1.0, 1.0, 1.0)
+	startimagerender(img)
+	cls()
+	blit(bg, 0, 0)
 	local frame = player.walk:step()	
 	blits(frame, player.pos.x, player.pos.y, 3.0*player.dir, 3.0)
 
@@ -43,6 +53,12 @@ while key ~= 27 do
 			end
 		end
 	end
+	endimagerender()
+	
+	img.shader = bloom
+	blits(img, 0, 240, 1.0, -1.0)
+	
+	drawtext("Hello", 1, 1, fnt)
 	
 	-- Player movement
 	if keystatus(32) then -- space

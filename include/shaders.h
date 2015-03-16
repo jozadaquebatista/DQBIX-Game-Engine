@@ -3,6 +3,26 @@
 #pragma once
 
 #include <string>
+const std::string text_vert = "#version 120\n"
+"attribute vec2 position;"
+"attribute vec2 coord;"
+"varying vec2 texcoord;"
+"uniform mat4 model;"
+"uniform mat4 proj;"
+"void main()"
+"{"
+"	gl_Position = proj * model * vec4(position, 0.0, 1.0);"
+"	texcoord = coord;"
+"}";
+
+const std::string text_frag = "#version 120\n"
+"varying vec2 texcoord;"
+"uniform sampler2D image;"
+"uniform vec3 color;"
+"void main()"
+"{"
+"	gl_FragColor = vec4(color, 1.0) * texture2D(image, texcoord);"
+"}";
 
 const std::string default_vert = "#version 120\n"
 							"attribute vec3 v_position;"

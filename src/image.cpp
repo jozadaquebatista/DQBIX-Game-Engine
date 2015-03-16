@@ -200,11 +200,14 @@ void image::draw_full(int x, int y, float sx, float sy, float a, mat4 proj)
 	bind();
 
 	// Use shader
-	m_shader->use();
-	m_shader->setInt("image", 0);
-	m_shader->setVec4("cliprect", crx * cliprect.cols, cry * cliprect.rows, crw, crh);
-	m_shader->setMatrix("model", m);
-	m_shader->setMatrix("proj", proj);
+	if (m_shader != nullptr)
+	{
+		m_shader->use();
+		m_shader->setInt("image", 0);
+		m_shader->setVec4("cliprect", crx * cliprect.cols, cry * cliprect.rows, crw, crh);
+		m_shader->setMatrix("model", m);
+		m_shader->setMatrix("proj", proj);
+	}
 
 	// Draw a quad
 	m_quad->draw();

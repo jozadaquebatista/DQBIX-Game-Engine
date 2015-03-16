@@ -4,6 +4,9 @@
 
 #include "point.hpp"
 #include "graphics.h"
+#include "shader.h"
+#include "shaders.h"
+#include "color.h"
 
 #include <drawtext.h>
 
@@ -15,6 +18,7 @@ public:
 	point* measure_string(std::string str);
 	void set_range(int from, int to);
 	void use();
+	void draw(std::string text, mat4 model, mat4 proj, color* col);
 
 	virtual ~font();
 
@@ -34,6 +38,7 @@ private:
 	font(font& f) {}
 	int sz;
 	struct dtx_font* fnth;
+	shader* m_shader;
 };
 
 #endif // __IX_FONT__

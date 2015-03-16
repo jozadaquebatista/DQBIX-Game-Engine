@@ -4,44 +4,6 @@ void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 {
 	if (img == NULL) return;
 
-	/*glColor4f(screen_mgr::drawcolor->r,
-		screen_mgr::drawcolor->g,
-		screen_mgr::drawcolor->b,
-		screen_mgr::drawcolor->a);
-	glPushMatrix();
-
-	int w = img->getCliprect().w;
-	int h = img->getCliprect().h;
-
-	float crw = (float)img->getCliprect().w / (float)img->getResource()->getWidth();
-	float crh = (float)img->getCliprect().h / (float)img->getResource()->getHeight();
-	float crx = (float)img->getCliprect().x / (float)img->getResource()->getWidth();
-	float cry = (float)img->getCliprect().y / (float)img->getResource()->getHeight();
-
-	float px = (float)x / (float)w;
-	float py = (float)y / (float)h;
-	float sw = w * sx;
-	float sh = h * sy;
-
-	mat4 m;
-	m.rotateZ(a).scale(sw, sh, 1.0f).translate(x, y, 0);
-	glMultMatrixf(m.get());
-
-	glEnable(GL_TEXTURE_2D);
-	img->bind();
-
-	glBegin(GL_QUADS);
-
-	glTexCoord2f(crx,         cry); glVertex2f(-0.5f, -0.5f);
-	glTexCoord2f(crx+crw,     cry); glVertex2f(0.5f, -0.5f);
-	glTexCoord2f(crx+crw, cry+crh); glVertex2f(0.5f, 0.5f);
-	glTexCoord2f(crx,     cry+crh); glVertex2f(-0.5f, 0.5f);
-
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-
-	glPopMatrix();*/
 	img->draw_full(x, y, sx, sy, a, screen_mgr::projection);
 }
 
@@ -67,14 +29,11 @@ void renderer::drawtext(std::string text, int x, int y, font* fnt)
 		screen_mgr::drawcolor->g,
 		screen_mgr::drawcolor->b,
 		screen_mgr::drawcolor->a);
-	glPushMatrix();
 
-	fnt->use();
-	mat4 m;
-	//TODO: Shader-based text
-	dtx_string(text.c_str());
-
-	glPopMatrix();
+	mat4 m = mat4(1.0f);
+	m = translate(m, vec3((float)x, (float)y, 0.0f));
+	
+	fnt->draw(text, m, screen_mgr::projection, screen_mgr::drawcolor);
 }
 
 void renderer::drawtextr(std::string text, int x, int y, float a, font* fnt)
@@ -84,14 +43,12 @@ void renderer::drawtextr(std::string text, int x, int y, float a, font* fnt)
 		screen_mgr::drawcolor->g,
 		screen_mgr::drawcolor->b,
 		screen_mgr::drawcolor->a);
-	glPushMatrix();
 
-	fnt->use();
-	mat4 m;
-	//TODO: Shader-based text
-	dtx_string(text.c_str());
+	mat4 m = mat4(1.0f);
+	m = translate(m, vec3((float)x, (float)y, 0.0f));
+	m = rotate(m, a, vec3(0.0f, 0.0f, 1.0f));
 
-	glPopMatrix();
+	fnt->draw(text, m, screen_mgr::projection, screen_mgr::drawcolor);
 }
 
 void renderer::line(int x1, int y1, int x2, int y2)
@@ -104,7 +61,6 @@ void renderer::line(int x1, int y1, int x2, int y2)
 	glVertex2i(x1, y1);
 	glVertex2i(x2, y2);
 	glEnd();
-
 }
 
 void renderer::dot(int x, int y)

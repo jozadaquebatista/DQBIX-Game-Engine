@@ -48,6 +48,9 @@ public:
 	void setOrigin(float x, float y) { origin = point(x, y); }
 	point getOrigin() const { return origin; }
 
+	void setIsCustomShader(bool val) { custom_shader = val; }
+	bool getIsCustomShader() const { return custom_shader; }
+
 	int getWidth() const { return getCliprect().w; }
 	int getHeight() const { return getCliprect().h; }
 
@@ -72,8 +75,9 @@ public:
 			.addFunction("use", &image::use)
 			.addProperty("width", &image::getWidth)
 			.addProperty("height", &image::getHeight)
+			.addData("shader", &image::m_shader, true)
+			.addProperty("customshader", &image::getIsCustomShader, &image::setIsCustomShader)
 		.endClass();
-			
 		imageResource::lua_reg(L);
 	}
 	mat4 m;
@@ -91,6 +95,7 @@ private:
 	mesh* m_quad;
 	void create_mesh();
 	point origin;
+	bool custom_shader;
 };
 
 #endif //__IX_IMAGE__

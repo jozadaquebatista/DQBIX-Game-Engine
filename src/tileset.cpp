@@ -26,6 +26,8 @@ image* tileset::getTile(char c)
 		clip.y = ay;
 		clip.w = w;
 		clip.h = h;
+		clip.rows = m_rows;
+		clip.cols = m_cols;
 		m_map->setCliprect(clip);
 		return m_map;
 	}

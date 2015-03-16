@@ -69,10 +69,12 @@ public:
 	static void console_visible(bool state);
 	static void set_icon(const char* icon);
 	static void is_lighting_enabled(bool en) { lighting_enabled = en; }
+#ifndef NO_LIGHTING
 	static void add_light(std::string name, light* l);
 	static void add_occluder(std::string name, boxoccluder* o);
 	static void remove_light(std::string name);
 	static void remove_occluder(std::string name);
+#endif
 	static image* create_rendertarget(int w, int h);
 
 	static void useAsRenderTarget();
@@ -88,11 +90,13 @@ public:
 			.addData("a", &color::a)
 			.endClass()
 			.addFunction("createtarget", &screen_mgr::create_rendertarget)
+#ifndef NO_LIGHTING
 			.addFunction("addlight", &screen_mgr::add_light)
 			.addFunction("addoccluder", &screen_mgr::add_occluder)
 			.addFunction("removelight", &screen_mgr::remove_light)
 			.addFunction("removeoccluder", &screen_mgr::remove_occluder)
 			.addFunction("lighting", &screen_mgr::is_lighting_enabled)
+#endif
 			.addFunction("screen", &screen_mgr::init)
 			.addFunction("cls", &screen_mgr::cls)
 			.addFunction("flip", &screen_mgr::flip)

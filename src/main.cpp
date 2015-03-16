@@ -6,7 +6,9 @@
 #include <ios>
 #include <cmath>
 
+#define NO_LIGHTING
 #include "../include/Screen.h"
+
 #include "../include/renderer.h"
 #include "../include/tileset.h"
 #include "../include/LuaEngine.hpp"
