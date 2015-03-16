@@ -18,7 +18,6 @@ Features
 HÄLP!
 -------------------------------------
 Since this is not perfect, here's a todo list. I really want some help!
-  - Improve shader support
   - Move everything from glMultiMatrix and glBegins/glEnds to shaders and vertex buffers
   - Code organization/refactoring
   - Improve 2D Lighting and Shadows
