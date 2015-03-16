@@ -25,30 +25,30 @@ void renderer::blit(image* img, int x, int y)
 void renderer::drawtext(std::string text, int x, int y, font* fnt)
 {
 	if (!fnt) return;
-	glColor4f(screen_mgr::drawcolor->r,
-		screen_mgr::drawcolor->g,
-		screen_mgr::drawcolor->b,
-		screen_mgr::drawcolor->a);
+
+	float fy = fnt->measure_string(text)->y/4.0f;
 
 	mat4 m = mat4(1.0f);
-	m = translate(m, vec3((float)x, (float)y, 0.0f));
-	
+	m = translate(m, vec3((float)x, (float)y+fy, 0.0f));
+	m = scale(m, vec3(1.0f, -1.0f, 1.0f));
+
 	fnt->draw(text, m, screen_mgr::projection, screen_mgr::drawcolor);
+
 }
 
 void renderer::drawtextr(std::string text, int x, int y, float a, font* fnt)
 {
 	if (!fnt) return;
-	glColor4f(screen_mgr::drawcolor->r,
-		screen_mgr::drawcolor->g,
-		screen_mgr::drawcolor->b,
-		screen_mgr::drawcolor->a);
+
+	float fy = fnt->measure_string(text)->y/4.0f;
 
 	mat4 m = mat4(1.0f);
-	m = translate(m, vec3((float)x, (float)y, 0.0f));
-	m = rotate(m, a, vec3(0.0f, 0.0f, 1.0f));
-
+	m = translate(m, vec3((float)x, (float)y+fy, 0.0f));
+	m = scale(m, vec3(1.0f, -1.0f, 1.0f));
+	m = rotate(m, a, vec3(0.0f, 0.0f, 1.0f));	
+	
 	fnt->draw(text, m, screen_mgr::projection, screen_mgr::drawcolor);
+
 }
 
 void renderer::line(int x1, int y1, int x2, int y2)

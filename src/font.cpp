@@ -7,20 +7,22 @@ point* font::measure_string(std::string str)
 	float w, h;
 	w = dtx_string_width(str.c_str());
 	h = dtx_string_height(str.c_str());
+	
 	return new point(w, h);
 }
 
 void font::draw(std::string text, mat4 model, mat4 proj, color* col)
 {
 	use();
-	dtx_string(text.c_str());
-	dtx_flush();
 
 	m_shader->use();
 	m_shader->setInt("image", 0);
-	m_shader->setVec3("color", col->r, col->g, col->b);
+	m_shader->setVec4("color", col->r, col->g, col->b, col->a);
 	m_shader->setMatrix("model", model);
 	m_shader->setMatrix("proj", proj);
+
+	dtx_string(text.c_str());
+	dtx_flush();
 
 	glUseProgram(0);
 }
