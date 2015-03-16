@@ -8,12 +8,13 @@ See: [Wiki](https://github.com/DCubix/DQBIX-Game-Engine/wiki)
 Features
 -------------------------------------
   - Render to texture
-  - 2D Lighting and Shadows (it's hacky, but it works :D)
   - Sprite animation
   - Tile maps
   - Shaders
   - Support for multiple image and audio formats
   - Basic collision detection
+
+PS: Lighting and Shadows are disabled, they won't work with the current workflow.
 
 HÄLP!
 -------------------------------------
