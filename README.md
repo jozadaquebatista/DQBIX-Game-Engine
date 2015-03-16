@@ -11,7 +11,7 @@ Features
   - 2D Lighting and Shadows (it's hacky, but it works :D)
   - Sprite animation
   - Tile maps
-  - Shaders ( half-supported )
+  - Shaders
   - Support for multiple image and audio formats
   - Basic collision detection
 
@@ -22,7 +22,7 @@ Since this is not perfect, here's a todo list. I really want some help!
   - Move everything from glMultiMatrix and glBegins/glEnds to shaders and vertex buffers
   - Code organization/refactoring
   - Improve 2D Lighting and Shadows
-  - Improve shader support (currently it's very hacky)
+  - Improve shader support (currently it's very hacky) [DONE!]
   - Add more occluder types (currently we only have box. maybe a circle, or polygon occluders...)
   - Add a physics engine (Box2D, Chipmunk or whatever...)
   - Particle systems
