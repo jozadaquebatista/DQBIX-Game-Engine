@@ -4,7 +4,7 @@
 
 #include <string>
 
-std::string default_vert = "#version 120\n"
+const std::string default_vert = "#version 120\n"
 							"attribute vec3 v_position;"
 							"attribute vec2 v_texcoord;"
 							"varying vec2 texcoord;"
@@ -19,7 +19,7 @@ std::string default_vert = "#version 120\n"
 							"	texcoord.y = (cliprect.y + v_texcoord.y) * cliprect.w;"
 							"}";
 
-std::string default_frag = "#version 120\n"
+const std::string default_frag = "#version 120\n"
 							"uniform sampler2D image;"
 							"varying vec2 texcoord;"
 							"void main()"
