@@ -1,5 +1,4 @@
 screen(320, 240, 32, "Test")
-backcolor(0.816, 0.9909, 0.0675, 1.0)
 
 -- Resources
 local key = 0
@@ -34,7 +33,8 @@ while key ~= 27 do
 	key = getkey()
 
 	color(1.0, 1.0, 1.0, 1.0)
-	blits(player.walk:step(), player.pos.x, player.pos.y, 3.0*player.dir, 3.0)
+	local frame = player.walk:step()	
+	blits(frame, player.pos.x, player.pos.y, 3.0*player.dir, 3.0)
 
 	for i = 1, #map do
 		for j = 1, #map[1] do

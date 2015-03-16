@@ -53,7 +53,9 @@ void image::create_mesh()
 	};
 	m_quad->addVertices(verts);
 
-	m_shader = new shader("../res/shaders/default.vert", "../res/shaders/default.frag");
+	m_shader = new shader();
+	m_shader->fromString(default_vert, default_frag);
+
 	m_shader->compile();
 	m_shader->addCommonUniforms();
 	m_shader->addUniform("image");
@@ -189,10 +191,10 @@ void image::draw_full(int x, int y, float sx, float sy, float a, mat4 proj)
 	// Model matrix
 	m = mat4(1.0f);
 	m = translate(m, vec3((float)x, (float)y, 0.0f));
-	m = translate(m, vec3(ox, oy, 0.0f));
-	m = rotate(m, a, vec3(0.0f, 0.0f, 1.0f));
+	m = translate(m, vec3(ox, oy, 0.0f));	
+	m = rotate(m, a, vec3(0.0f, 0.0f, 1.0f));	
 	m = translate(m, vec3(-ox, -oy, 0.0f));
-	m = scale(m, vec3(sw, sh, 1.0f));	
+	m = scale(m, vec3(sw, sh, 1.0f));
 	
 	// Bind texture
 	bind();

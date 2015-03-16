@@ -118,6 +118,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\sdl_backend.h" />
     <ClInclude Include="include\Stopwatch.h" />
     <ClInclude Include="include\vertex.h" />
+    <ClInclude Include="include\shaders.h" />
     <ClInclude Include="src\point.hpp" />
     <ClInclude Include="include\renderer.h" />
     <ClInclude Include="include\shader.h" />

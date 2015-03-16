@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	screen_mgr::init(640, 480, 32, "Test");
 	image* bg = new image("data/bg2.png");
 	image* im = new image("data/player.png");
-	im->setOrigin(point(0.5f, 0.5f));
+	im->setOrigin(0.5f, 0.5f);
 	animation* anim = new animation(im, 1, 4, 0.08f, true);
 
 	int key = 0;
@@ -77,8 +77,7 @@ int main(int argc, char *argv[])
 		key = screen_mgr::getkey();
 
 		renderer::blit(bg, 0, 0);
-		renderer::blit_full(anim->step(), 100, 100, 4.0, 4.0, a);
-		
+		renderer::blits(anim->step(), 100, 100, -4.0, 4.0);
 
 		screen_mgr::flip();
 		a += 0.05f;

@@ -12,6 +12,7 @@
 #include "../include/mesh.h"
 #include "../include/shader.h"
 #include "../include/point.hpp"
+#include "../include/shaders.h"
 
 typedef struct  
 {
@@ -44,7 +45,7 @@ public:
 		return getResource()->getID();
 	}
 
-	void setOrigin(point ori) { origin = ori; }
+	void setOrigin(float x, float y) { origin = point(x, y); }
 	point getOrigin() const { return origin; }
 
 	int getWidth() const { return getCliprect().w; }
@@ -61,20 +62,23 @@ public:
 	{
 		using namespace luabridge;
 		getGlobalNamespace(L)
-		.beginClass<image>("image")
-		.addConstructor<void(*)(std::string)>()
-		.addProperty("filter", &image::getFilter, &image::setFilter)
-		.addFunction("setAsRenderTarget", &image::setAsRenderTarget)
-		.addFunction("bind", &image::bind)
-		.addFunction("use", &image::use)
-		.addProperty("width", &image::getWidth)
-		.addProperty("height", &image::getHeight)
+			.beginClass<image>("image")
+			.addConstructor<void(*)(std::string)>()
+			.addProperty("filter", &image::getFilter, &image::setFilter)
+			.addFunction("setorigin", &image::setOrigin)
+			.addFunction("getorigin", &image::getOrigin)
+			.addFunction("setAsRenderTarget", &image::setAsRenderTarget)
+			.addFunction("bind", &image::bind)
+			.addFunction("use", &image::use)
+			.addProperty("width", &image::getWidth)
+			.addProperty("height", &image::getHeight)
 		.endClass();
 			
 		imageResource::lua_reg(L);
 	}
 	mat4 m;
 	shader* m_shader;
+	
 	// *sighs*
 	static SDL_Surface* loadicon(const char* filename);
 private:
@@ -86,7 +90,6 @@ private:
 	
 	mesh* m_quad;
 	void create_mesh();
-
 	point origin;
 };
 
