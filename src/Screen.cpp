@@ -47,9 +47,6 @@ bool screen_mgr::cap = true;
 int screen_mgr::lastticks;
 int screen_mgr::ticks;
 
-std::map<std::string, light*> screen_mgr::lights;
-shader* screen_mgr::m_shader;
-
 int screen_mgr::getkey()
 {
 	if (&evt == NULL) return -1;

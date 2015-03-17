@@ -8,9 +8,6 @@ local walkimg = image("data/player.png")
 local bg = image("data/bg2.png")
 local fnt = font("andy.ttf", 28)
 
---local l = light(50, 50, 1.0, 1.0, 1.0, 1.0)
---local monkey = shadedimage("data/monkey_d.png", "data/monkey_n.png")
-
 local bloom = shader("bloom.frag")
 bloom:compile()
 bloom:loaduniforms()
@@ -39,12 +36,15 @@ map = {
 -- Engine
 local gravity = 8.0
 local canjump = true
+local t = 0.0
 
 while key ~= 27 do
 	poll()
 	cls()
 	key = getkey()
 
+	t = t + 0.1
+	
 	startimagerender(img)
 	cls()
 	
@@ -62,11 +62,10 @@ while key ~= 27 do
 		end
 	end
 	
-	color(0.1, 0.2, 0.5, 0.7)
+	color(0.1, 0.2, 0.5, 1.0)
 	drawtext("Hello World!\nOla Mundo!\nHola Mundo!", 10, 10, fnt)
 	
 	endimagerender()
-	
 	
 	blitf(img, 320, 0, -1.0, 1.0, 3.14)
 	

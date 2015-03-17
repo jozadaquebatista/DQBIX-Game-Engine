@@ -33,9 +33,6 @@ public:
 	static screen* win;
 	static SDL_Event evt;	
 
-	static std::map<std::string, light*> lights;
-	static shader* m_shader;
-
 	static void init(int w, int h, int bpp, const char* title);
 	static void cls();
 	static void flip();
@@ -66,19 +63,6 @@ public:
 	static void console_visible(bool state);
 	static void set_icon(const char* icon);
 
-	inline static void add_light(std::string name, light* L)
-	{
-		lights.insert({ name, L });
-	}
-	inline static void delete_light(std::string name)
-	{
-		std::map<std::string, light*>::const_iterator pos = lights.find(name);
-		if (pos != lights.cend())
-		{
-			lights.erase(name);
-		}
-	}
-
 	static image* create_rendertarget(int w, int h);
 
 	static void useAsRenderTarget();
@@ -94,8 +78,6 @@ public:
 			.addData("a", &color::a)
 			.endClass()
 			.addFunction("createtarget", &screen_mgr::create_rendertarget)
-			.addFunction("addlight", &screen_mgr::add_light)
-			.addFunction("deletelight", &screen_mgr::delete_light)
 			.addFunction("screen", &screen_mgr::init)
 			.addFunction("cls", &screen_mgr::cls)
 			.addFunction("flip", &screen_mgr::flip)
