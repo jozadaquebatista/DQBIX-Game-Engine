@@ -16,18 +16,17 @@ Features
 
 PS: Lighting and Shadows are disabled, they won't work with the current workflow.
 
-HÄLP!
+HELP NEEDED
 -------------------------------------
 Since this is not perfect, here's a todo list. I really want some help!
-  - Move everything from glMultiMatrix and glBegins/glEnds to shaders and vertex buffers
+  - Move everything from glMultiMatrix and glBegins/glEnds to shaders and vertex buffers [DONE!]
   - Code organization/refactoring
   - Improve 2D Lighting and Shadows
-  - Improve shader support (currently it's very hacky) [DONE!]
-  - Add more occluder types (currently we only have box. maybe a circle, or polygon occluders...)
+  - Improve shader support [DONE!]
   - Add a physics engine (Box2D, Chipmunk or whatever...)
   - Particle systems
   - More advanced collision detection
   - A way to export your game for Windows and Android
-  - uhmm... any suggestions?
+  PS: I accept suggestions!
   
-If you want to help me, you'll need Visual Studio 2013 and a lot of coffee!
+If you want to help me, you'll need Visual Studio 2013!
