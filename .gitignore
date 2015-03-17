@@ -6,6 +6,11 @@ Debug*/Debug*.exe
 Debug*/Debug*\ Libs
 Debug/*.exe
 Debug/*.dll
+Release*.exe
+Release*/Release*.exe
+Release*/Release*\ Libs
+Release/*.exe
+Release/*.dll
 *.sdf
 *.opensdf
 *.aps
