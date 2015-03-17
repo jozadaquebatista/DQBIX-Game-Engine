@@ -21,7 +21,7 @@ HELP NEEDED
 Since this is not perfect, here's a todo list. I really want some help!
   - Move everything from glMultiMatrix and glBegins/glEnds to shaders and vertex buffers [DONE!]
   - Code organization/refactoring
-  - Improve 2D Lighting and Shadows
+  - Rewrite 2D Lighting and Shadows.
   - Improve shader support [DONE!]
   - Add a physics engine (Box2D, Chipmunk or whatever...)
   - Particle systems
