@@ -80,6 +80,5 @@ image* animation::step()
 
 animation::~animation()
 {
-	if (m_sheet) delete m_sheet;
-	m_sheet = NULL;
+	SAFE_DELETE(m_sheet);
 }

@@ -36,7 +36,7 @@ image* tileset::getTile(char c)
 
 tileset::~tileset()
 {
-	if (m_map) delete m_map;
+	SAFE_DELETE(m_map);
 }
 
 void tileset::lua_reg(lua_State* L)

@@ -58,6 +58,7 @@
       <AdditionalLibraryDirectories>depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\glew\lib;depends\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL.lib;SDLmain.lib;glew32s.lib;libdrawtext.lib;bass.lib;bass_fx.lib;lua52.lib;freeglut.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>depends\freeglut\lib;depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -87,6 +88,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
       <AdditionalLibraryDirectories>depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\glew\lib;depends\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL.lib;SDLmain.lib;glew32s.lib;libdrawtext.lib;bass.lib;bass_fx.lib;lua52.lib;freeglut.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>depends\freeglut\lib;depends\bass\src;depends\libdrawtext\lib;depends\Lua52;depends\SDL12\lib;depends\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

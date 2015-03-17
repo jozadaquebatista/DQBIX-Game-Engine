@@ -149,10 +149,10 @@ image::~image()
 		if (filename.length() > 0)
 			m_loadedImages.erase(filename);
 
-		delete m_resource;
+		SAFE_DELETE(m_resource);
 	}
-	if (m_shader) delete m_shader;
-	if (m_quad) delete m_quad;
+	SAFE_DELETE(m_shader);
+	SAFE_DELETE(m_quad);
 }
 
 void image::setAsRenderTarget()

@@ -73,6 +73,7 @@ void renderer::drawtextr(std::string text, int x, int y, float a, font* fnt)
 
 void renderer::line(int x1, int y1, int x2, int y2)
 {
+	// TODO: Modern OpenGL
 	glColor4f(screen_mgr::drawcolor->r,
 		screen_mgr::drawcolor->g,
 		screen_mgr::drawcolor->b,
@@ -85,6 +86,7 @@ void renderer::line(int x1, int y1, int x2, int y2)
 
 void renderer::dot(int x, int y)
 {
+	// TODO: Modern OpenGL
 	glColor4f(screen_mgr::drawcolor->r,
 		screen_mgr::drawcolor->g,
 		screen_mgr::drawcolor->b,
@@ -96,6 +98,7 @@ void renderer::dot(int x, int y)
 
 void renderer::circle(int x, int y, int r, bool fill /*= false*/)
 {
+	// TODO: Modern OpenGL
 	glColor4f(screen_mgr::drawcolor->r,
 		screen_mgr::drawcolor->g,
 		screen_mgr::drawcolor->b,
@@ -122,6 +125,7 @@ void renderer::circle(int x, int y, int r, bool fill /*= false*/)
 
 void renderer::rect(int x, int y, int w, int h, bool fill /*= false*/)
 {
+	// TODO: Modern OpenGL
 	glColor4f(screen_mgr::drawcolor->r,
 		screen_mgr::drawcolor->g,
 		screen_mgr::drawcolor->b,
