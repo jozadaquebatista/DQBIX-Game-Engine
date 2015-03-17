@@ -19,20 +19,6 @@
 // #define TEST_PROGRAM
 
 #define PI 3.141592658
-class argv_range {
-public:
-	argv_range(int argc, const char * const argv[])
-		: argc_(argc), argv_(argv)
-	{
-	}
-
-	const char * const *begin() const { return argv_; }
-	const char * const *end() const { return argv_ + argc_; }
-
-private:
-	const int argc_;
-	const char * const *argv_;
-};
 
 bool ends_with(std::string const & value, std::string const & ending)
 {
@@ -48,15 +34,6 @@ long getFileSize(FILE *file)
 	lEndPos = ftell(file);
 	fseek(file, lCurPos, 0);
 	return lEndPos;
-}
-void LoadFileInResource(int name, int type, DWORD& size, const char*& data)
-{
-	HMODULE handle = ::GetModuleHandle(NULL);
-	HRSRC rc = ::FindResource(handle, MAKEINTRESOURCE(name),
-		MAKEINTRESOURCE(type));
-	HGLOBAL rcData = ::LoadResource(handle, rc);
-	size = ::SizeofResource(handle, rc);
-	data = static_cast<const char*>(::LockResource(rcData));
 }
 
 bool isbind = false;

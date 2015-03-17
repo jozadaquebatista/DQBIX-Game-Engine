@@ -3,6 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../include/stb_image.h"
 
+// TODO: Simplify this
 image::image(int w, int h, unsigned char* data, int target, int filter, int internalFmt, int format, bool clamp, int attachment)
 {
 	this->filename = "RENDERTEXTURE" + w + h + m_loadedImages.size();
@@ -62,6 +63,7 @@ void image::create_mesh()
 	m_shader->addUniform("cliprect");
 }
 
+// TODO: Simplify this
 image::image(const std::string filename, int target, int filter)
 {
 	this->filename = filename;
@@ -216,6 +218,7 @@ void image::draw_full(int x, int y, float sx, float sy, float a, mat4 proj)
 
 }
 
+// Thanks to this tutorial <http://immersedcode.org/2011/4/7/stb-image/>
 SDL_Surface* image::loadicon(const char* filename)
 {
 	int x, y, comp;

@@ -3,7 +3,6 @@
 void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 {
 	if (img == NULL) return;
-
 	img->draw_full(x, y, sx, sy, a, screen_mgr::projection);
 }
 
@@ -26,6 +25,8 @@ void renderer::drawtext(std::string text, int x, int y, font* fnt)
 {
 	if (!fnt) return;
 
+	// TODO: This seems hacky, improve!
+
 	float fy = fnt->measure_string(text)->y/4.0f;
 
 	mat4 m = mat4(1.0f);
@@ -39,6 +40,8 @@ void renderer::drawtext(std::string text, int x, int y, font* fnt)
 void renderer::drawtextr(std::string text, int x, int y, float a, font* fnt)
 {
 	if (!fnt) return;
+
+	// TODO: This seems hacky, improve!
 
 	float fy = fnt->measure_string(text)->y/4.0f;
 

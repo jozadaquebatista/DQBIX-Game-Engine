@@ -60,7 +60,7 @@ while key ~= 27 do
 	end
 	
 	color(0.1, 0.2, 0.5, 0.7)
-	drawtext("Hello World!\nOla Mundo!\nHola Mundo!", 10, 0, fnt)
+	drawtext("Hello World!\nOla Mundo!\nHola Mundo!", 10, 10, fnt)
 	
 	endimagerender()
 	
