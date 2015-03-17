@@ -69,12 +69,6 @@ int screen_mgr::mousex()
 	SDL_PumpEvents();
 	SDL_GetMouseState(&x, NULL);
 	return x;
-	/*if (&evt == NULL) return -1;
-	if (evt.type == SDL_MOUSEMOTION)
-	{
-		return evt.motion.x;
-	}
-	return -1;*/
 }
 
 int screen_mgr::mousey()
@@ -83,25 +77,12 @@ int screen_mgr::mousey()
 	SDL_PumpEvents();
 	SDL_GetMouseState(NULL, &y);
 	return y;
-	/*if (&evt == NULL) return -1;
-	if (evt.type == SDL_MOUSEMOTION)
-	{
-	return evt.motion.y;
-	}
-	return -1;*/
 }
 
 int screen_mgr::getbutton()
 {
 	SDL_PumpEvents();
 	return SDL_GetMouseState(NULL, NULL);
-	// Old code
-	/*if (&evt == NULL) return -1;
-	if (evt.type == SDL_MOUSEMOTION || evt.type == SDL_MOUSEBUTTONDOWN)
-	{
-		return evt.motion.state;
-	}*/
-	//return -1;
 }
 
 bool screen_mgr::buttonstatus(int btn)
@@ -130,7 +111,7 @@ void screen_mgr::settitle(std::string newtitle)
 
 void screen_mgr::start_rendertexture(image* target)
 {
-	target->setAsRenderTarget();
+	target->useAsRenderTarget();
 }
 
 void screen_mgr::end_rendertexture()

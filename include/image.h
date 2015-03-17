@@ -36,7 +36,7 @@ public:
 	int getFilter() const { return filter; }
 	void setFilter(int val) { filter = val; }
 
-	void setAsRenderTarget();
+	void useAsRenderTarget();
 	void bind();
 	void use(int sampler_slot);
 
@@ -70,13 +70,12 @@ public:
 			.addProperty("filter", &image::getFilter, &image::setFilter)
 			.addFunction("setorigin", &image::setOrigin)
 			.addFunction("getorigin", &image::getOrigin)
-			.addFunction("setAsRenderTarget", &image::setAsRenderTarget)
+			.addFunction("setAsRenderTarget", &image::useAsRenderTarget)
 			.addFunction("bind", &image::bind)
 			.addFunction("use", &image::use)
 			.addProperty("width", &image::getWidth)
 			.addProperty("height", &image::getHeight)
 			.addData("shader", &image::m_shader, true)
-			.addProperty("customshader", &image::getIsCustomShader, &image::setIsCustomShader)
 		.endClass();
 		imageResource::lua_reg(L);
 	}

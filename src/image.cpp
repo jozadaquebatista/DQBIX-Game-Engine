@@ -155,7 +155,7 @@ image::~image()
 	SAFE_DELETE(m_quad);
 }
 
-void image::setAsRenderTarget()
+void image::useAsRenderTarget()
 {
 	m_resource->useAsRenderTarget();
 }
