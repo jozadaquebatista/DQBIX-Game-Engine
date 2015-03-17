@@ -8,6 +8,9 @@ local walkimg = image("data/player.png")
 local bg = image("data/bg2.png")
 local fnt = font("andy.ttf", 28)
 
+--local l = light(50, 50, 1.0, 1.0, 1.0, 1.0)
+--local monkey = shadedimage("data/monkey_d.png", "data/monkey_n.png")
+
 local bloom = shader("bloom.frag")
 bloom:compile()
 bloom:loaduniforms()

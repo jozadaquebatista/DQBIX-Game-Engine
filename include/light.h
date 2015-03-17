@@ -8,17 +8,15 @@
 class light
 {
 public:
-	light(int _x, int _y, float r=1.0f, float g=1.0f, float b=1.0f) 
+	light(int _x, int _y, float r=1.0f, float g=1.0f, float b=1.0f, float a=1.0f) 
 	: x(_x), y(_y)
 	{
 		_color = new color();
 		_color->r = r;
 		_color->g = g;
 		_color->b = b;
-		_color->a = 1.0f;
+		_color->a = a;
 
-		_intensity = 1.0f;
-		_radius = 1.0f;
 		_castshadow = true;
 	}
 
@@ -28,12 +26,16 @@ public:
 	void setY(int val) { y = val; }
 	color* getColor() const { return _color; }
 	void setColor(color* val) { _color = val; }
-	float getIntensity() const { return _intensity; }
-	void setIntensity(float val) { _intensity = val; }
+
 	bool getCastshadow() const { return _castshadow; }
 	void setCastshadow(bool val) { _castshadow = val; }
-	float getRadius() const { return _radius; }
-	void setRadius(float val) { _radius = val; }
+
+	float getConstant() const { return fx; }
+	float getLinear() const { return fy; }
+	float getQuadratic() const { return fz; }
+	void setConstant(float v) { fx = v; }
+	void setLinear(float v) { fy = v; }
+	void setQuadratic(float v) { fz = v; }
 
 	static void lua_reg(lua_State* L)
 	{
@@ -44,17 +46,17 @@ public:
 			.addProperty("x", &light::getX, &light::setX)
 			.addProperty("y", &light::getY, &light::setY)
 			.addProperty("color", &light::getColor, &light::setColor)
-			.addProperty("shadow", &light::getCastshadow, &light::setCastshadow)
-			.addProperty("radius", &light::getRadius, &light::setRadius)
-			.addProperty("intensity", &light::getIntensity, &light::setIntensity)
+			.addProperty("constant", &light::getConstant, &light::setConstant)
+			.addProperty("linear", &light::getLinear, &light::setLinear)
+			.addProperty("quadratic", &light::getQuadratic, &light::setQuadratic)
 			.endClass();
 	}
 private:
 	int x, y;
 	color* _color;
 	bool _castshadow;
-	float _intensity, _radius;
-	
+
+	float fx, fy, fz;
 };
 
 #endif //__IX_LIGHT__

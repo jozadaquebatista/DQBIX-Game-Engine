@@ -37,11 +37,7 @@ void screen_mgr::ortho_2d(float* mat, int left, int right, int bottom, int top)
 
 screen* screen_mgr::win = NULL;
 SDL_Event screen_mgr::evt;
-bool screen_mgr::lighting_enabled;
 bool screen_mgr::quit = false;
-
-std::map<std::string, boxoccluder*> screen_mgr::occluders;
-std::map<std::string, light*> screen_mgr::lights;
 
 color* screen_mgr::drawcolor = NULL;
 
@@ -51,7 +47,8 @@ bool screen_mgr::cap = true;
 int screen_mgr::lastticks;
 int screen_mgr::ticks;
 
-shader* screen_mgr::lighting;
+std::map<std::string, light*> screen_mgr::lights;
+shader* screen_mgr::m_shader;
 
 int screen_mgr::getkey()
 {
@@ -173,36 +170,6 @@ void screen_mgr::set_icon(const char* icon)
 	SDL_WM_SetIcon(image::loadicon(icon), NULL);
 }
 
-#ifndef NO_LIGHTING
-void screen_mgr::add_light(std::string name, light* l)
-{
-	lights[name] = l;
-}
-
-void screen_mgr::add_occluder(std::string name, boxoccluder* o)
-{
-	occluders[name] = o;
-}
-
-void screen_mgr::remove_light(std::string name)
-{
-	std::map<std::string, light*>::const_iterator pos = lights.find(name);
-	if (pos != lights.cend())
-	{
-		lights.erase(name);
-	}
-}
-
-void screen_mgr::remove_occluder(std::string name)
-{
-	std::map<std::string, boxoccluder*>::const_iterator pos = occluders.find(name);
-	if (pos != occluders.cend())
-	{
-		occluders.erase(name);
-	}
-}
-#endif
-
 image* screen_mgr::create_rendertarget(int w, int h)
 {
 	return new image(w, h, 0, GL_TEXTURE_2D, GL_NEAREST, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
@@ -252,86 +219,6 @@ void screen_mgr::cls()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-#ifndef NO_LIGHTING
-	if (lighting_enabled)
-	{
-		glClearStencil(0);
-		for (auto &rlight : lights)
-		{
-			light* light = rlight.second;
-			if (light->getIntensity() <= 0.0f) continue;
-
-			if (light->getCastshadow())
-			{
-				glClearStencil(0);
-				glClear(GL_STENCIL_BUFFER_BIT);
-
-				glEnable(GL_STENCIL_TEST);
-				glStencilFunc(GL_ALWAYS, 0x1, 0x1);
-				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-				glColorMask(false, false, false, false);
-
-				glColor4f(1, 1, 1, 0.7f);
-
-				for (auto &roccluder : occluders)
-				{
-					boxoccluder* occluder = roccluder.second;
-					int count = 4;
-					vec2 verts[4] = {
-						vec2(occluder->getX(), occluder->getY()),
-						vec2(occluder->getX() + occluder->getW(), occluder->getY()),
-						vec2(occluder->getX() + occluder->getW(), occluder->getY() + occluder->getH()),
-						vec2(occluder->getX(), occluder->getY() + occluder->getH()),
-					};
-					for (int i = 0; i < count; i++)
-					{
-						vec2 current = verts[i];
-						vec2 next = verts[(i + 1) % count];
-						vec2 edge = next - current;
-						vec2 normal = vec2(edge.y, -edge.x);
-						vec2 lightPos = vec2(light->getX(), light->getY());
-						vec2 lightToCurrent = current - lightPos;
-						if (dot(normal, lightToCurrent) > 0)
-						{
-							vec2 point1 = (current + (lightToCurrent) * 800.0f);
-							vec2 point2 = (next + (next - lightPos) * 800.0f);
-
-							glBegin(GL_QUADS);
-							glVertex2f(current.x, current.y);
-							glVertex2f(point1.x, point1.y);
-							glVertex2f(point2.x, point2.y);
-							glVertex2f(next.x, next.y);
-							glEnd();
-						}
-					}
-				}
-				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-				glStencilFunc(GL_EQUAL, 0x0, 0x1);
-				glColorMask(true, true, true, true);
-			}
-			
-			lighting->use();
-			lighting->setVec2("lightPos", light->getX(), win->h - light->getY());
-			lighting->setVec3("lightColor", light->getColor()->r,
-				light->getColor()->g,
-				light->getColor()->b);
-			lighting->setFloat("intensity", light->getIntensity());
-			lighting->setFloat("radius", light->getRadius());
-
-			glBlendFunc(GL_ONE, GL_ONE);
-
-			glBegin(GL_QUADS);
-			glVertex2f(0, 0);
-			glVertex2f(0, win->h);
-			glVertex2f(win->w, win->h);
-			glVertex2f(win->w, 0);
-			glEnd();
-
-			glBlendFunc(GL_DST_COLOR, GL_ONE);
-			glUseProgram(0);			
-		}
-	}
-#endif
 }
 
 void screen_mgr::flip()
@@ -384,9 +271,6 @@ void screen_mgr::opengl_setup(screen* wn)
 	projection = make_mat4(m);
 
 	glViewport(0, 0, wn->w, wn->h);
-	/*glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glLoadMatrixf(projection.get());*/
 
 	useAsRenderTarget();
 }
@@ -453,30 +337,17 @@ void screen_mgr::init(int w, int h, int bpp, const char* title)
 		exit(EXIT_FAILURE);
 	}
 
-	std::string frag = "#version 120\n"
-		"uniform vec2 lightPos;"
-		"uniform vec3 lightColor;"
-		"uniform float intensity;"
-		"uniform float radius;"
-		"void main()"
-		"{"
-		"	float distance = length(lightPos - gl_FragCoord.xy);"
-		"	float attenuation = 1.0 / ((1.0+10.0/((radius+50.0)/distance)));"
-		"	vec4 color = intensity * vec4(attenuation, attenuation, attenuation, 1);"
-		"	gl_FragColor = color * vec4(lightColor, 1.0);"
-		"}";
-	
-	lighting = new shader();
-	lighting->fromString("", frag);
+	//m_shader = new shader();
+	//m_shader->fromString(/*TODO*/default_vert, shaded_frag);
 
-	lighting->addUniform("lightPos");
-	lighting->addUniform("lightColor");
-	lighting->addUniform("intensity");
-	lighting->addUniform("radius");
-}
-
-void screen_mgr::set_shader_proj(shader* s)
-{
-	s->addUniform("proj");
-	s->setMatrix("proj", projection);
+	//m_shader->compile();
+	//m_shader->addCommonUniforms();
+	//m_shader->addUniform("diffuse");
+	//m_shader->addUniform("normal");
+	//m_shader->addUniform("cliprect");
+	//m_shader->addUniform("Resolution");
+	//m_shader->addUniform("LightPos");
+	//m_shader->addUniform("LightColor");
+	//m_shader->addUniform("AmbientColor");
+	//m_shader->addUniform("Falloff");
 }

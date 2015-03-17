@@ -10,4 +10,5 @@ extern "C" {
 
 #include <LuaBridge.h>
 
+#define SAFE_DELETE(x) { if(x) delete x; x = nullptr; }
 #endif //__IX_LUA__

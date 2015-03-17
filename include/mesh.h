@@ -17,6 +17,9 @@ public:
 	void addVertices(std::vector<vertex> vertices);
 	void draw();
 
+	static void calculateNormals(std::vector<vertex>& vertices);
+	static void calculateTangents(std::vector<vertex>& vertices);
+
 private:
 	GLuint vbo;
 	int size;

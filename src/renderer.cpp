@@ -1,5 +1,22 @@
 #include "../include/renderer.h"
 
+void renderer::lua_reg(lua_State* L)
+{
+	using namespace luabridge;
+	getGlobalNamespace(L)
+		.addFunction("drawtext", &renderer::drawtext)
+		.addFunction("drawtextr", &renderer::drawtextr)
+		.addFunction("blit", &renderer::blit)
+		.addFunction("blitf", &renderer::blit_full)
+		.addFunction("blitr", &renderer::blitr)
+		.addFunction("line", &renderer::line)
+		.addFunction("dot", &renderer::dot)
+		.addFunction("circle", &renderer::circle)
+		.addFunction("rect", &renderer::rect)
+		.addFunction("blits", &renderer::blits);
+	shader::lua_reg(L);
+}
+
 void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
 {
 	if (img == NULL) return;
