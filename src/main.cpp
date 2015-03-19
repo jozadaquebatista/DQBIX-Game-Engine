@@ -1,3 +1,7 @@
+// #define OLD_ENGINE
+// #define DEBUG_SCRIPT
+// #define TEST_PROGRAM
+
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -6,17 +10,15 @@
 #include <ios>
 #include <cmath>
 
-#define NO_LIGHTING
+#ifdef OLD_ENGINE
 #include "../include/Screen.h"
-
 #include "../include/renderer.h"
 #include "../include/tileset.h"
 #include "../include/LuaEngine.hpp"
-
-#include <cstdio>
-
-// #define DEBUG_SCRIPT
-// #define TEST_PROGRAM
+#else
+#include "../include/MainComponent.h"
+#include "../include/TestGame.h"
+#endif
 
 #define PI 3.141592658
 
@@ -36,8 +38,19 @@ long getFileSize(FILE *file)
 	return lEndPos;
 }
 
-bool isbind = false;
+#ifndef OLD_ENGINE
+int main(int argc, char* argv[])
+{
+	Window::createWindow(640, 480, "DQBIX");
 
+	MainComponent* game = new MainComponent(new TestGame());
+	game->start();
+	return 0;
+}
+#endif
+
+#ifdef OLD_ENGINE
+bool isbind = false;
 #ifdef TEST_PROGRAM
 int main(int argc, char *argv[])
 {
@@ -151,4 +164,5 @@ int main(int argc, char *argv[])
 	SAFE_DELETE(eng);
 	return 0;
 }
+#endif
 #endif
