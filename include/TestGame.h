@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Game.h"
+#include "image.h"
 
 class TestGame :
 	public Game
@@ -14,6 +15,8 @@ public:
 	void input();
 	void update();
 	void render();
+
+	image* img;
 };
 
 #endif

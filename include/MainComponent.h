@@ -10,6 +10,7 @@
 #define __NIX_MAIN__
 #pragma once
 
+#include "RenderUtil.h"
 #include "Window.h"
 #include "Time.h"
 #include "Game.h"

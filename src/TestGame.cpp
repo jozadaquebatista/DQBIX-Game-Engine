@@ -3,8 +3,8 @@
 
 TestGame::TestGame()
 {
+	img = new image("data/monkey_d.png");
 }
-
 
 TestGame::~TestGame()
 {
@@ -23,5 +23,5 @@ void TestGame::update()
 
 void TestGame::render()
 {
-
+	
 }

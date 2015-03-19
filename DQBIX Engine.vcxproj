@@ -120,6 +120,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\mesh.h" />
     <ClInclude Include="include\occluder.h" />
     <ClInclude Include="include\point.hpp" />
+    <ClInclude Include="include\RenderUtil.h" />
     <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\sdl_backend.h" />
     <ClInclude Include="include\Stopwatch.h" />
@@ -151,6 +152,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\occluder.cpp" />
     <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\RenderUtil.cpp" />
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\TestGame.cpp" />

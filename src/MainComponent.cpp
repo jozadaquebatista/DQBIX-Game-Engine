@@ -12,6 +12,7 @@ MainComponent::MainComponent(Game* game)
 	}
 	else
 		m_game = game;
+	RenderUtil::initGraphics(Window::getWidth(), Window::getHeight());
 }
 
 
@@ -88,6 +89,7 @@ void MainComponent::run()
 }
 void MainComponent::render()
 {
+	RenderUtil::clearScreen();
 	m_game->render();
 	Window::render();
 }
