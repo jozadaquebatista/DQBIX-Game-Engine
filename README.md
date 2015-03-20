@@ -1,15 +1,15 @@
-DQBIX-Game-Engine
+## DQBIX-Game-Engine
 =====================================
 DQBIX is an easy and advanced 2D game engine made with C++ and using Lua scripting.
 See: [Wiki](https://github.com/DCubix/DQBIX-Game-Engine/wiki)
 
-Engine Redesign Project
-***
-Goal: Make a decent rendering engine with SceneGraph. [ 0% ]
+## Engine Redesign Project
+=====================================
+Goal: Re-Design the entire engine. [ 30% ]
 
 ![Screenshot](http://i.gyazo.com/17568dd640f1c521a93d5981919df633.png)
 
-Features
+Features (Old Engine)
 -------------------------------------
   - Render to texture
   - Sprite animation
@@ -18,19 +18,14 @@ Features
   - Support for multiple image and audio formats
   - Basic collision detection
 
-PS: Lighting and Shadows are disabled, they won't work with the current workflow.
-
-HELP NEEDED
+HELP NEEDED (For the new engine [NIX])
 -------------------------------------
 Since this is not perfect, here's a todo list. I really want some help!
-  - Move everything from glMultiMatrix and glBegins/glEnds to shaders and vertex buffers [DONE!]
-  - Code organization/refactoring
-  - Rewrite 2D Lighting and Shadows.
-  - Improve shader support [DONE!]
-  - Add a physics engine (Box2D, Chipmunk or whatever...)
-  - Particle systems
-  - More advanced collision detection
-  - A way to export your game for Windows and Android
-  PS: I accept suggestions!
+  - Add normal map support
+  - Build a SceneTree system (I'm already doing it, but I accept any help)
+  - 3D Graphics (I already have a mesh class, all you need to do is implement a model importer (Assimp?) and set a Perspective projection)
+  - Lighting
+
+PS: I accept suggestions!
   
 If you want to help me, you'll need Visual Studio 2013!
