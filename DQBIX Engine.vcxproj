@@ -102,12 +102,11 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimatedSprite.h" />
-    <ClInclude Include="include\animation.h" />
     <ClInclude Include="include\audio.h" />
     <ClInclude Include="include\audio_backend.h" />
     <ClInclude Include="include\collisiondetection.h" />
     <ClInclude Include="include\color.h" />
-    <ClInclude Include="include\font.h" />
+    <ClInclude Include="include\Text.h" />
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Sprite.h" />
     <ClInclude Include="include\graphics.h" />
@@ -121,7 +120,6 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\occluder.h" />
     <ClInclude Include="include\point.hpp" />
     <ClInclude Include="include\RenderUtil.h" />
-    <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\sdl_backend.h" />
     <ClInclude Include="include\Stopwatch.h" />
     <ClInclude Include="include\Time.h" />
@@ -130,18 +128,16 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\shaders.h" />
     <ClInclude Include="include\GameWindow.h" />
     <ClInclude Include="src\point.hpp" />
-    <ClInclude Include="include\renderer.h" />
     <ClInclude Include="include\shader.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\tileset.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AnimatedSprite.cpp" />
-    <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\audio.cpp" />
     <ClCompile Include="src\collisiondetection.cpp" />
     <ClCompile Include="src\color.cpp" />
-    <ClCompile Include="src\font.cpp" />
+    <ClCompile Include="src\Text.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Stopwatch.cpp" />
@@ -152,9 +148,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\occluder.cpp" />
-    <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\RenderUtil.cpp" />
-    <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\tileset.cpp" />
     <ClCompile Include="src\LuaEngine.cpp" />

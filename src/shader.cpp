@@ -1,7 +1,7 @@
 #include "../include/shader.h"
 
 
-void shader::addUniform(std::string name)
+void Shader::addUniform(std::string name)
 {
 	int uloc = glGetUniformLocation(m_program, name.c_str());
 	if (uloc == -1)
@@ -12,32 +12,32 @@ void shader::addUniform(std::string name)
 }
 
 
-void shader::addCommonUniforms()
+void Shader::addCommonUniforms()
 {
 	addUniform("proj");
 	addUniform("model");
 }
 
-void shader::loadUniforms()
+void Shader::loadUniforms()
 {
 	addCommonUniforms();
 	addUniform("image");
 	addUniform("cliprect");
 }
 
-shader::~shader()
+Shader::~Shader()
 {
 	if (m_vs) glDeleteShader(m_vs);
 	if (m_fs) glDeleteShader(m_fs);
 	if (m_program) glDeleteProgram(m_program);
 }
 
-shader::shader(std::string fs)
+Shader::Shader(std::string fs)
 {
 	fromString(default_vert, loadShaderData(fs));
 }
 
-shader* shader::fromString(std::string vs, std::string fs)
+Shader* Shader::fromString(std::string vs, std::string fs)
 {
 	m_program = glCreateProgram();
 	if (vs != "")
@@ -92,7 +92,7 @@ shader* shader::fromString(std::string vs, std::string fs)
 	return this;
 }
 
-shader::shader(std::string vs /*= ""*/, std::string fs /*= ""*/)
+Shader::Shader(std::string vs /*= ""*/, std::string fs /*= ""*/)
 {
 	if (vs == "" || fs == "") return;
 	m_program = glCreateProgram();
@@ -147,12 +147,12 @@ shader::shader(std::string vs /*= ""*/, std::string fs /*= ""*/)
 	compile();
 }
 
-void shader::use()
+void Shader::use()
 {
 	glUseProgram(m_program);
 }
 
-void shader::compile()
+void Shader::compile()
 {
 	GLint status;	
 
@@ -179,7 +179,7 @@ void shader::compile()
 	}
 }
 
-void shader::setFloat(std::string name, float val)
+void Shader::setFloat(std::string name, float val)
 {
 	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
 	if (pos != uniforms.end())
@@ -192,7 +192,7 @@ void shader::setFloat(std::string name, float val)
 	}
 }
 
-void shader::setInt(std::string name, int val)
+void Shader::setInt(std::string name, int val)
 {
 	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
 	if (pos != uniforms.end())
@@ -205,7 +205,7 @@ void shader::setInt(std::string name, int val)
 	}
 }
 
-void shader::setVec2(std::string name, float x, float y)
+void Shader::setVec2(std::string name, float x, float y)
 {
 	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
 	if (pos != uniforms.end())
@@ -218,7 +218,7 @@ void shader::setVec2(std::string name, float x, float y)
 	}
 }
 
-void shader::setVec3(std::string name, float x, float y, float z)
+void Shader::setVec3(std::string name, float x, float y, float z)
 {
 	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
 	if (pos != uniforms.end())
@@ -231,7 +231,7 @@ void shader::setVec3(std::string name, float x, float y, float z)
 	}
 }
 
-void shader::setVec4(std::string name, float x, float y, float z, float w)
+void Shader::setVec4(std::string name, float x, float y, float z, float w)
 {
 	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
 	if (pos != uniforms.end())
@@ -244,7 +244,7 @@ void shader::setVec4(std::string name, float x, float y, float z, float w)
 	}
 }
 
-void shader::setMatrix(std::string name, mat4 mat)
+void Shader::setMatrix(std::string name, mat4 mat)
 {
 	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
 	if (pos != uniforms.end())
@@ -257,7 +257,7 @@ void shader::setMatrix(std::string name, mat4 mat)
 	}
 }
 
-std::string shader::loadShaderData(std::string filename)
+std::string Shader::loadShaderData(std::string filename)
 {
 	std::ifstream t(filename);
 	std::string str((std::istreambuf_iterator<char>(t)),
@@ -265,7 +265,7 @@ std::string shader::loadShaderData(std::string filename)
 	return str;
 }
 
-int shader::linecount(std::string t)
+int Shader::linecount(std::string t)
 {
 	int count = 0;
 	for (unsigned int i = 0; i < t.size(); i++)

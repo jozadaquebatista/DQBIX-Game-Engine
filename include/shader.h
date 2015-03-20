@@ -18,15 +18,15 @@ struct StringHelper {
 	operator const char**() { return &p; }
 };
 
-class shader
+class Shader
 {
 public:
-	shader() : shader("")
+	Shader() : Shader("")
 	{
 
 	}
-	shader(std::string vs, std::string fs);
-	shader(std::string fs);
+	Shader(std::string vs, std::string fs);
+	Shader(std::string fs);
 
 	void use();
 	void compile();
@@ -42,31 +42,31 @@ public:
 	void addCommonUniforms();
 	void loadUniforms();
 	
-	virtual ~shader();
+	virtual ~Shader();
 
-	shader* fromString(std::string vs, std::string fs);
+	Shader* fromString(std::string vs, std::string fs);
 
 	inline static void lua_reg(lua_State* L)
 	{
 		using namespace luabridge;
 		getGlobalNamespace(L)
-			.beginClass<shader>("shader")
+			.beginClass<Shader>("shader")
 			.addConstructor<void(*)(std::string, std::string)>()
 			.addConstructor<void(*)(std::string)>()
-			.addFunction("use", &shader::use)
-			.addFunction("loaduniforms", &shader::loadUniforms)
-			.addFunction("compile", &shader::compile)
-			.addFunction("setfloat", &shader::setFloat)
-			.addFunction("setint", &shader::setInt)
-			.addFunction("setvec2", &shader::setVec2)
-			.addFunction("setvec3", &shader::setVec3)
-			.addFunction("setvec4", &shader::setVec4)
-			.addFunction("adduniform", &shader::addUniform)
+			.addFunction("use", &Shader::use)
+			.addFunction("loaduniforms", &Shader::loadUniforms)
+			.addFunction("compile", &Shader::compile)
+			.addFunction("setfloat", &Shader::setFloat)
+			.addFunction("setint", &Shader::setInt)
+			.addFunction("setvec2", &Shader::setVec2)
+			.addFunction("setvec3", &Shader::setVec3)
+			.addFunction("setvec4", &Shader::setVec4)
+			.addFunction("adduniform", &Shader::addUniform)
 			.endClass();
 	}
 private:
-	shader(shader& o) {}
-	void operator=(shader s) {}
+	Shader(Shader& o) {}
+	void operator=(Shader s) {}
 	std::map<std::string, int> uniforms;
 
 	GLuint m_vs, m_fs, m_program;

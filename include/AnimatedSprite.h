@@ -37,7 +37,7 @@ private:
 	bool m_loop;
 
 	Texture* m_sheet;
-	shader* m_shader;
+	Shader* m_shader;
 	Stopwatch m_clock;
 
 	AnimatedSprite(AnimatedSprite& anim) {}
