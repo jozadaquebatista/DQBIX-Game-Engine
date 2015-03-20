@@ -18,7 +18,6 @@ public:
 private:
 	shader* m_shader;
 	Texture* m_texture;
-
 };
 
 #endif //__NIX_GAMEOBJECT__
