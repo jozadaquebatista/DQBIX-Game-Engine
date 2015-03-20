@@ -18,6 +18,7 @@ Sprite::Sprite(std::string filename)
 Sprite::~Sprite()
 {
 	SAFE_DELETE(m_texture);
+	SAFE_DELETE(m_shader);
 }
 
 void Sprite::draw()
