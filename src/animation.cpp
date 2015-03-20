@@ -35,7 +35,6 @@ void animation::lua_reg(lua_State* L)
 		.addFunction<std::vector<int>::const_reference(std::vector<int>::*)(std::vector<int>::size_type) const>("get", &std::vector<int>::at)
 		.endClass();
 		
-	Stopwatch::lua_reg(L);
 }
 
 Texture* animation::step()

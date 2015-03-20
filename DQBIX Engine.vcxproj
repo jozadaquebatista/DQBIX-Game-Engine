@@ -101,6 +101,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AnimatedSprite.h" />
     <ClInclude Include="include\animation.h" />
     <ClInclude Include="include\audio.h" />
     <ClInclude Include="include\audio_backend.h" />
@@ -135,6 +136,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\tileset.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AnimatedSprite.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\audio.cpp" />
     <ClCompile Include="src\collisiondetection.cpp" />
@@ -142,6 +144,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\font.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
+    <ClCompile Include="src\Stopwatch.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\imageResource.cpp" />
     <ClCompile Include="src\Input.cpp" />
