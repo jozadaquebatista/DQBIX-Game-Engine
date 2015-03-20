@@ -107,6 +107,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\collisiondetection.h" />
     <ClInclude Include="include\color.h" />
     <ClInclude Include="include\font.h" />
+    <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Sprite.h" />
     <ClInclude Include="include\graphics.h" />
     <ClInclude Include="include\Texture.h" />
@@ -139,6 +140,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\collisiondetection.cpp" />
     <ClCompile Include="src\color.cpp" />
     <ClCompile Include="src\font.cpp" />
+    <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\imageResource.cpp" />

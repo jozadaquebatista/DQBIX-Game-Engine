@@ -3,7 +3,6 @@
 
 Sprite::Sprite(std::string filename)
 {
-	m_transform = new Transform();
 	m_texture = filename != "" ? new Texture(filename) : NULL;
 
 	m_shader = new shader();
@@ -18,36 +17,7 @@ Sprite::Sprite(std::string filename)
 
 Sprite::~Sprite()
 {
-	for (auto& ob : m_children)
-	{
-		SAFE_DELETE(ob);
-	}
-	
-	SAFE_DELETE(m_transform);
 	SAFE_DELETE(m_texture);
-}
-
-Sprite* Sprite::addChild(Sprite*& obj)
-{
-	m_children.push_back(obj);
-	obj->getTransform()->setParent(getTransform());
-
-	return this;
-}
-
-void Sprite::update()
-{
-	m_transform->update();
-}
-
-void Sprite::updateAll()
-{
-	update();
-
-	for (auto& ob : m_children)
-	{
-		ob->updateAll();
-	}
 }
 
 void Sprite::draw()
@@ -70,16 +40,4 @@ void Sprite::draw()
 	m_texture->getShape()->draw(GL_TRIANGLE_STRIP);
 
 	glUseProgram(0);
-}
-
-void Sprite::drawAll()
-{	
-	draw();
-
-	for (auto& ob : m_children)
-	{
-		ob->drawAll();
-	}
-
-	updateAll();
 }

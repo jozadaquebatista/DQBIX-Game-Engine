@@ -6,31 +6,19 @@
 #define __NIX_GAMEOBJECT__
 #pragma once
 
-#include "Transform.h"
-#include "Texture.h"
-#include "shader.h"
-#include <vector>
+#include "Node.h"
 
-class Sprite
+class Sprite : public Node
 {
 public:
 	Sprite(std::string filename);
 	virtual ~Sprite();
 
-	Sprite* addChild(Sprite*& obj);
-
-	Transform* getTransform() const { return m_transform; }
-	
-	void updateAll();
-	void drawAll();
+	void draw();
 private:
 	shader* m_shader;
 	Texture* m_texture;
-	Transform* m_transform;
-	std::vector<Sprite*> m_children;
 
-	void update();
-	void draw();
 };
 
 #endif //__NIX_GAMEOBJECT__
