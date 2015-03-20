@@ -48,14 +48,13 @@ void Texture::create_mesh()
 
 	m_quad = new Mesh();
 	std::vector<vertex> verts = {
-		vertex(vec3(-1.0f * w2, -1.0f * h2, 0.0f), vec2(0.0f, 1.0f)),
-		vertex(vec3(-1.0f * w2,  1.0f * h2, 0.0f), vec2(0.0f, 0.0f)),
+		vertex(vec3(-1.0f * w2, -1.0f * h2, 0.0f), vec2(0.0f, 0.0f)),
 		vertex(vec3( 1.0f * w2, -1.0f * h2, 0.0f), vec2(1.0f, 0.0f)),
-		vertex(vec3( 1.0f * w2,  1.0f * h2, 0.0f), vec2(1.0f, 1.0f))
+		vertex(vec3( 1.0f * w2,  1.0f * h2, 0.0f), vec2(1.0f, 1.0f)),
+		vertex(vec3(-1.0f * w2,  1.0f * h2, 0.0f), vec2(0.0f, 1.0f))
 	};
 	std::vector<int> ind = {
-		0, 1, 2,
-		1, 2, 3
+		3, 0, 2, 1
 	};
 	m_quad->addVertices(verts, ind);
 }

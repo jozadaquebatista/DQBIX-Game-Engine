@@ -14,22 +14,23 @@
 class Sprite
 {
 public:
-	Sprite();
+	Sprite(std::string filename);
 	virtual ~Sprite();
 
-	Sprite* addChild(Sprite* obj);
+	Sprite* addChild(Sprite*& obj);
 
 	Transform* getTransform() const { return m_transform; }
 	
-	void update();
 	void updateAll();
-	void draw();
 	void drawAll();
 private:
 	shader* m_shader;
 	Texture* m_texture;
 	Transform* m_transform;
 	std::vector<Sprite*> m_children;
+
+	void update();
+	void draw();
 };
 
 #endif //__NIX_GAMEOBJECT__

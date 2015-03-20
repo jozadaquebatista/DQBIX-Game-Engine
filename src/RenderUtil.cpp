@@ -3,7 +3,7 @@
 void RenderUtil::clearScreen()
 {
 	glClearColor(m_backcolor.r, m_backcolor.g, m_backcolor.b, m_backcolor.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void RenderUtil::initGraphics(int w, int h)
@@ -16,7 +16,7 @@ void RenderUtil::initGraphics(int w, int h)
 
 	glFrontFace(GL_CW);
 
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
 	glViewport(0, 0, w, h);
 }

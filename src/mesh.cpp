@@ -59,7 +59,7 @@ void Mesh::addVertices(std::vector<vertex> vertices, std::vector<int> indices)
 
 }
 
-void Mesh::draw()
+void Mesh::draw(int mode)
 {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -69,7 +69,7 @@ void Mesh::draw()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (GLvoid*)sizeof(vec3));
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glDrawElements(GL_TRIANGLES, isize, GL_UNSIGNED_INT, 0);
+	glDrawElements((GLenum)mode, isize, GL_UNSIGNED_INT, 0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

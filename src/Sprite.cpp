@@ -1,9 +1,10 @@
 #include "../include/Sprite.h"
 #include "../include/GameWindow.h"
 
-Sprite::Sprite()
+Sprite::Sprite(std::string filename)
 {
 	m_transform = new Transform();
+	m_texture = filename != "" ? new Texture(filename) : NULL;
 
 	m_shader = new shader();
 	m_shader->fromString(default_vert, default_frag);
@@ -26,10 +27,11 @@ Sprite::~Sprite()
 	SAFE_DELETE(m_texture);
 }
 
-Sprite* Sprite::addChild(Sprite* obj)
+Sprite* Sprite::addChild(Sprite*& obj)
 {
 	m_children.push_back(obj);
 	obj->getTransform()->setParent(getTransform());
+
 	return this;
 }
 
@@ -51,6 +53,7 @@ void Sprite::updateAll()
 void Sprite::draw()
 {
 	if (!m_texture) return;
+
 	vec4 tr = m_texture->getTransformedClipRect();
 
 	m_texture->bind();
@@ -64,17 +67,19 @@ void Sprite::draw()
 		m_shader->setMatrix("proj", GameWindow::Projection);
 	}
 
-	m_texture->getShape()->draw();
+	m_texture->getShape()->draw(GL_TRIANGLE_STRIP);
 
 	glUseProgram(0);
 }
 
 void Sprite::drawAll()
-{
+{	
 	draw();
 
 	for (auto& ob : m_children)
 	{
 		ob->drawAll();
 	}
+
+	updateAll();
 }

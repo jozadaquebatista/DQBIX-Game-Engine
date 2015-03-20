@@ -16,7 +16,7 @@ public:
 	}
 
 	void addVertices(std::vector<vertex> vertices, std::vector<int> indices);
-	void draw();
+	void draw(int mode);
 
 	static void calculateNormals(std::vector<vertex>& vertices);
 	static void calculateTangents(std::vector<vertex>& vertices);

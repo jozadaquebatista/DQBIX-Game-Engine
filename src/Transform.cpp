@@ -28,7 +28,7 @@ glm::mat4 Transform::getTransformation()
 	mat4 scal = scale(mat4(1.0f), m_scale);
 	mat4 rot = mat4_cast(m_rotation);
 
-	return trans * rot * scal;
+	return getParentMatrix() * (trans * rot * scal);
 }
 
 glm::mat4 Transform::getParentMatrix()
