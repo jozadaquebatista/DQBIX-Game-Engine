@@ -16,7 +16,7 @@ public:
 
 	void draw();
 private:
-	shader* m_shader;
+	Shader* m_shader;
 	Texture* m_texture;
 };
 

@@ -104,7 +104,7 @@ glm::vec2 Input::getMousePosition()
 
 void Input::setMousePosition(vec2 p)
 {
-	SDL_WarpMouse((float)p.x, (float)p.y);
+	SDL_WarpMouse((int)p.x, (int)p.y);
 }
 
 void Input::setCursor(bool cur)

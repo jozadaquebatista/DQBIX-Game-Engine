@@ -5,7 +5,7 @@ Sprite::Sprite(std::string filename)
 {
 	m_texture = filename != "" ? new Texture(filename) : NULL;
 
-	m_shader = new shader();
+	m_shader = new Shader();
 	m_shader->fromString(default_vert, default_frag);
 
 	m_shader->compile();

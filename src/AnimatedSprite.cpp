@@ -11,7 +11,7 @@ AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols, float speed, 
 	m_index = 0;
 	m_clock.Start();
 
-	m_shader = new shader();
+	m_shader = new Shader();
 	m_shader->fromString(default_vert, default_frag);
 	m_shader->compile();
 	m_shader->addCommonUniforms();
