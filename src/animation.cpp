@@ -1,7 +1,7 @@
 #include "../include/animation.h"
 #include "../include/Stopwatch.h"
 
-animation::animation(image* sheet /*= 0*/, int rows /*= 1*/, int cols /*= 1*/, float speed /*= 0*/, bool loop /*= false*/)
+animation::animation(Texture* sheet /*= 0*/, int rows /*= 1*/, int cols /*= 1*/, float speed /*= 0*/, bool loop /*= false*/)
 {
 	m_sheet = sheet;
 	m_loop = loop;
@@ -19,7 +19,7 @@ void animation::lua_reg(lua_State* L)
 
 	getGlobalNamespace(L)
 		.beginClass<animation>("animation")
-		.addConstructor<void(*)(image*, int, int, float, bool)>()
+		.addConstructor<void(*)(Texture*, int, int, float, bool)>()
 		.addFunction("step", &animation::step)
 		.addProperty("rows", &animation::getRows, &animation::setRows)
 		.addProperty("cols", &animation::getCols, &animation::setCols)
@@ -38,7 +38,7 @@ void animation::lua_reg(lua_State* L)
 	Stopwatch::lua_reg(L);
 }
 
-image* animation::step()
+Texture* animation::step()
 {
 	if (m_index < 0) m_index = 0;
 	if (m_sheet == NULL) return NULL;

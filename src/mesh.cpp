@@ -1,6 +1,6 @@
 #include "..\include\mesh.h"
 
-void mesh::calculateNormals(std::vector<vertex>& vertices)
+void Mesh::calculateNormals(std::vector<vertex>& vertices)
 {
 	for (int i = 0; i < vertices.size(); i += 3)
 	{
@@ -15,7 +15,7 @@ void mesh::calculateNormals(std::vector<vertex>& vertices)
 	}
 }
 
-void mesh::calculateTangents(std::vector<vertex>& vertices)
+void Mesh::calculateTangents(std::vector<vertex>& vertices)
 {
 	for (int i = 0; i < vertices.size(); i += 3)
 	{
@@ -46,15 +46,20 @@ void mesh::calculateTangents(std::vector<vertex>& vertices)
 	}
 }
 
-void mesh::addVertices(std::vector<vertex> vertices)
+void Mesh::addVertices(std::vector<vertex> vertices, std::vector<int> indices)
 {
 	size = vertices.size();
+	isize = indices.size();
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &indices[0], GL_STATIC_DRAW);
+
 }
 
-void mesh::draw()
+void Mesh::draw(int mode)
 {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -63,7 +68,8 @@ void mesh::draw()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), nullptr);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (GLvoid*)sizeof(vec3));
 
-	glDrawArrays(GL_TRIANGLES, 0, size);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glDrawElements((GLenum)mode, isize, GL_UNSIGNED_INT, 0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

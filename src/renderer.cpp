@@ -17,23 +17,23 @@ void renderer::lua_reg(lua_State* L)
 	shader::lua_reg(L);
 }
 
-void renderer::blit_full(image* img, int x, int y, float sx, float sy, float a)
+void renderer::blit_full(Texture* img, int x, int y, float sx, float sy, float a)
 {
 	if (img == NULL) return;
-	img->draw_full(x, y, sx, sy, a, screen_mgr::projection);
+	//img->draw_full(x, y, sx, sy, a, screen_mgr::projection);
 }
 
-void renderer::blits(image* img, int x, int y, float sx, float sy)
+void renderer::blits(Texture* img, int x, int y, float sx, float sy)
 {
 	blit_full(img, x, y, sx, sy, 0.0f);
 }
 
-void renderer::blitr(image* img, int x, int y, float a)
+void renderer::blitr(Texture* img, int x, int y, float a)
 {
 	blit_full(img, x, y, 1.0f, 1.0f, a);
 }
 
-void renderer::blit(image* img, int x, int y)
+void renderer::blit(Texture* img, int x, int y)
 {
 	blit_full(img, x, y, 1.0f, 1.0f, 0.0f);
 }

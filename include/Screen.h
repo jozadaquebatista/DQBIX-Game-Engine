@@ -57,13 +57,13 @@ public:
 	static void set_back_color(float r, float g, float b, float a);
 
 	// Lua functions
-	static void start_rendertexture(image* target);
+	static void start_rendertexture(Texture* target);
 	static void end_rendertexture();
-	static void free_image(image* img);
+	static void free_image(Texture* img);
 	static void console_visible(bool state);
 	static void set_icon(const char* icon);
 
-	static image* create_rendertarget(int w, int h);
+	static Texture* create_rendertarget(int w, int h);
 
 	static void useAsRenderTarget();
 
@@ -101,7 +101,7 @@ public:
 			.addFunction("consolevisible", &screen_mgr::console_visible);
 			
 		point::lua_reg(L);
-		image::lua_reg(L);
+		
 		animation::lua_reg(L);
 		audio::lua_reg(L);
 		collisiondetection::lua_reg(L);

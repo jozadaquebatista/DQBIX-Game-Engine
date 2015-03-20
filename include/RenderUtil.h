@@ -17,6 +17,9 @@ class RenderUtil
 public:
 	static void clearScreen();
 	static void initGraphics(int w, int h);
+	static void setBackColor(vec4 col);
+private:
+	static vec4 m_backcolor;
 };
 
 #endif //__NIX_RENDERUTIL__

@@ -10,10 +10,10 @@
 class renderer
 {
 public:
-	static void blit_full(image* img, int x, int y, float sx, float sy, float a);
-	static void blits(image* img, int x, int y, float sx, float sy);
-	static void blitr(image* img, int x, int y, float a);
-	static void blit(image* img, int x, int y);
+	static void blit_full(Texture* img, int x, int y, float sx, float sy, float a);
+	static void blits(Texture* img, int x, int y, float sx, float sy);
+	static void blitr(Texture* img, int x, int y, float a);
+	static void blit(Texture* img, int x, int y);
 
 	static void drawtext(std::string text, int x, int y, font* fnt);
 	static void drawtextr(std::string text, int x, int y, float a, font* fnt);

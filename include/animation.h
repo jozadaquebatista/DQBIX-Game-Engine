@@ -2,15 +2,15 @@
 #define __IX_ANIMATION__
 #pragma once
 
-#include "image.h"
+#include "Texture.h"
 
 class Stopwatch;
 class animation
 {
 public:
-	animation(image* sheet = 0, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
+	animation(Texture* sheet = 0, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
 	
-	image* step();
+	Texture* step();
 
 	int getRows() const { return m_rows; }
 	void setRows(int val) { m_rows = val; }
@@ -20,8 +20,8 @@ public:
 	void setSpeed(float val) { m_speed = val; }
 	bool getLoop() const { return m_loop; }
 	void setLoop(bool val) { m_loop = val; }
-	image* getSpriteSheet() const { return m_sheet; }
-	void setSpriteSheet(image* val) { m_sheet = val; }
+	Texture* getSpriteSheet() const { return m_sheet; }
+	void setSpriteSheet(Texture* val) { m_sheet = val; }
 	int getIndex() const { return m_index; }
 
 	virtual ~animation();
@@ -33,7 +33,7 @@ private:
 	int m_index;	
 	float m_speed;
 	bool m_loop;
-	image* m_sheet;	
+	Texture* m_sheet;	
 	Stopwatch* sw;
 
 	animation(animation& anim) {}	

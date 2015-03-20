@@ -1,10 +1,10 @@
-#include "../include/image.h"
+#include "../include/Texture.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../include/stb_image.h"
 
 // TODO: Simplify this
-image::image(int w, int h, unsigned char* data, int target, int filter, int internalFmt, int format, bool clamp, int attachment)
+Texture::Texture(int w, int h, unsigned char* data, int target, int filter, int internalFmt, int format, bool clamp, int attachment)
 {
 	this->filename = "RENDERTEXTURE" + w + h + m_loadedImages.size();
 	std::map<std::string, imageResource*>::const_iterator pos = m_loadedImages.find(filename);
@@ -41,30 +41,26 @@ image::image(int w, int h, unsigned char* data, int target, int filter, int inte
 	
 }
 
-void image::create_mesh()
+void Texture::create_mesh()
 {
-	m_quad = new mesh();
+	float w2 = (float)getWidth() / 2.0f;
+	float h2 = (float)getHeight() / 2.0f;
+
+	m_quad = new Mesh();
 	std::vector<vertex> verts = {
-		vertex(vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)),
-		vertex(vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)),
-		vertex(vec3(0.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)),
-		vertex(vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)),
-		vertex(vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)),
-		vertex(vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f))
+		vertex(vec3(-1.0f * w2, -1.0f * h2, 0.0f), vec2(0.0f, 0.0f)),
+		vertex(vec3( 1.0f * w2, -1.0f * h2, 0.0f), vec2(1.0f, 0.0f)),
+		vertex(vec3( 1.0f * w2,  1.0f * h2, 0.0f), vec2(1.0f, 1.0f)),
+		vertex(vec3(-1.0f * w2,  1.0f * h2, 0.0f), vec2(0.0f, 1.0f))
 	};
-	m_quad->addVertices(verts);
-
-	m_shader = new shader();
-	m_shader->fromString(default_vert, default_frag);
-
-	m_shader->compile();
-	m_shader->addCommonUniforms();
-	m_shader->addUniform("image");
-	m_shader->addUniform("cliprect");
+	std::vector<int> ind = {
+		3, 0, 2, 1
+	};
+	m_quad->addVertices(verts, ind);
 }
 
 // TODO: Simplify this
-image::image(const std::string filename, int target, int filter)
+Texture::Texture(const std::string filename, int target, int filter)
 {
 	this->filename = filename;
 	this->filter = filter;
@@ -122,27 +118,26 @@ image::image(const std::string filename, int target, int filter)
 	create_mesh();
 }
 
-image::image(const image& texture) :
-m_resource(texture.m_resource),
-filename(texture.filename)
+Texture::Texture(const Texture& texture)
+	: m_resource(texture.m_resource), filename(texture.filename)
 {
 	m_resource->addReference();
 }
 
-image::image(std::string filename) : image(filename, GL_TEXTURE_2D, GL_NEAREST)
+Texture::Texture(std::string filename) : Texture(filename, GL_TEXTURE_2D, GL_NEAREST)
 {
 
 }
 
-void image::operator=(image texture)
+void Texture::operator=(Texture texture)
 {
-	char *temp[sizeof(image) / sizeof(char)];
-	memcpy(temp, this, sizeof(image));
-	memcpy(this, &texture, sizeof(image));
-	memcpy(&texture, temp, sizeof(image));
+	char *temp[sizeof(Texture) / sizeof(char)];
+	memcpy(temp, this, sizeof(Texture));
+	memcpy(this, &texture, sizeof(Texture));
+	memcpy(&texture, temp, sizeof(Texture));
 }
 
-image::~image()
+Texture::~Texture()
 {
 	if (m_resource && m_resource->removeReference())
 	{
@@ -151,75 +146,28 @@ image::~image()
 
 		SAFE_DELETE(m_resource);
 	}
-	SAFE_DELETE(m_shader);
 	SAFE_DELETE(m_quad);
 }
 
-void image::useAsRenderTarget()
+void Texture::useAsRenderTarget()
 {
 	m_resource->useAsRenderTarget();
 }
 
-void image::bind()
+void Texture::bind()
 {
 	this->use(0);
 }
 
-void image::use(int sampler_slot)
+void Texture::use(int sampler_slot)
 {
 	assert(sampler_slot >= 0 && sampler_slot <= 31);
 	glActiveTexture(GL_TEXTURE0 + sampler_slot);
 	m_resource->use();
 }
 
-void image::draw_full(int x, int y, float sx, float sy, float a, mat4 proj)
-{
-	int w = getCliprect().w;
-	int h = getCliprect().h;
-
-	float crw = (float)getCliprect().w / (float)getResource()->getWidth();
-	float crh = (float)getCliprect().h / (float)getResource()->getHeight();
-	float crx = (float)getCliprect().x / (float)getResource()->getWidth();
-	float cry = (float)getCliprect().y / (float)getResource()->getHeight();
-
-	float px = (float)x / (float)w;
-	float py = (float)y / (float)h;
-	float sw = w * sx;
-	float sh = h * sy;
-
-	float ox = sw * origin.x;
-	float oy = sh * origin.y;
-
-	// Model matrix
-	m = mat4(1.0f);
-	m = translate(m, vec3((float)x, (float)y, 0.0f));
-	m = translate(m, vec3(ox, oy, 0.0f));	
-	m = rotate(m, a, vec3(0.0f, 0.0f, 1.0f));	
-	m = translate(m, vec3(-ox, -oy, 0.0f));
-	m = scale(m, vec3(sw, sh, 1.0f));
-	
-	// Bind texture
-	bind();
-
-	// Use shader
-	if (m_shader != nullptr)
-	{
-		m_shader->use();
-		m_shader->setInt("image", 0);
-		m_shader->setVec4("cliprect", crx * cliprect.cols, cry * cliprect.rows, crw, crh);
-		m_shader->setMatrix("model", m);
-		m_shader->setMatrix("proj", proj);
-	}
-
-	// Draw a quad
-	m_quad->draw();
-
-	glUseProgram(0);
-
-}
-
 // Thanks to this tutorial <http://immersedcode.org/2011/4/7/stb-image/>
-SDL_Surface* image::loadicon(const char* filename)
+SDL_Surface* Texture::loadicon(const char* filename)
 {
 	int x, y, comp;
 	unsigned char *data;

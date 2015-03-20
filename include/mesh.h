@@ -6,23 +6,24 @@
 #include "vertex.h"
 #include <vector>
 
-class mesh
+class Mesh
 {
 public:
-	mesh()
+	Mesh()
 	{
 		glGenBuffers(1, &vbo);
+		glGenBuffers(1, &ibo);
 	}
 
-	void addVertices(std::vector<vertex> vertices);
-	void draw();
+	void addVertices(std::vector<vertex> vertices, std::vector<int> indices);
+	void draw(int mode);
 
 	static void calculateNormals(std::vector<vertex>& vertices);
 	static void calculateTangents(std::vector<vertex>& vertices);
 
 private:
-	GLuint vbo;
-	int size;
+	GLuint vbo, ibo;
+	int size, isize;
 };
 
 #endif //__IX_MESH__
