@@ -13,4 +13,5 @@
 #include <glm/gtc/type_ptr.hpp>
 using namespace glm;
 
+#define SAFE_DELETE(x) { if(x) delete x; x = nullptr; }
 #endif //__IX_GRAPHICS__

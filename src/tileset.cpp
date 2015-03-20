@@ -1,6 +1,6 @@
 #include "../include/tileset.h"
 
-tileset::tileset(image* map /*= NULL*/, int rows /*= 1*/, int cols /*= 1*/, std::string strmap /*= ""*/)
+tileset::tileset(Texture* map /*= NULL*/, int rows /*= 1*/, int cols /*= 1*/, std::string strmap /*= ""*/)
 {
 	m_rows = rows;
 	m_cols = cols;
@@ -8,7 +8,7 @@ tileset::tileset(image* map /*= NULL*/, int rows /*= 1*/, int cols /*= 1*/, std:
 	m_strmap = strmap;
 }
 
-image* tileset::getTile(char c)
+Texture* tileset::getTile(char c)
 {
 	std::size_t pos = m_strmap.find(c);
 	if (pos != std::string::npos)
@@ -45,7 +45,7 @@ void tileset::lua_reg(lua_State* L)
 
 	getGlobalNamespace(L)
 		.beginClass<tileset>("tileset")
-		.addConstructor<void(*)(image*, int, int, std::string)>()
+		.addConstructor<void(*)(Texture*, int, int, std::string)>()
 		.addFunction("tile", &tileset::getTile)
 		.addProperty("rows", &tileset::getRows, &tileset::setRows)
 		.addProperty("cols", &tileset::getCols, &tileset::setCols)

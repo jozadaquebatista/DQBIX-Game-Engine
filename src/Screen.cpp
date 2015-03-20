@@ -109,7 +109,7 @@ void screen_mgr::settitle(std::string newtitle)
 	SDL_WM_SetCaption(newtitle.c_str(), NULL);
 }
 
-void screen_mgr::start_rendertexture(image* target)
+void screen_mgr::start_rendertexture(Texture* target)
 {
 	target->useAsRenderTarget();
 }
@@ -119,7 +119,7 @@ void screen_mgr::end_rendertexture()
 	useAsRenderTarget();
 }
 
-void screen_mgr::free_image(image* img)
+void screen_mgr::free_image(Texture* img)
 {
 	if (img) delete img;
 	img = NULL;
@@ -145,12 +145,12 @@ void screen_mgr::console_visible(bool state)
 
 void screen_mgr::set_icon(const char* icon)
 {
-	SDL_WM_SetIcon(image::loadicon(icon), NULL);
+	SDL_WM_SetIcon(Texture::loadicon(icon), NULL);
 }
 
-image* screen_mgr::create_rendertarget(int w, int h)
+Texture* screen_mgr::create_rendertarget(int w, int h)
 {
-	return new image(w, h, 0, GL_TEXTURE_2D, GL_NEAREST, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
+	return new Texture(w, h, 0, GL_TEXTURE_2D, GL_NEAREST, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
 }
 
 void screen_mgr::quit_game()

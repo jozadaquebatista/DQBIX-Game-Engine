@@ -10,15 +10,7 @@
 #include <ios>
 #include <cmath>
 
-#ifdef OLD_ENGINE
-#include "../include/Screen.h"
-#include "../include/renderer.h"
-#include "../include/tileset.h"
-#include "../include/LuaEngine.hpp"
-#else
-#include "../include/MainComponent.h"
-#include "../include/TestGame.h"
-#endif
+#include "../include/Window.h"
 
 #define PI 3.141592658
 
@@ -41,10 +33,7 @@ long getFileSize(FILE *file)
 #ifndef OLD_ENGINE
 int main(int argc, char* argv[])
 {
-	Window::createWindow(640, 480, "DQBIX");
-
-	MainComponent* game = new MainComponent(new TestGame());
-	game->start();
+	
 	return 0;
 }
 #endif
@@ -55,8 +44,8 @@ bool isbind = false;
 int main(int argc, char *argv[])
 {
 	screen_mgr::init(640, 480, 32, "Test");
-	image* bg = new image("data/bg2.png");
-	image* im = new image("data/player.png");
+	Texture* bg = new Texture("data/bg2.png");
+	Texture* im = new Texture("data/player.png");
 	im->setOrigin(0.5f, 0.5f);
 	animation* anim = new animation(im, 1, 4, 0.08f, true);
 
