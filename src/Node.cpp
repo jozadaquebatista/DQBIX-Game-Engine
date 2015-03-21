@@ -19,6 +19,7 @@ Node::~Node()
 Node* Node::addChild(Node* obj)
 {
 	m_children.push_back(obj);
+	obj->setParentNode(this);
 	obj->getTransform()->setParent(getTransform());
 	return this;
 }
@@ -31,21 +32,41 @@ void Node::drawAll()
 	{
 		ob->drawAll();
 	}
-
-	updateAll();
+	
 }
 
-void Node::updateAll()
+void Node::updateAll(float delta)
 {
-	update();
+	update(delta);
 
 	for (auto& ob : m_children)
 	{
-		ob->updateAll();
+		ob->updateAll(delta);
 	}
 }
 
-void Node::update()
+void Node::setName(std::string newname)
 {
-	m_transform->update();
+	if (getParentNode() == nullptr)
+		name = newname;
+	else
+	{
+		if (getParentNode()->getName() != newname)
+			name = newname;
+	}
+}
+
+Node* Node::getNode(std::string name)
+{
+	for (auto& n : m_children)
+	{
+		if (n->getName() == name)
+			return n;
+	}
+	return nullptr;
+}
+
+void Node::update(float delta)
+{
+	getTransform()->update();
 }

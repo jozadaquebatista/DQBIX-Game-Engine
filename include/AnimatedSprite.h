@@ -30,6 +30,7 @@ public:
 
 	void step();
 	void draw();
+	void update(float delta);
 private:
 	int m_rows, m_cols;
 	int m_index;

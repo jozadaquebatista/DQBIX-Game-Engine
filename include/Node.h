@@ -15,19 +15,29 @@ class Node
 {
 public:
 	Node();
-	virtual ~Node();
+	~Node();
 
 	Node* addChild(Node* obj);
 	Transform* getTransform() const { return m_transform; }
 
 	void drawAll();
 	virtual void draw() {}
+	virtual void update(float delta);
+
+	void updateAll(float delta);
+
+	void setName(std::string newname);
+	std::string getName() const { return name; }
+
+	Node* getNode(std::string name);
+
+	Node* getParentNode() const { return m_parentnode; }
+	void setParentNode(Node* n) { m_parentnode = n; }
 private:
+	Node* m_parentnode;
 	Transform* m_transform;
 	std::vector<Node*> m_children;
-	
-	void updateAll();
-	void update();
+	std::string name;	
 };
 
 #endif //__NIX_NODE__
