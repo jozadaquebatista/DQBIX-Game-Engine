@@ -33,7 +33,7 @@ glm::mat4 Transform::getTransformation()
 
 glm::mat4 Transform::getParentMatrix()
 {
-	if (m_parent != 0 && m_parent->changed())
+	if (m_parent != 0)
 		m_parentMat = m_parent->getTransformation();
 	return m_parentMat;
 }

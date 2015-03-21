@@ -106,6 +106,8 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\audio_backend.h" />
     <ClInclude Include="include\collisiondetection.h" />
     <ClInclude Include="include\color.h" />
+    <ClInclude Include="include\Material.h" />
+    <ClInclude Include="include\SceneTree.h" />
     <ClInclude Include="include\Text.h" />
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Sprite.h" />
@@ -127,7 +129,6 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\vertex.h" />
     <ClInclude Include="include\shaders.h" />
     <ClInclude Include="include\GameWindow.h" />
-    <ClInclude Include="src\point.hpp" />
     <ClInclude Include="include\shader.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\tileset.h" />
@@ -137,6 +138,8 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\audio.cpp" />
     <ClCompile Include="src\collisiondetection.cpp" />
     <ClCompile Include="src\color.cpp" />
+    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\SceneTree.cpp" />
     <ClCompile Include="src\Text.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Sprite.cpp" />

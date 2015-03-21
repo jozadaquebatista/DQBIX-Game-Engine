@@ -85,3 +85,9 @@ void AnimatedSprite::draw()
 
 	glUseProgram(0);
 }
+
+void AnimatedSprite::update(float delta)
+{
+	Node::update(delta);
+	step();
+}

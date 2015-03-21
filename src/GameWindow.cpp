@@ -76,7 +76,7 @@ void GameWindow::mainloop()
 			if (GameWindow::closed())
 				running = false;
 
-			if (update) update(frameTime);
+			m_tree->update(frameTime);
 
 			if (frameCounter >= Time::SECOND)
 			{
@@ -84,10 +84,12 @@ void GameWindow::mainloop()
 				frameCounter = 0;
 			}
 		}
+
 		if (can_render)
 		{
 			RenderUtil::clearScreen();
-			if (render) render();
+			m_tree->render();
+
 			if (!quit)
 				SDL_GL_SwapBuffers();
 			frames++;
@@ -143,6 +145,8 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	Projection = make_mat4(mat);
 
 	RenderUtil::initGraphics(GameWindow::getWidth(), GameWindow::getHeight());
+
+	m_tree = new SceneTree();
 
 	running = true;
 }
