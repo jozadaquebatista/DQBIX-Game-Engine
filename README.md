@@ -3,7 +3,7 @@ DQBIX is an easy and advanced 2D game engine made with C++ and using Lua scripti
 See: [Wiki](https://github.com/DCubix/DQBIX-Game-Engine/wiki)
 
 ## Engine Redesign Project
-Goal: Re-Design the entire engine. [ 30% ]
+Goal: Re-Design the entire engine. [ 55% ]
 
 ![Screenshot](http://i.imgur.com/nsPkvzr.png)
 
