@@ -73,8 +73,8 @@ void Node::attachScript(Script* scr)
 {
 	if (scr != nullptr)
 	{
-		scr->setOwner(this);
-		m_script = scr;
+		m_script = new Script(*scr);
+		m_script->setOwner(this);
 		m_script->compile();
 	}
 	else { m_script = nullptr; }

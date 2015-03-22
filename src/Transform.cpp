@@ -23,6 +23,11 @@ void Transform::move(float x, float y, float z)
 	m_translation += vec3(x, y, z);
 }
 
+void Transform::scale_transform(float x, float y, float z)
+{
+	m_scale += vec3(x, y, z);
+}
+
 glm::mat4 Transform::getTransformation()
 {
 	mat4 trans = translate(mat4(1.0f), m_translation);
