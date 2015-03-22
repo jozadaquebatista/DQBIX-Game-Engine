@@ -4,8 +4,9 @@ void LuaEngine::err_report(int state)
 {
 	if (state != 0)
 	{
-		std::cerr << "ERROR -> " << lua_tostring(L, state) << std::endl;
+		std::cout << "ERROR -> " << lua_tostring(L, state) << std::endl;
 		lua_pop(L, 1);
+		exit(EXIT_FAILURE);
 	}
 }
 

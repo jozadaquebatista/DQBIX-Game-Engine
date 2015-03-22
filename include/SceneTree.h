@@ -23,7 +23,11 @@ public:
 	void render();
 	void update(float delta);
 
-	Node* addChild(Node* n) { return getRootNode()->addChild(n);}
+	Node* addChild(Node* n) {
+		n->create();
+		return getRootNode()->addChild(n);
+	}
+
 private:
 	SceneTree(SceneTree& s) {}
 	void operator=(SceneTree s) {}

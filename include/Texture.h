@@ -7,12 +7,14 @@
 #include <assert.h>
 
 #include "imageResource.h"
-#include "../include/sdl_backend.h"
-#include "../include/color.h"
-#include "../include/mesh.h"
-#include "../include/shader.h"
-#include "../include/point.hpp"
-#include "../include/shaders.h"
+#include "sdl_backend.h"
+#include "color.h"
+#include "mesh.h"
+#include "shader.h"
+#include "point.hpp"
+#include "shaders.h"
+
+#include "lua.hpp"
 
 typedef struct  
 {
@@ -64,6 +66,17 @@ public:
 	Mesh* getShape() const { return m_quad; }
 
 	imageResource* getResource() const { return m_resource; }
+
+	static void RegisterObject(lua_State* L)
+	{
+		using namespace luabridge;
+		getGlobalNamespace(L)
+			.beginClass<Texture>("Texture")
+			.addConstructor<void(*)(std::string)>()
+			.addProperty("width", &Texture::getWidth)
+			.addProperty("height", &Texture::getHeight)
+			.endClass();
+	}
 
 	static SDL_Surface* loadicon(const char* filename);
 private:

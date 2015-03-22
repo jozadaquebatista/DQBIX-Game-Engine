@@ -16,9 +16,9 @@ public:
 	~LuaEngine()
 	{
 		lua_close(L);
-	}
+	}	
 
-	lua_State* getLuaState() const { return L; }
+	lua_State* getState() { return L; }
 
 	void RunScript(const char* filename);
 	void RunString(const char* expr);

@@ -101,6 +101,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Helpers.hpp" />
     <ClInclude Include="include\AnimatedSprite.h" />
     <ClInclude Include="include\audio.h" />
     <ClInclude Include="include\audio_backend.h" />
@@ -108,6 +109,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\color.h" />
     <ClInclude Include="include\Material.h" />
     <ClInclude Include="include\SceneTree.h" />
+    <ClInclude Include="include\Script.h" />
     <ClInclude Include="include\Text.h" />
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Sprite.h" />
@@ -131,15 +133,16 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\GameWindow.h" />
     <ClInclude Include="include\shader.h" />
     <ClInclude Include="include\stb_image.h" />
-    <ClInclude Include="include\tileset.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AnimatedSprite.cpp" />
     <ClCompile Include="src\audio.cpp" />
     <ClCompile Include="src\collisiondetection.cpp" />
     <ClCompile Include="src\color.cpp" />
+    <ClCompile Include="src\Helpers.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\SceneTree.cpp" />
+    <ClCompile Include="src\Script.cpp" />
     <ClCompile Include="src\Text.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
@@ -153,7 +156,6 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\occluder.cpp" />
     <ClCompile Include="src\RenderUtil.cpp" />
     <ClCompile Include="src\shader.cpp" />
-    <ClCompile Include="src\tileset.cpp" />
     <ClCompile Include="src\LuaEngine.cpp" />
     <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\Transform.cpp" />

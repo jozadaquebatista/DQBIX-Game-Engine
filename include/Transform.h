@@ -11,19 +11,29 @@
 #pragma once
 
 #include "graphics.h"
+#include "lua.hpp"
 
 class Transform
 {
 public:
 	Transform();
 
-	vec3 getTranslation() const { return m_translation; }
-	vec3 getScale() const { return m_scale; }
-	quat getRotation() const { return m_rotation; }
+	vec3 getTranslation()
+	{
+		return m_translation;
+	}
+	vec3 getScale()
+	{ 
+		return m_scale;
+	}
+	quat getRotation()
+	{
+		return m_rotation;
+	}
 
-	void setTranslation(vec3 t) { m_translation = t; }
-	void setScale(vec3 s) { m_scale = s; }
-	void setRotation(quat r) { m_rotation = r; }
+	void setTranslation(float x, float y, float z) { m_translation = vec3(x, y, z); }
+	void setScale(float x, float y, float z) { m_scale = vec3(x, y, z); }
+	void setRotation(float x, float y, float z, float w) { m_rotation = quat(w, x, y, z); }
 	Transform* getParent() const { return m_parent; }
 	void setParent(Transform* p) { m_parent = p; }
 
@@ -48,6 +58,19 @@ public:
 
 	bool changed();
 	void update();
+
+	static void RegisterObject(lua_State* L)
+	{
+		using namespace luabridge;
+		getGlobalNamespace(L)
+			.beginClass<Transform>("Transform")
+			.addConstructor<void(*)(void)>()
+			.addProperty("parent", &Transform::getParent, &Transform::setParent)
+			.addFunction("rotate", &Transform::rotate_transform)
+			.addFunction("scale", &Transform::setScale)
+			.addFunction("move", &Transform::move)
+			.endClass();
+	}
 private:
 	mat4 m_parentMat;
 	vec3 m_translation;

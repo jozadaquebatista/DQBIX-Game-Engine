@@ -13,6 +13,8 @@
 #include <vector>
 #include "sdl_backend.h"
 #include "graphics.h"
+#include "point.hpp"
+#include "lua.hpp"
 
 class Input
 {
@@ -25,9 +27,11 @@ public:
 	static bool getMouse(int btncode);
 	static bool getMouseDown(int btncode);
 	static bool getMouseUp(int btncode);
-	static vec2 getMousePosition();
-	static void setMousePosition(vec2 p);
+	static point getMousePosition();
+	static void setMousePosition(float x, float y);
 	static void setCursor(bool cur);
+
+	static void RegisterObject(lua_State* L);
 
 	static SDL_Event evt;
 private:

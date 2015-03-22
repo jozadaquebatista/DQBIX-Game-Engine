@@ -14,7 +14,7 @@ public:
 	boxoccluder(int _x, int _y, int _w, int _h)
 		: x(_x), y(_y), w(_w), h(_h)
 	{
-
+		
 	}
 
 	int getX() const { return x; }
@@ -40,6 +40,7 @@ public:
 			.addProperty("width", &boxoccluder::getW, &boxoccluder::setW)
 			.addProperty("height", &boxoccluder::getH, &boxoccluder::setH)
 			.endClass();
+
 	}
 private:
 	int x, y, w, h;

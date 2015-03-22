@@ -7,6 +7,8 @@
 #define __NIX_WINDOW__
 #pragma once
 
+#include "AnimatedSprite.h"
+#include "Sprite.h"
 #include "SceneTree.h"
 #include "RenderUtil.h"
 #include "Time.h"
@@ -34,9 +36,12 @@ public:
 	static mat4 Projection;
 
 	SceneTree* getTree() { return m_tree; }
+
+	LuaEngine* getLuaEngine() { return eng; }
 private:
 	void ortho_2d(float* mat, int left, int right, int bottom, int top);
 	SceneTree* m_tree;
+	LuaEngine* eng;
 };
 
 #endif //__NIX_WINDOW__
