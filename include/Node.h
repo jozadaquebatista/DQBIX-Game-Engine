@@ -9,7 +9,9 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "shader.h"
+#include "Script.h"
 #include <vector>
+#include "LuaEngine.hpp"
 
 class Node
 {
@@ -23,6 +25,7 @@ public:
 	void drawAll();
 	virtual void draw() {}
 	virtual void update(float delta);
+	void create();
 
 	void updateAll(float delta);
 
@@ -33,11 +36,16 @@ public:
 
 	Node* getParentNode() const { return m_parentnode; }
 	void setParentNode(Node* n) { m_parentnode = n; }
+
+	void attachScript(Script* scr);
+
+	static void RegisterObject(lua_State* L);
 private:
 	Node* m_parentnode;
 	Transform* m_transform;
 	std::vector<Node*> m_children;
 	std::string name;	
+	Script* m_script;
 };
 
 #endif //__NIX_NODE__

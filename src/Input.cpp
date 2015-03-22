@@ -97,17 +97,35 @@ bool Input::getMouseUp(int btncode)
 	return upMouse[btncode];
 }
 
-glm::vec2 Input::getMousePosition()
+point Input::getMousePosition()
 {
-	return vec2((float)mX, (float)mY);
+	return point((float)mX, (float)mY);
 }
 
-void Input::setMousePosition(vec2 p)
+void Input::setMousePosition(float x, float y)
 {
-	SDL_WarpMouse((int)p.x, (int)p.y);
+	SDL_WarpMouse((int)x, (int)y);
 }
 
 void Input::setCursor(bool cur)
 {
 	SDL_ShowCursor(cur ? 1 : 0);
+}
+
+void Input::RegisterObject(lua_State* L)
+{
+	using namespace luabridge;
+
+	getGlobalNamespace(L)
+		.beginClass<Input>("Input")
+			.addStaticFunction("getKey", &Input::getKey)
+			.addStaticFunction("getKeyDown", &Input::getKeyDown)
+			.addStaticFunction("getKeyUp", &Input::getKeyUp)
+			.addStaticFunction("getMouse", &Input::getMouse)
+			.addStaticFunction("getMouseDown", &Input::getMouseDown)
+			.addStaticFunction("getMouseUp", &Input::getMouseUp)
+			.addStaticFunction("getMousePosition", &Input::getMousePosition)
+			.addStaticFunction("setMousePosition", &Input::setMousePosition)
+			.addStaticFunction("setCursor", &Input::setCursor)
+		.endClass();
 }

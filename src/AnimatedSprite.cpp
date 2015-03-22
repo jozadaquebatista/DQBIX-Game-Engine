@@ -91,3 +91,19 @@ void AnimatedSprite::update(float delta)
 	Node::update(delta);
 	step();
 }
+
+void AnimatedSprite::RegisterObject(lua_State* L)
+{
+	using namespace luabridge;
+
+	getGlobalNamespace(L)
+		.beginClass<AnimatedSprite>("AnimatedSprite")
+		.addConstructor<void(*)(Texture*, int, int, float, bool)>()
+		.addProperty("rows", &AnimatedSprite::getRows, &AnimatedSprite::setRows)
+		.addProperty("columns", &AnimatedSprite::getCols, &AnimatedSprite::setCols)
+		.addProperty("speed", &AnimatedSprite::getSpeed, &AnimatedSprite::setSpeed)
+		.addProperty("loop", &AnimatedSprite::getLoop, &AnimatedSprite::setLoop)
+		.addProperty("index", &AnimatedSprite::getIndex)
+		.addFunction("step", &AnimatedSprite::step)
+		.endClass();
+}

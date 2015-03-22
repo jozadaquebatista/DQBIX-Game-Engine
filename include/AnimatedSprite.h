@@ -31,6 +31,8 @@ public:
 	void step();
 	void draw();
 	void update(float delta);
+
+	static void RegisterObject(lua_State* L);
 private:
 	int m_rows, m_cols;
 	int m_index;

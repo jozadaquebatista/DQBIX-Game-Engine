@@ -97,7 +97,7 @@ void GameWindow::mainloop()
 		else
 			SDL_Delay(1);
 	}
-
+	SAFE_DELETE(eng);
 	SDL_Quit();
 }
 
@@ -149,6 +149,16 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	m_tree = new SceneTree();
 
 	running = true;
+
+	// Register Lua Objects
+	eng = new LuaEngine();
+	point::lua_reg(eng->getState());
+	Node::RegisterObject(eng->getState());
+	Texture::RegisterObject(eng->getState());
+	Transform::RegisterObject(eng->getState());
+	Sprite::RegisterObject(eng->getState());
+	AnimatedSprite::RegisterObject(eng->getState());
+	Input::RegisterObject(eng->getState());
 }
 
 bool GameWindow::closed()
