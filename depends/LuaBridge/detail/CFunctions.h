@@ -252,8 +252,7 @@ struct CFunc
       The member function pointer is in the first upvalue.
       The class userdata object is at the top of the Lua stack.
   */
-  template <class MemFnPtr,
-            class ReturnType = typename FuncTraits <MemFnPtr>::ReturnType>
+  template <class MemFnPtr, class ReturnType = typename FuncTraits <MemFnPtr>::ReturnType>
   struct CallMember
   {
     typedef typename FuncTraits <MemFnPtr>::ClassType T;

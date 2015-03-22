@@ -8,6 +8,7 @@ Transform::Transform()
 	m_parentMat = mat4(1.0f);
 	m_initOld = false;
 	m_parent = 0;
+
 }
 
 void Transform::rotate_transform(float x, float y, float z)

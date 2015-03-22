@@ -42,3 +42,13 @@ void Sprite::draw()
 
 	glUseProgram(0);
 }
+
+void Sprite::RegisterObject(lua_State* L)
+{
+	using namespace luabridge;
+	getGlobalNamespace(L)
+		.beginClass<Sprite>("Sprite")
+		.addConstructor<void(*)(std::string)>()
+		.addProperty("texture", &Sprite::getTexture, &Sprite::setTexture)
+		.endClass();
+}
