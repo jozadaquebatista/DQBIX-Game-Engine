@@ -1,7 +1,3 @@
-// THIS FILE IS PART OF THE NEW ENGINE PROJECT
-// IF YOU WANT TO USE THE OLD ENGINE, YOU NEED TO
-// DEFINE OLD_ENGINE ON main.cpp
-// ===============================================
 // File: Transform.h
 // Class: Transform
 // Author: Diego Lopes <diego95lopes@live.com>
@@ -11,6 +7,7 @@
 #pragma once
 
 #include "graphics.h"
+#include "Dummies.h"
 #include "lua.hpp"
 
 class Transform
@@ -18,22 +15,38 @@ class Transform
 public:
 	Transform();
 
-	vec3 getTranslation()
+	Vector3 getTranslation()
 	{
-		return m_translation;
+		Vector3 ret;
+		ret.x = m_translation.x;
+		ret.y = m_translation.y;
+		ret.z = m_translation.z;
+		return ret;
 	}
-	vec3 getScale()
+	Vector3 getScale()
 	{ 
-		return m_scale;
+		Vector3 ret;
+		ret.x = m_scale.x;
+		ret.y = m_scale.y;
+		ret.z = m_scale.z;
+		return ret;
 	}
-	quat getRotation()
+	Vector3 getRotation()
 	{
-		return m_rotation;
+		vec3 rot = eulerAngles(m_rotation);
+		Vector3 ret;
+		ret.x = rot.x;
+		ret.y = rot.y;
+		ret.z = rot.z;
+		return ret;
 	}
 
-	void setTranslation(float x, float y, float z) { m_translation = vec3(x, y, z); }
-	void setScale(float x, float y, float z) { m_scale = vec3(x, y, z); }
-	void setRotation(float x, float y, float z, float w) { m_rotation = quat(w, x, y, z); }
+	void setTranslation(Vector3 v) { m_translation = vec3(v.x, v.y, v.z); }
+	void setScale(Vector3 v) { m_scale = vec3(v.x, v.y, v.z); }
+	void setRotation(float a, Vector3 v)
+	{ 
+		m_rotation = rotate(quat(1.0f, 0.0f, 0.0f, 0.0f), a, vec3(v.x, v.y, v.z));
+	}
 	Transform* getParent() const { return m_parent; }
 	void setParent(Transform* p) { m_parent = p; }
 
@@ -52,6 +65,7 @@ public:
 
 	void rotate_transform(float x, float y, float z);
 	void move(float x, float y, float z);
+	void scale_transform(float x, float y, float z);
 
 	mat4 getTransformation();
 	mat4 getParentMatrix();
@@ -61,14 +75,22 @@ public:
 
 	static void RegisterObject(lua_State* L)
 	{
+		RegisterDummyObjects(L);
+
 		using namespace luabridge;
 		getGlobalNamespace(L)
 			.beginClass<Transform>("Transform")
 			.addConstructor<void(*)(void)>()
 			.addProperty("parent", &Transform::getParent, &Transform::setParent)
 			.addFunction("rotate", &Transform::rotate_transform)
-			.addFunction("scale", &Transform::setScale)
+			.addFunction("scale", &Transform::scale_transform)
 			.addFunction("move", &Transform::move)
+			.addFunction("getposition", &Transform::getTranslation)
+			.addFunction("setposition", &Transform::setTranslation)
+			.addFunction("getscale", &Transform::getScale)
+			.addFunction("setscale", &Transform::setScale)
+			.addFunction("getrotation", &Transform::getRotation)
+			.addFunction("setrotation", &Transform::setRotation)
 			.endClass();
 	}
 private:

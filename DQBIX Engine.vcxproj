@@ -128,6 +128,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="include\Stopwatch.h" />
     <ClInclude Include="include\Time.h" />
     <ClInclude Include="include\Transform.h" />
+    <ClInclude Include="include\Dummies.h" />
     <ClInclude Include="include\vertex.h" />
     <ClInclude Include="include\shaders.h" />
     <ClInclude Include="include\GameWindow.h" />
@@ -159,6 +160,7 @@ xcopy /y /d "depends\bass\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\LuaEngine.cpp" />
     <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\Transform.cpp" />
+    <ClCompile Include="src\Dummies.cpp" />
     <ClCompile Include="src\vertex.cpp" />
     <ClCompile Include="src\GameWindow.cpp" />
   </ItemGroup>

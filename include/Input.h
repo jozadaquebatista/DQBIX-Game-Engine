@@ -1,7 +1,3 @@
-// THIS FILE IS PART OF THE NEW ENGINE PROJECT
-// IF YOU WANT TO USE THE OLD ENGINE, YOU NEED TO
-// DEFINE OLD_ENGINE ON main.cpp
-// ===============================================
 // File: Input.h
 // Class: Input
 // Author: Diego Lopes <diego95lopes@live.com>
