@@ -26,4 +26,4 @@ Since this is not perfect, here's a todo list. I really want some help!
 
 PS: I accept suggestions!
   
-If you want to help me, you'll need Visual Studio 2013!
+If you want to help me, you'll need QtCreator ( Windows Only =( )
