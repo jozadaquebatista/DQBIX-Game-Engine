@@ -3,8 +3,8 @@
 Node::Node()
 {
 	m_transform = new Transform();
-    m_parentnode = 0;
-    m_script = 0;
+    m_parentnode = NULL;
+    m_script = NULL;
 }
 
 Node::~Node()
@@ -18,7 +18,7 @@ Node::~Node()
 	}
 
 	SAFE_DELETE(m_transform);
-	SAFE_DELETE(m_script);
+    SAFE_DELETE(m_script);
 }
 
 Node* Node::addChild(Node* obj)
@@ -62,7 +62,19 @@ Node* Node::getNode(std::string name)
 		if (n->getName() == name)
 			return n;
 	}
-	return nullptr;
+    return NULL;
+}
+
+luabridge::LuaRef Node::getChildren(lua_State* L) const
+{
+    using namespace luabridge;
+    LuaRef ret = newTable(L);
+    for (int i = 0; i < m_children.size(); i++)
+    {
+        Node* c = m_children[i];
+        ret[i] = c;
+    }
+    return ret;
 }
 
 void Node::attachScript(Script* scr)
@@ -86,7 +98,11 @@ void Node::RegisterObject(lua_State* L)
 		.addFunction("addChild", &Node::addChild)
 		.addFunction("getNode", &Node::getNode)
 		.addProperty("transform", &Node::getTransform)
-		.addProperty("name", &Node::getName, &Node::setName)
+        .addFunction("getname", &Node::getName)
+        .addFunction("rename", &Node::setName)
+        .addFunction("getparent", &Node::getParentNode)
+        .addFunction("setparent", &Node::setParentNode)
+        .addFunction("getchildren", &Node::getChildren)
 		.endClass();
 }
 
@@ -101,4 +117,14 @@ void Node::create()
 {
     if (m_script != NULL)
         m_script->init();
+}
+
+void Node::createAll()
+{
+    create();
+
+    for (auto& ob : m_children)
+    {
+        ob->createAll();
+    }
 }

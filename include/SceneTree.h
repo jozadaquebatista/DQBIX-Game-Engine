@@ -16,18 +16,23 @@ public:
 	Node* getRootNode()
 	{ 
         if (m_root == NULL)
+        {
 			m_root = new Node();
+            m_root->setName("__root__");
+        }
 		return m_root; 
 	}
 
+    void create();
 	void render();
 	void update(float delta);
 
-	Node* addChild(Node* n) {
-		n->create();
+    Node* addChild(Node* n)
+    {
 		return getRootNode()->addChild(n);
 	}
 
+    static void RegisterObject(lua_State* L);
 private:
     SceneTree(SceneTree&) {}
 	void operator=(SceneTree s) {}

@@ -52,6 +52,7 @@ void GameWindow::mainloop()
 	int frameCounter = 0;
 
 	if (init) init();
+    m_tree->create();
 
 	while (running)
 	{
@@ -96,9 +97,25 @@ void GameWindow::mainloop()
 		}
 		else
 			SDL_Delay(1);
-	}
-	SAFE_DELETE(eng);
-	SDL_Quit();
+    }
+    SAFE_DELETE(m_tree);
+    SDL_Quit();
+}
+
+void GameWindow::RegisterObject(lua_State *L)
+{
+    using namespace luabridge;
+    getGlobalNamespace(L)
+            .beginClass<GameWindow>("GameWindow")
+            .addFunction("getTree", &GameWindow::getTree)
+            .addFunction("getWidth", &GameWindow::getWidth)
+            .addFunction("getHeight", &GameWindow::getHeight)
+            .endClass();
+}
+
+GameWindow::~GameWindow()
+{
+    SAFE_DELETE(m_tree);
 }
 
 void GameWindow::createWindow(int width, int height, std::string title)
@@ -146,6 +163,13 @@ void GameWindow::createWindow(int width, int height, std::string title)
 
 	RenderUtil::initGraphics(GameWindow::getWidth(), GameWindow::getHeight());
 
+#ifndef MODERN_OPENGL
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glLoadMatrixf(mat);
+    glMatrixMode(GL_MODELVIEW);
+#endif
+
 	m_tree = new SceneTree();
 
 	running = true;
@@ -159,6 +183,8 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	Sprite::RegisterObject(eng->getState());
 	AnimatedSprite::RegisterObject(eng->getState());
 	Input::RegisterObject(eng->getState());
+    SceneTree::RegisterObject(eng->getState());
+
 }
 
 bool GameWindow::closed()

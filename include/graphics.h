@@ -1,6 +1,8 @@
 #ifndef __IX_GRAPHICS__
 #define __IX_GRAPHICS__
 
+//#define MODERN_OPENGL
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GL/freeglut.h>

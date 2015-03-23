@@ -26,6 +26,7 @@ public:
 	virtual void draw() {}
 	virtual void update(float delta);
 	void create();
+    void createAll();
 
 	void updateAll(float delta);
 
@@ -34,8 +35,10 @@ public:
 
 	Node* getNode(std::string name);
 
-	Node* getParentNode() const { return m_parentnode; }
+    Node* getParentNode() { return m_parentnode; }
 	void setParentNode(Node* n) { m_parentnode = n; }
+
+    luabridge::LuaRef getChildren(lua_State* L) const;
 
 	void attachScript(Script* scr);
 

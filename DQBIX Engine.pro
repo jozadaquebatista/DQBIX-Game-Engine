@@ -44,3 +44,5 @@ LIBS += -L$$PWD/depends/SDL12/lib/ -lSDL -lSDLmain
 PRE_TARGETDEPS += $$PWD/depends/freeglut/lib/freeglut.lib
 PRE_TARGETDEPS += $$PWD/depends/glew/lib/glew32s.lib
 PRE_TARGETDEPS += $$PWD/depends/libdrawtext/lib/libdrawtext.lib
+
+DISTFILES +=

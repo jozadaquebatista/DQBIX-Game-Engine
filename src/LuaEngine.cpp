@@ -6,7 +6,7 @@ void LuaEngine::err_report(int state)
 	{
 		std::cout << "ERROR -> " << lua_tostring(L, state) << std::endl;
 		lua_pop(L, 1);
-        std::exit(-1);
+        std::exit(0);
 	}
 }
 

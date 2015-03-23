@@ -19,7 +19,8 @@
 class GameWindow
 {
 public:
-	GameWindow() : m_tree(0) {};
+    GameWindow() : m_tree(0) {}
+    ~GameWindow();
 
 	void createWindow(int width, int height, std::string title);
 
@@ -38,6 +39,8 @@ public:
 	SceneTree* getTree() { return m_tree; }
 
 	LuaEngine* getLuaEngine() { return eng; }
+
+    static void RegisterObject(lua_State* L);
 private:
 	void ortho_2d(float* mat, int left, int right, int bottom, int top);
 	SceneTree* m_tree;

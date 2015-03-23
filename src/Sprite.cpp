@@ -4,7 +4,7 @@
 Sprite::Sprite(std::string filename)
 {
 	m_texture = filename != "" ? new Texture(filename) : NULL;
-
+#ifdef MODERN_OPENGL
 	m_shader = new Shader();
 	m_shader->fromString(default_vert, default_frag);
 
@@ -12,6 +12,7 @@ Sprite::Sprite(std::string filename)
 	m_shader->addCommonUniforms();
 	m_shader->addUniform("image");
 	m_shader->addUniform("cliprect");
+#endif
 }
 
 
@@ -29,6 +30,7 @@ void Sprite::draw()
 
 	m_texture->bind();
 
+#ifdef MODERN_OPENGL
 	if (m_shader != nullptr)
 	{
 		m_shader->use();
@@ -37,10 +39,33 @@ void Sprite::draw()
 		m_shader->setMatrix("model", getTransform()->getTransformation());
 		m_shader->setMatrix("proj", GameWindow::Projection);
 	}
+    m_texture->getShape()->draw(GL_TRIANGLE_STRIP);
 
-	m_texture->getShape()->draw(GL_TRIANGLE_STRIP);
+    glUseProgram(0);
+#else
+    float w2 = (float)m_texture->getWidth() / 2.0f;
+    float h2 = (float)m_texture->getHeight() / 2.0f;
 
-	glUseProgram(0);
+    float crx = tr.x / m_texture->getCliprect().cols;
+    float cry = tr.y / m_texture->getCliprect().rows;
+    float crw = tr.z;
+    float crh = tr.w;
+
+    glPushMatrix();
+
+    glMultMatrixf(value_ptr(getTransform()->getTransformation()));
+
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(crx,         cry); glVertex2f(-1.0f*w2, -1.0f*h2);
+    glTexCoord2f(crx+crw,     cry); glVertex2f( 1.0f*w2, -1.0f*h2);
+    glTexCoord2f(crx+crw, cry+crh); glVertex2f( 1.0f*w2,  1.0f*h2);
+    glTexCoord2f(crx,     cry+crh); glVertex2f(-1.0f*w2,  1.0f*h2);
+
+    glEnd();
+
+    glPopMatrix();
+#endif
 }
 
 void Sprite::RegisterObject(lua_State* L)
