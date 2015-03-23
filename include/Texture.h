@@ -61,7 +61,7 @@ public:
 		float crx = (float)getCliprect().x / (float)getResource()->getWidth();
 		float cry = (float)getCliprect().y / (float)getResource()->getHeight();
 
-		return vec4(crx * getCliprect().cols, cry * getCliprect().rows, crw, crh);
+        return vec4(crx * getCliprect().cols, cry * getCliprect().rows, crw, crh);
 	}
 	Mesh* getShape() const { return m_quad; }
 

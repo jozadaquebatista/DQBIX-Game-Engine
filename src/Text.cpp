@@ -17,7 +17,7 @@ void Text::draw()
 	if (!fnth) return;
 
 	use();
-
+#ifdef MODERN_OPENGL
 	if (m_shader != nullptr)
 	{
 		m_shader->use();
@@ -31,6 +31,16 @@ void Text::draw()
 	dtx_flush();
 
 	glUseProgram(0);
+#else
+    glPushMatrix();
+
+    glMultMatrixf(value_ptr(getTransform()->getTransformation()));
+
+    dtx_string(m_text.c_str());
+
+    glPopMatrix();
+#endif
+
 }
 
 void Text::set_range(int from, int to)
@@ -53,10 +63,12 @@ Text::~Text()
 Text::Text(std::string fontfile /*= ""*/, int sz/*=18*/)
 {
 	fnth = dtx_open_font(fontfile.c_str(), sz);
+#ifdef MODERN_OPENGL
 	dtx_vertex_attribs(0, 1);
-
+#endif
 	this->sz = sz;
 
+#ifdef MODERN_OPENGL
 	m_shader = new Shader();
 	m_shader->fromString(text_vert, text_frag);
 
@@ -64,4 +76,5 @@ Text::Text(std::string fontfile /*= ""*/, int sz/*=18*/)
 	m_shader->addCommonUniforms();
 	m_shader->addUniform("image");
 	m_shader->addUniform("color");
+#endif
 }

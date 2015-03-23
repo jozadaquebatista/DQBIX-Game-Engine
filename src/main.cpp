@@ -1,3 +1,4 @@
+
 #include "../include/GameWindow.h"
 #include "../include/Text.h"
 
@@ -15,7 +16,6 @@ void init()
     anim = new AnimatedSprite(new Texture("exp.png"), 4, 5, 0.04f, true);
     anim->setName("anim");
     anim->getTransform()->move(200.0f, 200.0f, 0.0f);
-    anim->getTransform()->setScale(Vector3(0.5f, 0.5f, 0.5f));
     anim->attachScript(moves);
 
     spr = new Sprite("data/monkey_n.png");
@@ -25,6 +25,7 @@ void init()
     spr->attachScript(teste);
 
     tex = new Text("andy.ttf", 32);
+    tex->setName("label");
     tex->setText("Hello World!");
     tex->setColor(1.0f, 1.0f, 1.0f, 1.0f);
     tex->getTransform()->setTranslation(Vector3(120, 120, 0));
@@ -43,5 +44,7 @@ int main(int argc, char** argv)
     win->init = init;
 
     win->mainloop();
+
+    SAFE_DELETE(win);
     return 0;
 }

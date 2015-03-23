@@ -10,7 +10,6 @@ Material::Material()
 	
 }
 
-
 Material::Material(Texture* diffuse) : Material()
 {
 	m_diffuse = diffuse;

@@ -2,10 +2,10 @@
 #include "../include/Node.h"
 
 Script::Script(std::string scriptfile, LuaEngine* L)
-	: m_L(L), 
-	on_destroy(L->getState()),
-	on_create(L->getState()),
-	on_update(L->getState()),
+    : m_L(L),
+    on_destroy(m_L->getState()),
+    on_create(m_L->getState()),
+    on_update(m_L->getState()),
 	m_owner(0)
 {
 	m_source = readFile(scriptfile);
@@ -13,7 +13,7 @@ Script::Script(std::string scriptfile, LuaEngine* L)
 
 Script::~Script()
 {
-	SAFE_DELETE(m_L);
+
 }
 
 void Script::compile()

@@ -11,12 +11,14 @@ AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols, float speed, 
 	m_index = 0;
 	m_clock.Start();
 
+#ifdef MODERN_OPENGL
 	m_shader = new Shader();
 	m_shader->fromString(default_vert, default_frag);
 	m_shader->compile();
 	m_shader->addCommonUniforms();
 	m_shader->addUniform("image");
 	m_shader->addUniform("cliprect");
+#endif
 }
 
 
@@ -72,6 +74,7 @@ void AnimatedSprite::draw()
 
 	m_sheet->bind();
 
+#ifdef MODERN_OPENGL
     if (m_shader != NULL)
 	{
 		m_shader->use();
@@ -84,6 +87,30 @@ void AnimatedSprite::draw()
 	m_sheet->getShape()->draw(GL_TRIANGLE_STRIP);
 
 	glUseProgram(0);
+#else
+    float w2 = (float)m_sheet->getResource()->getWidth() / 2.0f;
+    float h2 = (float)m_sheet->getResource()->getHeight() / 2.0f;
+
+    float crx = tr.x / m_sheet->getCliprect().cols;
+    float cry = tr.y / m_sheet->getCliprect().rows;
+    float crw = tr.z;
+    float crh = tr.w;
+
+    glPushMatrix();
+
+    glMultMatrixf(value_ptr(getTransform()->getTransformation()));
+
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(crx,         cry); glVertex2f(-1.0f*w2, -1.0f*h2);
+    glTexCoord2f(crx+crw,     cry); glVertex2f( 1.0f*w2, -1.0f*h2);
+    glTexCoord2f(crx+crw, cry+crh); glVertex2f( 1.0f*w2,  1.0f*h2);
+    glTexCoord2f(crx,     cry+crh); glVertex2f(-1.0f*w2,  1.0f*h2);
+
+    glEnd();
+
+    glPopMatrix();
+#endif
 }
 
 void AnimatedSprite::update(float delta)
