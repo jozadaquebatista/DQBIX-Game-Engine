@@ -15,7 +15,7 @@ public:
 
 	Node* getRootNode()
 	{ 
-		if (m_root == nullptr)
+        if (m_root == NULL)
 			m_root = new Node();
 		return m_root; 
 	}
@@ -29,7 +29,7 @@ public:
 	}
 
 private:
-	SceneTree(SceneTree& s) {}
+    SceneTree(SceneTree&) {}
 	void operator=(SceneTree s) {}
 	Node* m_root;
 };

@@ -65,8 +65,8 @@ public:
 			.endClass();
 	}
 private:
-	Shader(Shader& o) {}
-	void operator=(Shader s) {}
+    Shader(Shader&) {}
+    void operator=(Shader s) {}
 	std::map<std::string, int> uniforms;
 
 	GLuint m_vs, m_fs, m_program;

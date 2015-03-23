@@ -3,8 +3,8 @@
 
 Material::Material()
 {
-	m_diffuse = nullptr;
-	m_normal = nullptr;
+    m_diffuse = NULL;
+    m_normal = NULL;
 
 	m_matshader = new Shader();
 	

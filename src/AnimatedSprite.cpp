@@ -72,7 +72,7 @@ void AnimatedSprite::draw()
 
 	m_sheet->bind();
 
-	if (m_shader != nullptr)
+    if (m_shader != NULL)
 	{
 		m_shader->use();
 		m_shader->setInt("image", 0);
