@@ -3,14 +3,16 @@
 Node::Node()
 {
 	m_transform = new Transform();
+    m_parentnode = 0;
+    m_script = 0;
 }
 
 Node::~Node()
 {
-	if (m_script == nullptr) return;
-		m_script->destroy();
+    if (m_script != NULL)
+        m_script->destroy();
 
-	for (auto& ob : m_children)
+    for (auto& ob : m_children)
 	{
 		SAFE_DELETE(ob);
 	}
@@ -50,13 +52,7 @@ void Node::updateAll(float delta)
 
 void Node::setName(std::string newname)
 {
-	if (getParentNode() == nullptr)
-		name = newname;
-	else
-	{
-		if (getParentNode()->getName() != newname)
-			name = newname;
-	}
+    name = newname;
 }
 
 Node* Node::getNode(std::string name)
@@ -97,13 +93,12 @@ void Node::RegisterObject(lua_State* L)
 void Node::update(float delta)
 {
 	getTransform()->update();
-	if (m_script == nullptr) return;
+    if (m_script != NULL)
 		m_script->update(delta);
 }
 
 void Node::create()
 {
-	if (m_script == nullptr) return;
-
-	m_script->init();
+    if (m_script != NULL)
+        m_script->init();
 }

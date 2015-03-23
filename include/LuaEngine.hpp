@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "lua.hpp"
+#include <cstdlib>
 
 class LuaEngine
 {

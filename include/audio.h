@@ -10,7 +10,7 @@ class audio
 {
 public:
 	audio(std::string filename = "");
-	audio(const audio& other) {}
+        audio(const audio&) {}
 	void operator=(audio other) {}
 
 	virtual ~audio();

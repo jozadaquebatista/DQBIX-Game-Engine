@@ -1,8 +1,7 @@
 #include "../include/Texture.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../include/stb_image.h"
-
+#include <stb_image.h>
 // TODO: Simplify this
 Texture::Texture(int w, int h, unsigned char* data, int target, int filter, int internalFmt, int format, bool clamp, int attachment)
 {
@@ -68,19 +67,20 @@ Texture::Texture(const std::string filename, int target, int filter)
 	std::map<std::string, imageResource*>::const_iterator pos = m_loadedImages.find(filename);
 	if (pos == m_loadedImages.end())
 	{
-		int w, h, comp;
-		unsigned char* data = stbi_load(filename.c_str(), &w, &h, &comp, STBI_rgb_alpha);
-		if (data == nullptr)
+        int w, h, comp;
+        unsigned char* data = stbi_load(filename.c_str(), &w, &h, &comp, 4);
+
+        if (data == NULL)
 		{
-			printf("%s\n", "Failed to load image.");
-			exit(EXIT_FAILURE);
+            printf("Failed to load image: %s\n", filename.c_str());
+            std::exit(-1);
 		}
 
 		this->m_resource = new imageResource(target, w, h, 1, data,
 			filter, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
 		m_loadedImages.insert({ filename, m_resource });
 
-		stbi_image_free(data);
+        stbi_image_free(data);
 	}
 	else
 	{
@@ -92,19 +92,20 @@ Texture::Texture(const std::string filename, int target, int filter)
 		}
 		else
 		{
-			int w, h, comp;
-			unsigned char* data = stbi_load(filename.c_str(), &w, &h, &comp, STBI_rgb_alpha);
-			if (data == nullptr)
+            int w, h, comp;
+            unsigned char* data = stbi_load(filename.c_str(), &w, &h, &comp, 4);
+
+            if (data == NULL)
 			{
-				printf("%s\n", "Failed to load image.");
-				exit(EXIT_FAILURE);
+                printf("Failed to load image: %s\n", filename.c_str());
+                std::exit(-1);
 			}
 
 			this->m_resource = new imageResource(target, w, h, 1, data,
 				filter, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0);
 			m_loadedImages.insert({ filename, m_resource });
 
-			stbi_image_free(data);
+            stbi_image_free(data);
 		}
 	}
 
@@ -169,43 +170,44 @@ void Texture::use(int sampler_slot)
 // Thanks to this tutorial <http://immersedcode.org/2011/4/7/stb-image/>
 SDL_Surface* Texture::loadicon(const char* filename)
 {
-	int x, y, comp;
-	unsigned char *data;
-	uint32_t rmask, gmask, bmask, amask;
-	SDL_Surface *rv;
+//	int x, y, comp;
+//	unsigned char *data;
+//	uint32_t rmask, gmask, bmask, amask;
+//	SDL_Surface *rv;
 
-	FILE *file = fopen(filename, "rb");
-	if (!file)
-		return 0;
+//	FILE *file = fopen(filename, "rb");
+//	if (!file)
+//		return 0;
 
-	data = stbi_load_from_file(file, &x, &y, &comp, 0);
-	fclose(file);
+//    data = SOIL_load_image(filename, &x, &y, &comp, 4);
+//	fclose(file);
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-	rmask = 0xff000000;
-	gmask = 0x00ff0000;
-	bmask = 0x0000ff00;
-	amask = 0x000000ff;
-#else
-	rmask = 0x000000ff;
-	gmask = 0x0000ff00;
-	bmask = 0x00ff0000;
-	amask = 0xff000000;
-#endif
+//#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+//	rmask = 0xff000000;
+//	gmask = 0x00ff0000;
+//	bmask = 0x0000ff00;
+//	amask = 0x000000ff;
+//#else
+//	rmask = 0x000000ff;
+//	gmask = 0x0000ff00;
+//	bmask = 0x00ff0000;
+//	amask = 0xff000000;
+//#endif
 
-	if (comp == 4) {
-		rv = SDL_CreateRGBSurface(0, x, y, 32, rmask, gmask, bmask, amask);
-	}
-	else if (comp == 3) {
-		rv = SDL_CreateRGBSurface(0, x, y, 24, rmask, gmask, bmask, 0);
-	}
-	else {
-		stbi_image_free(data);
-		return 0;
-	}
+//	if (comp == 4) {
+//		rv = SDL_CreateRGBSurface(0, x, y, 32, rmask, gmask, bmask, amask);
+//	}
+//	else if (comp == 3) {
+//		rv = SDL_CreateRGBSurface(0, x, y, 24, rmask, gmask, bmask, 0);
+//	}
+//	else {
+//        SOIL_free_image_data(data);
+//		return 0;
+//	}
 
-	memcpy(rv->pixels, data, comp * x * y);
-	stbi_image_free(data);
+//	memcpy(rv->pixels, data, comp * x * y);
+//    SOIL_free_image_data(data);
 
-	return rv;
+//	return rv;
+    return 0;
 }

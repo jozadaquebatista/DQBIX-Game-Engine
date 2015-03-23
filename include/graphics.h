@@ -1,8 +1,6 @@
 #ifndef __IX_GRAPHICS__
 #define __IX_GRAPHICS__
 
-#pragma once
-
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -13,5 +11,7 @@
 #include <glm/gtc/type_ptr.hpp>
 using namespace glm;
 
-#define SAFE_DELETE(x) { if(x) delete x; x = nullptr; }
+#include <cstdlib>
+
+#define SAFE_DELETE(x) { if(x) delete x; x = NULL; }
 #endif //__IX_GRAPHICS__

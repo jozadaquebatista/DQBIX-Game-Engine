@@ -6,13 +6,13 @@ void LuaEngine::err_report(int state)
 	{
 		std::cout << "ERROR -> " << lua_tostring(L, state) << std::endl;
 		lua_pop(L, 1);
-		exit(EXIT_FAILURE);
+        std::exit(-1);
 	}
 }
 
 void LuaEngine::RunScript(const char* filename)
 {
-	if (filename == nullptr)
+    if (filename == NULL)
 		return;
 	int state = luaL_dofile(L, filename);
 	err_report(state);
@@ -20,7 +20,7 @@ void LuaEngine::RunScript(const char* filename)
 
 void LuaEngine::RunString(const char* expr)
 {
-	if (expr == nullptr)
+    if (expr == NULL)
 	{
 		std::cerr << "Null expression is not allowed." << std::endl;
 		return;

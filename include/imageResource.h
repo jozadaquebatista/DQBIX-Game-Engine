@@ -69,8 +69,8 @@ private:
 	
 	int* genTextures(int count);
 
-	imageResource(imageResource& other) {}
-	void operator=(imageResource& other) {}
+    imageResource(imageResource&) {}
+    void operator=(imageResource) {}
 };
 
 #endif //__IX_IMG_RES__

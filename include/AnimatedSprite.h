@@ -43,7 +43,7 @@ private:
 	Shader* m_shader;
 	Stopwatch m_clock;
 
-	AnimatedSprite(AnimatedSprite& anim) {}
+        AnimatedSprite(AnimatedSprite&) {}
 	void operator=(AnimatedSprite texture) {}
 };
 

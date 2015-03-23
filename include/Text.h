@@ -35,7 +35,7 @@ public:
 
 private:
 	void operator=(Text f) {}
-	Text(Text& f) {}
+        Text(Text&) {}
 
 	int sz;
 	struct dtx_font* fnth;
