@@ -116,7 +116,19 @@ void AnimatedSprite::draw()
 void AnimatedSprite::update(float delta)
 {
 	Node::update(delta);
-	step();
+    step();
+}
+
+bool AnimatedSprite::hovered(point mousepos)
+{
+    if (!getSpriteSheet()) return false;
+
+    Vector3 pos = getTransform()->getTranslation();
+    float w = (float)getSpriteSheet()->getWidth();
+    float h = (float)getSpriteSheet()->getHeight();
+    float sradius = w < h ? w / 2.0f : h / 2.0f;
+
+    return (collisiondetection::circle(mousepos.x, mousepos.y, 2, pos.x, pos.y, sradius));
 }
 
 void AnimatedSprite::RegisterObject(lua_State* L)

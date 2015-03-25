@@ -30,7 +30,8 @@ public:
     Node* addChild(Node* n)
     {
 		return getRootNode()->addChild(n);
-	}
+    }
+    void setEngine(GameWindow* win);
 
     static void RegisterObject(lua_State* L);
 private:

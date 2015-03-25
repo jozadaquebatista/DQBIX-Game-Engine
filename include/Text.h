@@ -21,8 +21,8 @@ public:
 	std::string getText() const { return m_text; }
 	void setText(std::string t) { m_text = t; }
 
-	color getColor() const { return m_color; }
-	void setColor(color c) { m_color = c; }
+	Color getColor() const { return m_color; }
+	void setColor(Color c) { m_color = c; }
 	void setColor(float r, float g, float b, float a)
 	{
 		m_color.r = r;
@@ -40,7 +40,7 @@ private:
 	int sz;
 	struct dtx_font* fnth;
 	Shader* m_shader;
-	color m_color;
+	Color m_color;
 	std::string m_text;
 };
 

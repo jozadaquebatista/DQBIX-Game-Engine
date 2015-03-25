@@ -7,6 +7,7 @@
 #pragma once
 
 #include "Node.h"
+#include "collisiondetection.h"
 
 class Sprite : public Node
 {
@@ -15,6 +16,7 @@ public:
 	virtual ~Sprite();
 
 	void draw();
+    bool hovered(point mousepos);
 
 	Texture* getTexture() const { return m_texture; }
 	void setTexture(Texture* tex) { m_texture = tex; }

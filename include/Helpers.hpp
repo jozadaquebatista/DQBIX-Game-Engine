@@ -8,5 +8,5 @@
 
 std::string readFile(std::string filepath);
 //
-
+int stringToInt(std::string text);
 #endif

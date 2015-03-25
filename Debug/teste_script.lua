@@ -10,6 +10,9 @@ function on_create(own)
 end
 
 function on_update(own, d)
+	if Input.isClicked(own, 1) then
+		print("Clicked Own")
+	end
 	r = r + d * 2
 	s = s + d * 6
 	local ob_scale = math.abs(math.sin(s))

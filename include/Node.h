@@ -9,10 +9,11 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "shader.h"
-#include "Script.h"
+#include "component.h"
 #include <vector>
 #include "LuaEngine.hpp"
 
+class GameWindow;
 class Node
 {
 public:
@@ -20,11 +21,15 @@ public:
 	~Node();
 
 	Node* addChild(Node* obj);
+    Node* addComponent(Component* comp);
+
 	Transform* getTransform() const { return m_transform; }
 
 	void drawAll();
-	virtual void draw() {}
+    virtual void draw();
 	virtual void update(float delta);
+    virtual bool hovered(point mousepos) {return false;}
+
 	void create();
     void createAll();
 
@@ -38,17 +43,18 @@ public:
     Node* getParentNode() { return m_parentnode; }
 	void setParentNode(Node* n) { m_parentnode = n; }
 
-    luabridge::LuaRef getChildren(lua_State* L) const;
+    void setEngine(GameWindow* win);
 
-	void attachScript(Script* scr);
+    luabridge::LuaRef getChildren(lua_State* L) const;
 
 	static void RegisterObject(lua_State* L);
 private:
 	Node* m_parentnode;
 	Transform* m_transform;
 	std::vector<Node*> m_children;
-	std::string name;	
-	Script* m_script;
+    std::vector<Component*> m_components;
+    std::string name;
+    GameWindow* win;
 };
 
 #endif //__NIX_NODE__

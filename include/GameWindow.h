@@ -14,6 +14,7 @@
 #include "Time.h"
 #include "Input.h"
 #include "sdl_backend.h"
+#include "light.h"
 #include <string>
 
 class GameWindow
@@ -31,7 +32,6 @@ public:
 	std::string getTitle();
 	
 	void(*init)();
-
 	void mainloop();
 
 	static mat4 Projection;
@@ -41,10 +41,13 @@ public:
 	LuaEngine* getLuaEngine() { return eng; }
 
     static void RegisterObject(lua_State* L);
+
+    void addLight(Light* l) { m_lights.push_back(l); }
 private:
 	void ortho_2d(float* mat, int left, int right, int bottom, int top);
 	SceneTree* m_tree;
 	LuaEngine* eng;
+    std::vector<Light*> m_lights;
 };
 
 #endif //__NIX_WINDOW__

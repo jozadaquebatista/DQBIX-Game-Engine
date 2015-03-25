@@ -11,7 +11,9 @@
 #include "graphics.h"
 #include "point.hpp"
 #include "lua.hpp"
+#include "Node.h"
 
+class GameWindow;
 class Input
 {
 public:
@@ -27,9 +29,13 @@ public:
 	static void setMousePosition(float x, float y);
 	static void setCursor(bool cur);
 
+    static bool mouseHoverNode(Node* n);
+    static bool mouseHoverClick(Node* n, int mouse_button=1);
+
 	static void RegisterObject(lua_State* L);
 
-	static SDL_Event evt;
+    static SDL_Event evt;
+    static GameWindow* win;
 private:
 	static bool downKeys[];
 	static bool upKeys[];
