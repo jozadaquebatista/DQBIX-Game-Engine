@@ -1,7 +1,8 @@
 #ifndef __IX_GRAPHICS__
 #define __IX_GRAPHICS__
 
-//#define MODERN_OPENGL
+#define PICK_TOL 10
+#define PICK_BUFFER_SIZE 256
 
 #define GLEW_STATIC
 #include <GL/glew.h>

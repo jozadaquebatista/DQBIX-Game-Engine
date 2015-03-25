@@ -5,6 +5,6 @@
 typedef struct
 {
 	float r, g, b, a;
-} color;
+} Color;
 
 #endif //__IX_COLOR__

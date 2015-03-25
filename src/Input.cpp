@@ -1,4 +1,7 @@
 #include "..\include\Input.h"
+#include "../include/GameWindow.h"
+
+GameWindow* Input::win = 0;
 
 SDL_Event Input::evt;
 
@@ -109,7 +112,19 @@ void Input::setMousePosition(float x, float y)
 
 void Input::setCursor(bool cur)
 {
-	SDL_ShowCursor(cur ? 1 : 0);
+    SDL_ShowCursor(cur ? 1 : 0);
+}
+
+bool Input::mouseHoverNode(Node *n)
+{
+    if (!n) return false;
+    return n->hovered(getMousePosition());
+}
+
+bool Input::mouseHoverClick(Node *n, int mouse_button)
+{
+    if (!n) return false;
+    return (mouseHoverNode(n) && getMouseDown(mouse_button));
 }
 
 void Input::RegisterObject(lua_State* L)
@@ -118,6 +133,8 @@ void Input::RegisterObject(lua_State* L)
 
 	getGlobalNamespace(L)
 		.beginClass<Input>("Input")
+            .addStaticFunction("isHovered", &Input::mouseHoverNode)
+            .addStaticFunction("isClicked", &Input::mouseHoverClick)
 			.addStaticFunction("getKey", &Input::getKey)
 			.addStaticFunction("getKeyDown", &Input::getKeyDown)
 			.addStaticFunction("getKeyUp", &Input::getKeyUp)

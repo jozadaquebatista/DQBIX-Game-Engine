@@ -68,6 +68,19 @@ void Sprite::draw()
 #endif
 }
 
+// This is a bad thing, but it's okay for now.
+bool Sprite::hovered(point mousepos)
+{
+    if (!getTexture()) return false;
+
+    Vector3 pos = getTransform()->getTranslation();
+    float w = (float)getTexture()->getWidth();
+    float h = (float)getTexture()->getHeight();
+    float sradius = w < h ? w / 2.0f : h / 2.0f;
+
+    return (collisiondetection::circle(mousepos.x, mousepos.y, 2, pos.x, pos.y, sradius));
+}
+
 void Sprite::RegisterObject(lua_State* L)
 {
 	using namespace luabridge;

@@ -1,32 +1,47 @@
 #include "..\include\Node.h"
+#include "../include/GameWindow.h"
 
 Node::Node()
 {
 	m_transform = new Transform();
     m_parentnode = NULL;
-    m_script = NULL;
 }
 
 Node::~Node()
 {
-    if (m_script != NULL)
-        m_script->destroy();
+//    if (m_script != NULL)
+//        m_script->destroy();
+    for (auto& comp : m_components)
+    {
+        comp->destroy();
+    }
 
     for (auto& ob : m_children)
 	{
 		SAFE_DELETE(ob);
 	}
+    for (auto& comp : m_components)
+    {
+        SAFE_DELETE(comp);
+    }
 
 	SAFE_DELETE(m_transform);
-    SAFE_DELETE(m_script);
 }
 
 Node* Node::addChild(Node* obj)
 {
 	m_children.push_back(obj);
+    obj->setEngine(this->win);
 	obj->setParentNode(this);
 	obj->getTransform()->setParent(getTransform());
-	return this;
+    return this;
+}
+
+Node* Node::addComponent(Component *comp)
+{
+    comp->setOwner(this);
+    m_components.push_back(comp);
+    return this;
 }
 
 void Node::drawAll()
@@ -37,7 +52,15 @@ void Node::drawAll()
 	{
 		ob->drawAll();
 	}
-	
+
+}
+
+void Node::draw()
+{
+    for (auto& comp : m_components)
+    {
+        comp->draw();
+    }
 }
 
 void Node::updateAll(float delta)
@@ -65,6 +88,23 @@ Node* Node::getNode(std::string name)
     return NULL;
 }
 
+void Node::setEngine(GameWindow *win)
+{
+    if (this->win != win)
+    {
+        this->win = win;
+
+        for (auto& comp : m_components)
+        {
+            comp->addToEngine(win);
+        }
+        for (auto& n : m_children)
+        {
+            n->setEngine(win);
+        }
+    }
+}
+
 luabridge::LuaRef Node::getChildren(lua_State* L) const
 {
     using namespace luabridge;
@@ -77,46 +117,25 @@ luabridge::LuaRef Node::getChildren(lua_State* L) const
     return ret;
 }
 
-void Node::attachScript(Script* scr)
-{
-	if (scr != nullptr)
-	{
-		m_script = new Script(*scr);
-		m_script->setOwner(this);
-		m_script->compile();
-	}
-	else { m_script = nullptr; }
-}
-
-void Node::RegisterObject(lua_State* L)
-{
-	using namespace luabridge;
-
-	getGlobalNamespace(L)
-		.beginClass<Node>("Node")
-		.addConstructor<void(*)(void)>()
-		.addFunction("addChild", &Node::addChild)
-		.addFunction("getNode", &Node::getNode)
-		.addProperty("transform", &Node::getTransform)
-        .addFunction("getname", &Node::getName)
-        .addFunction("rename", &Node::setName)
-        .addFunction("getparent", &Node::getParentNode)
-        .addFunction("setparent", &Node::setParentNode)
-        .addFunction("getchildren", &Node::getChildren)
-		.endClass();
-}
-
 void Node::update(float delta)
 {
 	getTransform()->update();
-    if (m_script != NULL)
-		m_script->update(delta);
+//    if (m_script != NULL)
+//		m_script->update(delta);
+    for (auto& comp : m_components)
+    {
+        comp->update(delta);
+    }
 }
 
 void Node::create()
 {
-    if (m_script != NULL)
-        m_script->init();
+//    if (m_script != NULL)
+//        m_script->init();
+    for (auto& comp : m_components)
+    {
+        comp->create();
+    }
 }
 
 void Node::createAll()
@@ -127,4 +146,22 @@ void Node::createAll()
     {
         ob->createAll();
     }
+}
+
+void Node::RegisterObject(lua_State* L)
+{
+    using namespace luabridge;
+
+    getGlobalNamespace(L)
+        .beginClass<Node>("Node")
+        .addConstructor<void(*)(void)>()
+        .addFunction("addChild", &Node::addChild)
+        .addFunction("getNode", &Node::getNode)
+        .addProperty("transform", &Node::getTransform)
+        .addFunction("getname", &Node::getName)
+        .addFunction("rename", &Node::setName)
+        .addFunction("getparent", &Node::getParentNode)
+        .addFunction("setparent", &Node::setParentNode)
+        .addFunction("getchildren", &Node::getChildren)
+        .endClass();
 }

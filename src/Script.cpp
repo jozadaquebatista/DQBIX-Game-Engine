@@ -1,5 +1,5 @@
 #include "../include/Script.h"
-#include "../include/Node.h"
+#include "../include/component.h"
 
 Script::Script(std::string scriptfile, LuaEngine* L)
     : m_L(L),
@@ -43,12 +43,12 @@ void Script::destroy()
 		on_destroy(m_owner);
 }
 
-void Script::setOwner(Node* own)
+void Script::setOwner(Component* own)
 {
 	m_owner = own;
 }
 
-Node* Script::getOwner() const
+Component* Script::getOwner() const
 {
 	return m_owner;
 }

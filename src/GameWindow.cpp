@@ -184,7 +184,8 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	AnimatedSprite::RegisterObject(eng->getState());
 	Input::RegisterObject(eng->getState());
     SceneTree::RegisterObject(eng->getState());
-
+    Component::RegisterObject(eng->getState());
+    Light::RegisterObject(eng->getState());
 }
 
 bool GameWindow::closed()

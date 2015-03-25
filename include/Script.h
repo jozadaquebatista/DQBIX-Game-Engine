@@ -9,7 +9,7 @@
 #include "LuaEngine.hpp"
 #include "Helpers.hpp"
 
-class Node;
+class Component;
 class Script
 {
 public:
@@ -23,8 +23,8 @@ public:
 
 	LuaEngine* getEngine() { return m_L; }
 
-	void setOwner(Node* own);
-	Node* getOwner() const;
+    void setOwner(Component* own);
+    Component* getOwner() const;
 
 private:
 	void operator=(Script s) {}
@@ -37,7 +37,7 @@ private:
 	luabridge::LuaRef on_destroy;
 	luabridge::LuaRef on_update;
 
-	Node* m_owner;
+    Component* m_owner;
 };
 
 #endif //__NIX_SCRIPT__

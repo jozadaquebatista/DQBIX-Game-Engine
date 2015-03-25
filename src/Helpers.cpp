@@ -7,3 +7,15 @@ std::string readFile(std::string filepath)
                      std::istreambuf_iterator<char>());
     return str;
 }
+
+
+
+int stringToInt(std::string text)
+{
+    int ret = 0;
+    for (char& c : text)
+    {
+        ret += (int)c;
+    }
+    return ret;
+}

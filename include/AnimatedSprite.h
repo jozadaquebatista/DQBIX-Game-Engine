@@ -31,6 +31,7 @@ public:
 	void step();
 	void draw();
 	void update(float delta);
+    bool hovered(point mousepos);
 
 	static void RegisterObject(lua_State* L);
 private:

@@ -1,5 +1,5 @@
 #include "..\include\SceneTree.h"
-
+#include "../include/GameWindow.h"
 
 SceneTree::SceneTree() : m_root(0)
 {
@@ -24,6 +24,11 @@ void SceneTree::render()
 void SceneTree::update(float delta)
 {
     m_root->updateAll(delta);
+}
+
+void SceneTree::setEngine(GameWindow *win)
+{
+    getRootNode()->setEngine(win);
 }
 
 void SceneTree::RegisterObject(lua_State *L)
