@@ -14,6 +14,7 @@
 #include "Time.h"
 #include "Input.h"
 #include "sdl_backend.h"
+#include "audio.h"
 #include "light.h"
 #include <string>
 
@@ -42,8 +43,11 @@ public:
 
     static void RegisterObject(lua_State* L);
 
+    float getFps() const;
+
 private:
-	void ortho_2d(float* mat, int left, int right, int bottom, int top);
+    float fps;
+    void ortho_2d(float* mat, int left, int right, int bottom, int top);
 	SceneTree* m_tree;
     LuaEngine* eng;
 };

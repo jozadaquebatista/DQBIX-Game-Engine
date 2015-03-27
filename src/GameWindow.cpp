@@ -78,6 +78,7 @@ void GameWindow::mainloop()
 				running = false;
 
 			m_tree->update(frameTime);
+            fps = frameTime;
 
 			if (frameCounter >= Time::SECOND)
 			{
@@ -111,6 +112,16 @@ void GameWindow::RegisterObject(lua_State *L)
             .addFunction("getWidth", &GameWindow::getWidth)
             .addFunction("getHeight", &GameWindow::getHeight)
             .endClass();
+}
+float GameWindow::getFps() const
+{
+    return fps;
+}
+
+void GameWindow::useAsRenderTarget()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, getWidth(), getHeight());
 }
 
 GameWindow::~GameWindow()
@@ -162,6 +173,7 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	Projection = make_mat4(mat);
 
 	RenderUtil::initGraphics(GameWindow::getWidth(), GameWindow::getHeight());
+    useAsRenderTarget();
 
 #ifndef MODERN_OPENGL
     glMatrixMode(GL_PROJECTION);
@@ -185,6 +197,7 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	Input::RegisterObject(eng->getState());
     SceneTree::RegisterObject(eng->getState());
     Component::RegisterObject(eng->getState());
+    AudioClip::RegisterObject(eng->getState());
 }
 
 bool GameWindow::closed()

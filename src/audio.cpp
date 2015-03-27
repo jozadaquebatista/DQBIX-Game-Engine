@@ -1,6 +1,6 @@
 #include "../include/audio.h"
 
-audio::audio(std::string filename)
+AudioClip::AudioClip(std::string filename)
 {
 	pan = 0.0f;
 	volume = 1.0f;
@@ -15,12 +15,12 @@ audio::audio(std::string filename)
 }
 
 
-audio::~audio()
+AudioClip::~AudioClip()
 {
 	if (hm) BASS_SampleFree(hm);
 }
 
-void audio::play()
+void AudioClip::play()
 {
 	if (loop)
 		BASS_ChannelFlags(hm, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP);
@@ -49,7 +49,7 @@ void audio::play()
 	}
 }
 
-void audio::pause()
+void AudioClip::pause()
 {
 	oshot = true;
 	if (playing)
@@ -59,7 +59,7 @@ void audio::pause()
 	}
 }
 
-void audio::stop()
+void AudioClip::stop()
 {
 	oshot = true;
 	if (playing)

@@ -20,7 +20,7 @@ void init()
     spr->getTransform()->setTranslation(Vector3(250.0f, 250.0f, 0.0f));
     spr->addComponent(new SimpleMove());
 
-    tex = new Text("../res/dfont.ttf", 18);
+    tex = new Text("dfont.ttf", 18);
     tex->setName("label");
     tex->setText("DQBIX Game Engine Test");
     tex->setColor(1.0f, 1.0f, 1.0f, 1.0f);

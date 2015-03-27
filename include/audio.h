@@ -1,19 +1,20 @@
-#ifndef __IX_AUDIO__
-#define __IX_AUDIO__
+#ifndef __IX_AUDIOCLIP__
+#define __IX_AUDIOCLIP__
 #pragma once
 
 #include <string>
 #include "audio_backend.h"
-
 #include "lua.hpp"
-class audio
+#include "component.h"
+
+class AudioClip : public Component
 {
 public:
-	audio(std::string filename = "");
-        audio(const audio&) {}
-	void operator=(audio other) {}
+    AudioClip(std::string filename = "");
+        AudioClip(const AudioClip&) {}
+    void operator=(AudioClip other) {}
 
-	virtual ~audio();
+    virtual ~AudioClip();
 
 	void play();
 	void pause();
@@ -22,21 +23,21 @@ public:
 	float volume, pitch, pan;
 	bool loop, play_once, playing;
 
-	inline static void lua_reg(lua_State* L)
+    inline static void RegisterObject(lua_State* L)
 	{
 		using namespace luabridge;
 		getGlobalNamespace(L)
-			.beginClass<audio>("sound")
+            .beginClass<AudioClip>("AudioClip")
 			.addConstructor<void(*)(std::string)>()
-			.addFunction("play", &audio::play)
-			.addFunction("pause", &audio::pause)
-			.addFunction("stop", &audio::stop)
-			.addData("volume", &audio::volume)
-			.addData("pitch", &audio::pitch)
-			.addData("pan", &audio::pan)
-			.addData("loop", &audio::loop)
-			.addData("playonce", &audio::play_once)
-			.addData("playing", &audio::playing, false)
+            .addFunction("play", &AudioClip::play)
+            .addFunction("pause", &AudioClip::pause)
+            .addFunction("stop", &AudioClip::stop)
+            .addData("volume", &AudioClip::volume)
+            .addData("pitch", &AudioClip::pitch)
+            .addData("pan", &AudioClip::pan)
+            .addData("loop", &AudioClip::loop)
+            .addData("playonce", &AudioClip::play_once)
+            .addData("playing", &AudioClip::playing, false)
 			.endClass();
 	}
 private:
@@ -44,4 +45,4 @@ private:
 	HSTREAM hm;
 };
 
-#endif //__IX_AUDIO__
+#endif //__IX_AUDIOCLIP__
