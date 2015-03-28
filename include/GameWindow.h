@@ -44,7 +44,7 @@ public:
     static void RegisterObject(lua_State* L);
 
     float getFps() const;
-
+    void useAsRenderTarget();
 private:
     float fps;
     void ortho_2d(float* mat, int left, int right, int bottom, int top);

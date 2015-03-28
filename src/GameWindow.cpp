@@ -173,7 +173,6 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	Projection = make_mat4(mat);
 
 	RenderUtil::initGraphics(GameWindow::getWidth(), GameWindow::getHeight());
-    useAsRenderTarget();
 
 #ifndef MODERN_OPENGL
     glMatrixMode(GL_PROJECTION);
