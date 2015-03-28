@@ -47,21 +47,21 @@ void imageResource::initRenderTargets(int attachment)
 {
 	if (attachment == NULL) return;
 
-	int* drawBuffers = new int[1];
-
-	drawBuffers[0] = attachment;
-
 	if (m_fbo == 0)
 	{
 		glGenFramebuffers(1, (GLuint*)&m_fbo);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 	}
 	glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, getTarget(), m_id, 0);
-
 	if (m_fbo == 0) return;
-	glDrawBuffers(1, (const GLenum*)&drawBuffers);
+
+    GLenum drawBuffers[1] = {attachment};
+
+    glDrawBuffers(1, drawBuffers);
+
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
+        printf("Could not create render targets.");
 		exit(EXIT_FAILURE);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

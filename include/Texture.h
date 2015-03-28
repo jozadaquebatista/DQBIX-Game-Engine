@@ -27,8 +27,14 @@ public:
 	Texture(const Texture& texture);
 	void operator=(Texture texture);
 
-	Texture(int w, int h, unsigned char* data = 0, int target = GL_TEXTURE_2D, int filter = GL_LINEAR, int internalFmt = 0,
-		  int format = 0, bool clamp = false, int attachment = 0);
+    Texture(int w, int h,
+            unsigned char* data = 0,
+            int target = GL_TEXTURE_2D,
+            int filter = GL_LINEAR,
+            int internalFmt = 0,
+            int format = 0,
+            bool clamp = false,
+            int attachment = 0);
 	Texture(const std::string filename, int target, int filter);
 
 	Texture(std::string filename);
@@ -53,7 +59,7 @@ public:
 	rect getCliprect() const { return cliprect; }
 	void setCliprect(rect val) { cliprect = val; }
 
-	// Useful for sprite animation
+    // For sprite animation and tilemaps
 	inline vec4 getTransformedClipRect()
 	{
 		float crw = (float)getCliprect().w / (float)getResource()->getWidth();
@@ -63,6 +69,7 @@ public:
 
         return vec4(crx * getCliprect().cols, cry * getCliprect().rows, crw, crh);
 	}
+
 	Mesh* getShape() const { return m_quad; }
 
 	imageResource* getResource() const { return m_resource; }
@@ -78,7 +85,6 @@ public:
 			.endClass();
 	}
 
-	static SDL_Surface* loadicon(const char* filename);
 private:
 	std::map<std::string, imageResource*> m_loadedImages;
 	imageResource* m_resource;
@@ -88,6 +94,16 @@ private:
 	
 	Mesh* m_quad;
 	void create_mesh();
+
+    void init(int w, int h,
+              unsigned char* data = 0,
+              int target = GL_TEXTURE_2D,
+              int filter = GL_LINEAR,
+              int internalFmt = 0,
+              int format = 0,
+              bool clamp = false,
+              int attachment = 0,
+              std::string filename = "");
 };
 
 #endif //__IX_IMAGE__

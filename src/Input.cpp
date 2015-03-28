@@ -32,7 +32,6 @@ void Input::update()
 
 	while (SDL_PollEvent(&evt))
 	{
-
 		if (evt.type == SDL_MOUSEMOTION)
 		{
 			mX = evt.motion.x;
@@ -48,7 +47,7 @@ void Input::update()
 		}
 		if (evt.type == SDL_KEYUP)
 		{
-			int value = evt.key.keysym.sym;
+            int value = evt.key.keysym.sym;
 
 			inputs[value] = false;
 			upKeys[value] = true;
