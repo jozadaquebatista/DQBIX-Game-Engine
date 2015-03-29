@@ -42,7 +42,7 @@ public:
 	virtual ~Texture();
 
 	int getFilter() const { return filter; }
-	void setFilter(int val) { filter = val; }
+    void setFilter(int val);
 
 	void useAsRenderTarget();
 	void bind();

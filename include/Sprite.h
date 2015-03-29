@@ -8,23 +8,26 @@
 
 #include "Node.h"
 #include "collisiondetection.h"
+#include "Material.h"
 
 class Sprite : public Node
 {
 public:
 	Sprite(std::string filename);
+    Sprite(std::string filename, std::string normal_filename);
 	virtual ~Sprite();
 
-	void draw();
+    void draw(SceneTree* tree);
     bool hovered(point mousepos);
 
-	Texture* getTexture() const { return m_texture; }
-	void setTexture(Texture* tex) { m_texture = tex; }
-
 	static void RegisterObject(lua_State* L);
+
+    Material* getMaterial() const;
+    void setMaterial(Material *material);
+
 private:
-	Shader* m_shader;
-	Texture* m_texture;
+    Material* m_material;
+    Shader* m_shader;
 };
 
 #endif //__NIX_SPRITE__

@@ -16,7 +16,7 @@ AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols, float speed, 
 	m_shader->fromString(default_vert, default_frag);
 	m_shader->compile();
 	m_shader->addCommonUniforms();
-	m_shader->addUniform("image");
+    m_shader->addUniform("diffuse");
 	m_shader->addUniform("cliprect");
 #endif
 }
@@ -66,7 +66,7 @@ void AnimatedSprite::step()
 	m_sheet->setCliprect(clip);
 }
 
-void AnimatedSprite::draw()
+void AnimatedSprite::draw(SceneTree* tree)
 {
 	if (!m_sheet) return;
 
@@ -78,7 +78,7 @@ void AnimatedSprite::draw()
     if (m_shader != NULL)
 	{
 		m_shader->use();
-		m_shader->setInt("image", 0);
+        m_shader->setInt("diffuse", 0);
 		m_shader->setVec4("cliprect", tr.x, tr.y, tr.z, tr.w);
 		m_shader->setMatrix("model", getTransform()->getTransformation());
 		m_shader->setMatrix("proj", GameWindow::Projection);

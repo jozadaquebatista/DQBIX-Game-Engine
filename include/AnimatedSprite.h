@@ -29,7 +29,7 @@ public:
 	int getIndex() const { return m_index; }
 
 	void step();
-	void draw();
+    void draw(SceneTree* tree);
 	void update(float delta);
     bool hovered(point mousepos);
 

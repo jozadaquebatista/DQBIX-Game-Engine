@@ -88,7 +88,7 @@ Texture::Texture(const Texture& texture)
 	m_resource->addReference();
 }
 
-Texture::Texture(std::string filename) : Texture(filename, GL_TEXTURE_2D, GL_NEAREST)
+Texture::Texture(std::string filename) : Texture(filename, GL_TEXTURE_2D, GL_LINEAR)
 {
 
 }
@@ -113,9 +113,15 @@ Texture::~Texture()
 	SAFE_DELETE(m_quad);
 }
 
+void Texture::setFilter(int val)
+{
+    filter = val;
+    m_resource->setFilter(filter);
+}
+
 void Texture::useAsRenderTarget()
 {
-	m_resource->useAsRenderTarget();
+    m_resource->useAsRenderTarget();
 }
 
 void Texture::bind()

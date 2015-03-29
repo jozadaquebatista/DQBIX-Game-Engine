@@ -18,7 +18,7 @@ void SceneTree::create()
 
 void SceneTree::render()
 {
-	m_root->drawAll();
+    m_root->drawAll(this);
 }
 
 void SceneTree::update(float delta)
@@ -29,6 +29,11 @@ void SceneTree::update(float delta)
 void SceneTree::setEngine(GameWindow *win)
 {
     getRootNode()->setEngine(win);
+}
+
+GameWindow *SceneTree::getEngine()
+{
+    return getRootNode()->getEngine();
 }
 
 void SceneTree::RegisterObject(lua_State *L)

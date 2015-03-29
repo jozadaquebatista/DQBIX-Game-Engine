@@ -22,12 +22,35 @@ public:
 	Texture* getNormalTexture() const { return m_normal; }
 	void setNormalTexture(Texture* tex) { m_normal = tex; }
 
+    float getSpecularPower() const;
+    void setSpecularPower(float getSpecularPower);
+
+    float getNormalPower() const;
+    void setNormalPower(float getNormalPower);
+
+    bool getIsSshadeless() const;
+    void setShadeless(bool getIsSshadeless);
+
+    void setDiffuseColor(float r, float g, float b, float a);
+    void setSpecularColor(float r, float g, float b, float a);
+
+    float getSpecularHardness() const;
+    void setSpecularHardness(float getSpecularHardness);
+
+    float dR, dG, dB, dA;
+    float sR, sG, sB, sA;
+
 private:
-	float dR, dG, dB, dA;
-	float m_normal_power;
+    Material(Material&& mat) {}
+    void operator=(Material mat) {}
+
+    float m_specularPower;
+    float m_specularHardness;
+    float m_normalPower;
+    bool m_shadeless;
+
 	Texture* m_diffuse;
-	Texture* m_normal;
-	Shader* m_matshader;
+    Texture* m_normal;
 };
 
 #endif // __NIX_MATERIAL__
