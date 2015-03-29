@@ -5,7 +5,7 @@ See: [Wiki](https://github.com/DCubix/DQBIX-Game-Engine/wiki)
 ## Engine Redesign Project
 Goal: Re-Design the entire engine. [ 55% ]
 
-![Screenshot](http://i.imgur.com/nsPkvzr.png)
+![Screenshot](http://i.imgur.com/lRAKwdW.gif)
 
 Features (Old Engine)
 -------------------------------------
