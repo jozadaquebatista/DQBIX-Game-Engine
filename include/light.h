@@ -19,6 +19,7 @@ public:
         _castshadow = false;
 
         intens = 160.0f;
+        m_radius = 2.0f;
 	}
 
     Color getColor() const { return _color; }
@@ -28,6 +29,9 @@ public:
         _color.g = g;
         _color.b = b;
         _color.a = a;
+        fx = 0.0f;
+        fy = 0.0f;
+        fz = 0.02f;
     }
 
 	bool getCastshadow() const { return _castshadow; }
@@ -59,12 +63,15 @@ public:
             .addProperty("intensity", &Light::getIntensity, &Light::setIntensity)
 			.endClass();
 	}
+    float getRadius() const;
+    void setRadius(float getRadius);
+
 private:
     Color _color;
-	bool _castshadow;
+    bool _castshadow;
 
-	float fx, fy, fz;
-    float intens;
+    float fx, fy, fz;
+    float intens, m_radius;
 };
 
 #endif //__IX_LIGHT__

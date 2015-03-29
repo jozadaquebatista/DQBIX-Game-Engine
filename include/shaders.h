@@ -6,32 +6,6 @@
 
 #include <string>
 
-const std::string shaded_frag = "#version 120\n"
-"uniform sampler2D diffuse;"
-"uniform sampler2D normal;"
-"uniform vec2 Resolution;"
-"uniform vec3 LightPos;"
-"uniform vec4 LightColor;"
-"uniform vec4 AmbientColor;"
-"uniform vec3 Falloff;"
-"varying vec2 texcoord;"
-"void main()"
-"{"
-"	vec4 diffuseColor = texture2D(diffuse, texcoord);"
-"	vec3 normalMap = texture2D(normal, texcoord).xyz;"
-"	vec3 lightDir = vec3(LightPos.xy - (gl_FragCoord.xy / Resolution.xy), LightPos.z);"
-"	lightDir.x *= Resolution.x / Resolution.y;"
-"	float D = length(lightDir);"
-"	vec3 N = normalize(normalMap * 2.0 - 1.0);"
-"	vec3 L = normalize(lightDir);"
-"	vec3 diffusePremul = (LightColor.rgb * LightColor.a) * max(dot(N, L), 0.0);"
-"	vec3 Ambient = AmbientColor.rgb * AmbientColor.a;"
-"	float Attenuation = 1.0 / (Falloff.x + (Falloff.y*D) + (Falloff.z*D*D));"
-"	vec3 Intensity = Ambient + diffusePremul * Attenuation;"
-"	vec3 FinalColor = diffuseColor.rgb * Intensity;"
-"	gl_FragColor = vec4(FinalColor, diffuseColor.a);"
-"}";
-
 const std::string text_vert = "#version 120\n"
 "attribute vec2 position;"
 "attribute vec2 coord;"
@@ -51,7 +25,6 @@ const std::string text_frag = "#version 120\n"
 "void main()"
 "{"
 "	vec4 tex = texture2D(image, texcoord);"
-" // libdrawtext generates a black font. So we need to invert it in order to tint it\n"
 "	vec4 inv = vec4(1.0-tex.rgb, tex.a);"
 "	gl_FragColor = color * inv;"
 "}";
@@ -78,10 +51,10 @@ const std::string default_frag = _ST( #version 120\n
                                      uniform sampler2D normal;
                                      uniform vec3 u_lightPos;
                                      uniform vec4 u_lightColor;
+                                     uniform vec3 u_lightFalloff;
                                      uniform vec4 u_ambientColor;
                                      uniform float u_lightIntens;
                                      uniform float m_specularPower;
-                                     uniform float m_specularHard;
                                      uniform float m_normalPower;
                                      uniform vec4 m_diffuseColor;
                                      uniform vec4 m_specularColor;
@@ -95,22 +68,31 @@ const std::string default_frag = _ST( #version 120\n
                                          vec4 color_tex = texture2D(diffuse, texcoord);
                                          vec4 normal_tex = texture2D(normal, texcoord);
 
-                                         vec3 n = normal_tex.xyz * 2.0 - vec3(1.0, 1.0, 1.0);
-                                         n *= m_normalPower;
+                                         // Get the distance
+                                         float D = length(vertPos - lightPos);
 
-                                         float distance = distance(vertPos, lightPos);
-                                         vec3 lightDirection = normalize(lightPos - vertPos);
+                                         float intensity = 1.0 / ( u_lightFalloff.x + (u_lightFalloff.y*D) + (u_lightFalloff.z*D*D));
 
-                                         float f = clamp(dot(n, lightDirection), 0.0, 1.0);
+                                         vec3 N = normalize((2.0 * normal_tex.xyz) - 1.0);
+                                         N *= m_normalPower;
+                                         vec3 L = normalize(lightPos - vertPos);
 
-                                         vec3 r = reflect(-lightDirection, n);
-                                         float fcos = clamp(dot(vec3(0.0, 0.0, 1.0), r), 0.0, 1.0);
+                                         float diffusePower = max(dot(N, L), 0.0);
+                                         vec3 diffuseComponent = diffusePower * m_diffuseColor.rgb * u_lightIntens;
 
-                                         vec4 ambient = u_ambientColor;
-                                         vec4 diffuse = m_diffuseColor * u_lightColor * f * u_lightIntens / distance / distance;
-                                         vec4 specular = m_specularColor * pow(fcos, 32.0) / (m_specularHard + 0.0001);
+                                         vec3 R = reflect(-L, N);
+                                         float specularPower = 0.0;
 
-                                         gl_FragColor = color_tex * (ambient + diffuse + (m_specularPower * specular));
+                                         if (diffusePower > 0.0) {
+                                             float StoC = max(dot(vec3(0.0, 0.0, 1.0), R), 0.0);
+                                             specularPower = pow(StoC, m_specularPower);
+                                         }
+                                         vec3 specularComponent = specularPower * m_specularColor.rgb * u_lightIntens;
+
+                                         vec3 linearColor = u_ambientColor.rgb + intensity * (diffuseComponent + specularComponent);
+                                         vec3 finalColor = u_lightColor.rgb * color_tex.rgb * linearColor;
+
+                                         gl_FragColor = vec4(finalColor, color_tex.a);
                                      } );
 
 #endif //__IX_SHADERS__

@@ -3,7 +3,7 @@
 
 AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols, float speed, bool loop)
 {
-	m_sheet = sheet;
+    m_material = new Material(sheet);
 	m_loop = loop;
 	m_cols = cols;
 	m_rows = rows;
@@ -12,26 +12,70 @@ AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols, float speed, 
 	m_clock.Start();
 
 #ifdef MODERN_OPENGL
-	m_shader = new Shader();
-	m_shader->fromString(default_vert, default_frag);
-	m_shader->compile();
-	m_shader->addCommonUniforms();
+    m_shader = new Shader();
+    m_shader->fromString(default_vert, default_frag);
+
+    m_shader->compile();
+    m_shader->addCommonUniforms();
     m_shader->addUniform("diffuse");
-	m_shader->addUniform("cliprect");
+    if (m_material->getNormalTexture() != NULL)
+        m_shader->addUniform("normal");
+    m_shader->addUniform("cliprect");
+    m_shader->addUniform("u_lightPos");
+    m_shader->addUniform("u_lightColor");
+    m_shader->addUniform("u_lightIntens");
+    m_shader->addUniform("u_ambientColor");
+    m_shader->addUniform("m_specularPower");
+    m_shader->addUniform("m_normalPower");
+    m_shader->addUniform("m_diffuseColor");
+    m_shader->addUniform("m_specularColor");
+    m_shader->addUniform("u_lightFalloff");
+#endif
+}
+
+AnimatedSprite::AnimatedSprite(Texture *sheet, Texture *sheet_norm, int rows, int cols, float speed, bool loop)
+{
+    m_material = new Material(sheet, sheet_norm);
+    m_loop = loop;
+    m_cols = cols;
+    m_rows = rows;
+    m_speed = speed;
+    m_index = 0;
+    m_clock.Start();
+
+#ifdef MODERN_OPENGL
+    m_shader = new Shader();
+    m_shader->fromString(default_vert, default_frag);
+
+    m_shader->compile();
+    m_shader->addCommonUniforms();
+    m_shader->addUniform("diffuse");
+    if (m_material->getNormalTexture() != NULL)
+        m_shader->addUniform("normal");
+    m_shader->addUniform("cliprect");
+    m_shader->addUniform("u_lightPos");
+    m_shader->addUniform("u_lightColor");
+    m_shader->addUniform("u_lightIntens");
+    m_shader->addUniform("u_ambientColor");
+    m_shader->addUniform("m_specularPower");
+    m_shader->addUniform("m_normalPower");
+    m_shader->addUniform("m_diffuseColor");
+    m_shader->addUniform("m_specularColor");
+    m_shader->addUniform("u_lightFalloff");
 #endif
 }
 
 
 AnimatedSprite::~AnimatedSprite()
 {
-	SAFE_DELETE(m_sheet);
+    SAFE_DELETE(m_material);
 	SAFE_DELETE(m_shader);
 }
 
 void AnimatedSprite::step()
 {
 	if (m_index < 0) m_index = 0;
-	if (m_sheet == NULL) return;
+    if (m_material == NULL) return;
 	if (m_cols <= 0 || m_rows <= 0) return;
 
 	int fc = m_rows * m_cols;
@@ -49,8 +93,8 @@ void AnimatedSprite::step()
 	int i = 0;
 	i = m_index;
 
-	int w = m_sheet->getResource()->getWidth() / m_cols;
-	int h = m_sheet->getResource()->getHeight() / m_rows;
+    int w = m_material->getDiffuseTexture()->getResource()->getWidth() / m_cols;
+    int h = m_material->getDiffuseTexture()->getResource()->getHeight() / m_rows;
 
 	int ax = i % m_cols * w;
 	int ay = (int)(i / m_cols) * h;
@@ -63,53 +107,83 @@ void AnimatedSprite::step()
 	clip.frame = i;
 	clip.cols = m_cols;
 	clip.rows = m_rows;
-	m_sheet->setCliprect(clip);
+    m_material->getDiffuseTexture()->setCliprect(clip);
+    if (m_material->getNormalTexture() != NULL)
+        m_material->getNormalTexture()->setCliprect(clip);
 }
 
 void AnimatedSprite::draw(SceneTree* tree)
 {
-	if (!m_sheet) return;
+    if (!m_material) return;
 
-	vec4 tr = m_sheet->getTransformedClipRect();
+    m_material->getDiffuseTexture()->use(0);
+    if (m_material->getNormalTexture() != NULL)
+        m_material->getNormalTexture()->use(1);
 
-	m_sheet->bind();
+    vec4 tr = m_material->getDiffuseTexture()->getTransformedClipRect();
 
 #ifdef MODERN_OPENGL
-    if (m_shader != NULL)
-	{
-		m_shader->use();
+    std::vector<Light*> lights = tree->getLights();
+    if (m_shader != nullptr)
+    {
+        m_shader->use();
         m_shader->setInt("diffuse", 0);
-		m_shader->setVec4("cliprect", tr.x, tr.y, tr.z, tr.w);
-		m_shader->setMatrix("model", getTransform()->getTransformation());
-		m_shader->setMatrix("proj", GameWindow::Projection);
-	}
+        m_shader->setVec4("cliprect", tr.x, tr.y, tr.z, tr.w);
+        m_shader->setMatrix("model", getTransform()->getTransformation());
+        m_shader->setMatrix("proj", GameWindow::Projection);
 
-	m_sheet->getShape()->draw(GL_TRIANGLE_STRIP);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        if (m_material->getIsSshadeless())
+        {
+            m_shader->setVec4("u_ambientColor", 1.0f, 1.0f, 1.0f, 1.0f);
+            m_material->getDiffuseTexture()->getShape()->draw(GL_TRIANGLE_STRIP);
+        }
+        else
+        {
+            if (m_material->getNormalTexture() != NULL)
+                m_shader->setInt("normal", 1);
 
-	glUseProgram(0);
-#else
-    float w2 = (float)m_sheet->getResource()->getWidth() / 2.0f;
-    float h2 = (float)m_sheet->getResource()->getHeight() / 2.0f;
+            m_shader->setFloat("m_specularPower", m_material->getSpecularPower());
+            m_shader->setFloat("m_normalPower", m_material->getNormalPower());
+            m_shader->setVec4("m_diffuseColor", m_material->dR,
+                                                m_material->dG,
+                                                m_material->dB,
+                                                m_material->dA);
+            m_shader->setVec4("m_specularColor", m_material->sR,
+                                                 m_material->sG,
+                                                 m_material->sB,
+                                                 m_material->sA);
+            Color ambient = tree->getEngine()->getAmbient();
+            m_shader->setVec4("u_ambientColor", ambient.r, ambient.g, ambient.b, ambient.a);
 
-    float crx = tr.x / m_sheet->getCliprect().cols;
-    float cry = tr.y / m_sheet->getCliprect().rows;
-    float crw = tr.z;
-    float crh = tr.w;
+            if (lights.size() > 0)
+            {
 
-    glPushMatrix();
+                glBlendFunc(GL_ONE, GL_ONE);
+                glBlendEquation(GL_FUNC_ADD);
 
-    glMultMatrixf(value_ptr(getTransform()->getTransformation()));
+                for (Light*& l : lights)
+                {
+                    Vector3 lpos = l->getTransform()->getTranslation();
+                    Color lcol = l->getColor();
+                    m_shader->setVec3("u_lightPos", lpos.x, lpos.y, lpos.z);
+                    m_shader->setVec4("u_lightColor", lcol.r, lcol.g, lcol.b, lcol.a);
+                    m_shader->setFloat("u_lightIntens", l->getIntensity());
+                    m_shader->setVec3("u_lightFalloff", l->getConstant(), l->getLinear(), l->getQuadratic());
 
-    glBegin(GL_QUADS);
+                    m_material->getDiffuseTexture()->getShape()->draw(GL_TRIANGLE_STRIP);
+                }
+            }
+            else
+            {
+                m_material->getDiffuseTexture()->getShape()->draw(GL_TRIANGLE_STRIP);
+            }
+        }
+        glDisable(GL_BLEND);
+    }
 
-    glTexCoord2f(crx,         cry); glVertex2f(-1.0f*w2, -1.0f*h2);
-    glTexCoord2f(crx+crw,     cry); glVertex2f( 1.0f*w2, -1.0f*h2);
-    glTexCoord2f(crx+crw, cry+crh); glVertex2f( 1.0f*w2,  1.0f*h2);
-    glTexCoord2f(crx,     cry+crh); glVertex2f(-1.0f*w2,  1.0f*h2);
-
-    glEnd();
-
-    glPopMatrix();
+    glUseProgram(0);
 #endif
 }
 
@@ -121,14 +195,24 @@ void AnimatedSprite::update(float delta)
 
 bool AnimatedSprite::hovered(point mousepos)
 {
-    if (!getSpriteSheet()) return false;
+    if (!m_material) return false;
 
     Vector3 pos = getTransform()->getTranslation();
-    float w = (float)getSpriteSheet()->getWidth();
-    float h = (float)getSpriteSheet()->getHeight();
+    float w = (float)m_material->getDiffuseTexture()->getWidth();
+    float h = (float)m_material->getDiffuseTexture()->getHeight();
     float sradius = w < h ? w / 2.0f : h / 2.0f;
 
     return (collisiondetection::circle(mousepos.x, mousepos.y, 2, pos.x, pos.y, sradius));
+}
+
+Material *AnimatedSprite::getMaterial() const
+{
+    return m_material;
+}
+
+void AnimatedSprite::setMaterial(Material *material)
+{
+    m_material = material;
 }
 
 void AnimatedSprite::RegisterObject(lua_State* L)

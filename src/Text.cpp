@@ -12,11 +12,12 @@ point* Text::measure_string(std::string str)
 	return new point(w, h);
 }
 
-void Text::draw()
+void Text::draw(SceneTree* tree)
 {
 	if (!fnth) return;
 
-	use();
+    use();
+    glActiveTexture(GL_TEXTURE0);
 #ifdef MODERN_OPENGL
 	if (m_shader != nullptr)
 	{

@@ -34,18 +34,15 @@ public:
     void setDiffuseColor(float r, float g, float b, float a);
     void setSpecularColor(float r, float g, float b, float a);
 
-    float getSpecularHardness() const;
-    void setSpecularHardness(float getSpecularHardness);
-
     float dR, dG, dB, dA;
     float sR, sG, sB, sA;
 
+    static Texture* DefaultNormal;
 private:
     Material(Material&& mat) {}
     void operator=(Material mat) {}
 
     float m_specularPower;
-    float m_specularHardness;
     float m_normalPower;
     bool m_shadeless;
 

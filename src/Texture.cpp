@@ -15,15 +15,11 @@ Texture::Texture(const std::string filename, int target, int filter)
 
     int w, h, comp;
     unsigned char* data = stbi_load(filename.c_str(), &w, &h, &comp, 4);
-    if (data == NULL)
+    if (data != NULL)
     {
-        printf("Failed to load image: %s\n", filename.c_str());
-        std::exit(-1);
+        init(w, h, data, target, filter, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0, filename);
+        stbi_image_free(data);
     }
-
-    init(w, h, data, target, filter, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0, filename);
-
-    stbi_image_free(data);
 }
 
 void Texture::init(int w, int h, unsigned char *data, int target, int filter, int internalFmt, int format, bool clamp, int attachment, std::string filename)
@@ -115,6 +111,7 @@ Texture::~Texture()
 
 void Texture::setFilter(int val)
 {
+    if (!m_resource) return;
     filter = val;
     m_resource->setFilter(filter);
 }
