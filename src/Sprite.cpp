@@ -23,7 +23,7 @@ Sprite::Sprite(std::string filename)
     m_shader->addUniform("m_normalPower");
     m_shader->addUniform("m_diffuseColor");
     m_shader->addUniform("m_specularColor");
-    m_shader->addUniform("m_specularHard");
+    m_shader->addUniform("u_lightFalloff");
 #endif
 }
 
@@ -49,7 +49,7 @@ Sprite::Sprite(std::string filename, std::string normal_filename)
     m_shader->addUniform("m_normalPower");
     m_shader->addUniform("m_diffuseColor");
     m_shader->addUniform("m_specularColor");
-    m_shader->addUniform("m_specularHard");
+    m_shader->addUniform("u_lightFalloff");
 #endif
 }
 
@@ -92,7 +92,6 @@ void Sprite::draw(SceneTree* tree)
             if (m_material->getNormalTexture() != NULL)
                 m_shader->setInt("normal", 1);
 
-            m_shader->setFloat("m_specularHard", m_material->getSpecularHardness());
             m_shader->setFloat("m_specularPower", m_material->getSpecularPower());
             m_shader->setFloat("m_normalPower", m_material->getNormalPower());
             m_shader->setVec4("m_diffuseColor", m_material->dR,
@@ -119,6 +118,7 @@ void Sprite::draw(SceneTree* tree)
                     m_shader->setVec3("u_lightPos", lpos.x, lpos.y, lpos.z);
                     m_shader->setVec4("u_lightColor", lcol.r, lcol.g, lcol.b, lcol.a);
                     m_shader->setFloat("u_lightIntens", l->getIntensity());
+                    m_shader->setVec3("u_lightFalloff", l->getConstant(), l->getLinear(), l->getQuadratic());
 
                     m_material->getDiffuseTexture()->getShape()->draw(GL_TRIANGLE_STRIP);
                 }

@@ -92,7 +92,7 @@ void GameWindow::mainloop()
 
 			if (frameCounter >= Time::SECOND)
 			{
-                printf("FPS: %d\n", frames);
+//                printf("FPS: %d\n", frames);
 				frames = 0;
 				frameCounter = 0;
 			}

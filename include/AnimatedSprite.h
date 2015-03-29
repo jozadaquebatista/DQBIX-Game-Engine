@@ -8,12 +8,14 @@
 
 #include "Node.h"
 #include "Stopwatch.h"
+#include "Material.h"
 
 class AnimatedSprite :
 	public Node
 {
 public:
 	AnimatedSprite(Texture* sheet = 0, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
+    AnimatedSprite(Texture* sheet = 0, Texture* sheet_norm = 0, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
 	virtual ~AnimatedSprite();
 
 	int getRows() const { return m_rows; }
@@ -24,9 +26,10 @@ public:
 	void setSpeed(float val) { m_speed = val; }
 	bool getLoop() const { return m_loop; }
 	void setLoop(bool val) { m_loop = val; }
-	Texture* getSpriteSheet() const { return m_sheet; }
-	void setSpriteSheet(Texture* val) { m_sheet = val; }
 	int getIndex() const { return m_index; }
+
+    Material* getMaterial() const;
+    void setMaterial(Material *material);
 
 	void step();
     void draw(SceneTree* tree);
@@ -40,11 +43,11 @@ private:
 	float m_speed;
 	bool m_loop;
 
-	Texture* m_sheet;
+    Material* m_material;
 	Shader* m_shader;
 	Stopwatch m_clock;
 
-        AnimatedSprite(AnimatedSprite&) {}
+    AnimatedSprite(AnimatedSprite&) {}
 	void operator=(AnimatedSprite texture) {}
 };
 

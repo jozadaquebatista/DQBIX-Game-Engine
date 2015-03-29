@@ -16,7 +16,7 @@ public:
 	void set_range(int from, int to);
 	void use();
 
-	void draw();
+    void draw(SceneTree* tree);
 
 	std::string getText() const { return m_text; }
 	void setText(std::string t) { m_text = t; }

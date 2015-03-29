@@ -1,5 +1,6 @@
 #include "..\include\Material.h"
 
+Texture* Material::DefaultNormal = 0;
 
 Material::Material()
 {
@@ -10,12 +11,25 @@ Material::Material()
     m_specularPower = 1.0f;
     m_normalPower = 1.0f;
     m_shadeless = false;
-    m_specularHardness = 1.0f;
+
+    // Default normal texture
+    unsigned char* data = new unsigned char[2 * 2 * 4];
+    for (int i = 0; i < 2 * 2 * 4; i += 4)
+    {
+        data[i]      = (unsigned char)128; // R
+        data[i + 1]  = (unsigned char)127; // G
+        data[i + 2]  = (unsigned char)254; // B
+        data[i + 3]  = (unsigned char)255; // A
+    }
+    Material::DefaultNormal = new Texture(2, 2, data, GL_TEXTURE_2D,
+                                          GL_NEAREST, GL_RGBA, GL_RGBA,
+                                          false, GL_COLOR_ATTACHMENT0);
 }
 
 Material::Material(Texture* diffuse) : Material()
 {
 	m_diffuse = diffuse;
+    m_normal = Material::DefaultNormal;
 }
 
 Material::Material(Texture* diffuse, Texture* normal) : Material(diffuse)
@@ -71,16 +85,3 @@ void Material::setSpecularColor(float r, float g, float b, float a)
     sB = b;
     sA = a;
 }
-float Material::getSpecularHardness() const
-{
-    return m_specularHardness;
-}
-
-void Material::setSpecularHardness(float specularHardness)
-{
-    m_specularHardness = specularHardness;
-}
-
-
-
-
