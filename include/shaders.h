@@ -2,6 +2,8 @@
 #define __IX_SHADERS__
 #pragma once
 
+#define _ST(x) #x
+
 #include <string>
 
 const std::string shaded_frag = "#version 120\n"
@@ -54,27 +56,61 @@ const std::string text_frag = "#version 120\n"
 "	gl_FragColor = color * inv;"
 "}";
 
-const std::string default_vert = "#version 120\n"
-							"attribute vec3 v_position;"
-							"attribute vec2 v_texcoord;"
-							"varying vec2 texcoord;"
-							"uniform mat4 model;"
-							"uniform mat4 proj;"
-							"uniform vec4 cliprect;"
-							"void main()"
-							"{"
-							"	gl_Position = proj * model * vec4(v_position, 1.0);"
+const std::string default_vert = _ST( #version 120\n
+                                     attribute vec3 v_position;
+                                     attribute vec2 v_texcoord;
+                                     varying vec2 texcoord;
+                                     varying vec4 vertex;
+                                     uniform mat4 model;
+                                     uniform mat4 proj;
+                                     uniform vec4 cliprect;
+                                     void main()
+                                     {
+                                        vec4 pos = vec4(v_position, 1.0);
+                                        vertex = model * pos;
+                                        gl_Position = proj * vertex;
+                                        texcoord.x = (cliprect.x + v_texcoord.x) * cliprect.z;
+                                        texcoord.y = (cliprect.y + v_texcoord.y) * cliprect.w;
+                                     } );
 
-							"	texcoord.x = (cliprect.x + v_texcoord.x) * cliprect.z;"
-							"	texcoord.y = (cliprect.y + v_texcoord.y) * cliprect.w;"
-							"}";
+const std::string default_frag = _ST( #version 120\n
+                                     uniform sampler2D diffuse;
+                                     uniform sampler2D normal;
+                                     uniform vec3 u_lightPos;
+                                     uniform vec4 u_lightColor;
+                                     uniform vec4 u_ambientColor;
+                                     uniform float u_lightIntens;
+                                     uniform float m_specularPower;
+                                     uniform float m_specularHard;
+                                     uniform float m_normalPower;
+                                     uniform vec4 m_diffuseColor;
+                                     uniform vec4 m_specularColor;
+                                     varying vec2 texcoord;
+                                     varying vec4 vertex;
+                                     void main()
+                                     {
+                                         vec3 lightPos = u_lightPos;
+                                         vec3 vertPos = vertex.xyz;
 
-const std::string default_frag = "#version 120\n"
-							"uniform sampler2D image;"
-							"varying vec2 texcoord;"
-							"void main()"
-							"{"
-							"	gl_FragColor = texture2D(image, texcoord);"
-							"}";
+                                         vec4 color_tex = texture2D(diffuse, texcoord);
+                                         vec4 normal_tex = texture2D(normal, texcoord);
+
+                                         vec3 n = normal_tex.xyz * 2.0 - vec3(1.0, 1.0, 1.0);
+                                         n *= m_normalPower;
+
+                                         float distance = distance(vertPos, lightPos);
+                                         vec3 lightDirection = normalize(lightPos - vertPos);
+
+                                         float f = clamp(dot(n, lightDirection), 0.0, 1.0);
+
+                                         vec3 r = reflect(-lightDirection, n);
+                                         float fcos = clamp(dot(vec3(0.0, 0.0, 1.0), r), 0.0, 1.0);
+
+                                         vec4 ambient = u_ambientColor;
+                                         vec4 diffuse = m_diffuseColor * u_lightColor * f * u_lightIntens / distance / distance;
+                                         vec4 specular = m_specularColor * pow(fcos, 32.0) / (m_specularHard + 0.0001);
+
+                                         gl_FragColor = color_tex * (ambient + diffuse + (m_specularPower * specular));
+                                     } );
 
 #endif //__IX_SHADERS__

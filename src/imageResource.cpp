@@ -76,7 +76,15 @@ void imageResource::useAsRenderTarget()
 {
 	glBindTexture(GL_TEXTURE_2D, m_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-	glViewport(0, 0, m_width, m_height);
+    glViewport(0, 0, m_width, m_height);
+}
+
+void imageResource::setFilter(int flt)
+{
+    glBindTexture(getTarget(), m_id);
+
+    glTexParameterf(getTarget(), GL_TEXTURE_MIN_FILTER, flt);
+    glTexParameterf(getTarget(), GL_TEXTURE_MAG_FILTER, flt);
 }
 
 void imageResource::addReference()

@@ -13,6 +13,7 @@
 #include <vector>
 #include "LuaEngine.hpp"
 
+class SceneTree;
 class GameWindow;
 class Node
 {
@@ -25,8 +26,8 @@ public:
 
 	Transform* getTransform() const { return m_transform; }
 
-	void drawAll();
-    virtual void draw();
+    void drawAll(SceneTree* tree);
+    virtual void draw(SceneTree* tree);
 	virtual void update(float delta);
     virtual bool hovered(point mousepos) {return false;}
 
@@ -44,6 +45,7 @@ public:
 	void setParentNode(Node* n) { m_parentnode = n; }
 
     void setEngine(GameWindow* win);
+    GameWindow* getEngine();
 
     luabridge::LuaRef getChildren(lua_State* L) const;
 

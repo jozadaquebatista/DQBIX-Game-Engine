@@ -38,14 +38,24 @@ void GameWindow::ortho_2d(float* mat, int left, int right, int bottom, int top)
 	*mat++ = (-(zFar + zNear)*inv_z);
 	*mat++ = (1.0f);
 }
+Color GameWindow::getAmbient() const
+{
+    return m_ambient;
+}
+
+void GameWindow::setAmbient(const Color &ambient)
+{
+    m_ambient = ambient;
+}
+
 
 void GameWindow::mainloop()
 {
-	running = true;
+    running = true;
 
-	const float frameTime = 1.0f / (float)FRAME_CAP;
+    const float frameTime = 1.0f / (float)FRAME_CAP;
 
-	int lastTime = Time::getTime();
+    int lastTime = Time::getTime();
 	float unprocessedTime = 0.0f;
 
 	int frames = 0;
@@ -82,6 +92,7 @@ void GameWindow::mainloop()
 
 			if (frameCounter >= Time::SECOND)
 			{
+                printf("FPS: %d\n", frames);
 				frames = 0;
 				frameCounter = 0;
 			}
@@ -182,6 +193,7 @@ void GameWindow::createWindow(int width, int height, std::string title)
 #endif
 
 	m_tree = new SceneTree();
+    m_tree->setEngine(this);
 
 	running = true;
 

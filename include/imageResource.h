@@ -37,6 +37,7 @@ public:
 
 	void use();
 	void useAsRenderTarget();
+    void setFilter(int flt);
 
 	void addReference();
 	bool removeReference();

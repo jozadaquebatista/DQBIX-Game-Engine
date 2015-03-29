@@ -45,11 +45,19 @@ public:
 
     float getFps() const;
     void useAsRenderTarget();
+
+    Color getAmbient() const;
+    void setAmbient(const Color &getAmbient);
+
 private:
+    GameWindow(GameWindow& win) {}
+    void operator=(GameWindow win) {}
+
     float fps;
     void ortho_2d(float* mat, int left, int right, int bottom, int top);
 	SceneTree* m_tree;
     LuaEngine* eng;
+    Color m_ambient;
 };
 
 #endif //__NIX_WINDOW__

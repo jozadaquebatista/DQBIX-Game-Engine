@@ -1,5 +1,6 @@
-#include "..\include\Node.h"
+#include "../include/Node.h"
 #include "../include/GameWindow.h"
+#include "../include/SceneTree.h"
 
 Node::Node()
 {
@@ -44,22 +45,22 @@ Node* Node::addComponent(Component *comp)
     return this;
 }
 
-void Node::drawAll()
+void Node::drawAll(SceneTree* tree)
 {
-	draw();
+    draw(tree);
 
 	for (auto& ob : m_children)
 	{
-		ob->drawAll();
+        ob->drawAll(tree);
 	}
 
 }
 
-void Node::draw()
+void Node::draw(SceneTree* tree)
 {
     for (auto& comp : m_components)
     {
-        comp->draw();
+        comp->draw(tree);
     }
 }
 
@@ -90,19 +91,21 @@ Node* Node::getNode(std::string name)
 
 void Node::setEngine(GameWindow *win)
 {
-    if (this->win != win)
-    {
-        this->win = win;
+    this->win = win;
 
-        for (auto& comp : m_components)
-        {
-            comp->addToEngine(win);
-        }
-        for (auto& n : m_children)
-        {
-            n->setEngine(win);
-        }
+    for (auto& comp : m_components)
+    {
+        comp->addToEngine(win);
     }
+    for (auto& n : m_children)
+    {
+        n->setEngine(win);
+    }
+}
+
+GameWindow *Node::getEngine()
+{
+    return this->win;
 }
 
 luabridge::LuaRef Node::getChildren(lua_State* L) const

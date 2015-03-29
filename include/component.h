@@ -5,6 +5,7 @@
 #include "Script.h"
 #include "Transform.h"
 
+class SceneTree;
 class GameWindow;
 class Node;
 class Component
@@ -19,7 +20,7 @@ public:
 
     virtual void create();
     virtual void destroy();
-    virtual void draw() {}
+    virtual void draw(SceneTree* tree) {}
     virtual void update(float delta);
 
     virtual void addToEngine(GameWindow* eng) {}

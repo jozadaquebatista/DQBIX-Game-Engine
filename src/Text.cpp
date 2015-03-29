@@ -21,7 +21,7 @@ void Text::draw()
 	if (m_shader != nullptr)
 	{
 		m_shader->use();
-		m_shader->setInt("image", 0);
+        m_shader->setInt("image", 0);
 		m_shader->setVec4("color", m_color.r, m_color.g, m_color.b, m_color.a);
 		m_shader->setMatrix("model", getTransform()->getTransformation());
 		m_shader->setMatrix("proj", GameWindow::Projection);
@@ -63,12 +63,10 @@ Text::~Text()
 Text::Text(std::string fontfile /*= ""*/, int sz/*=18*/)
 {
 	fnth = dtx_open_font(fontfile.c_str(), sz);
+    this->sz = sz;
 #ifdef MODERN_OPENGL
-	dtx_vertex_attribs(0, 1);
-#endif
-	this->sz = sz;
+    dtx_vertex_attribs(0, 1);
 
-#ifdef MODERN_OPENGL
 	m_shader = new Shader();
 	m_shader->fromString(text_vert, text_frag);
 
