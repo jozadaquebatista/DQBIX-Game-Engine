@@ -8,13 +8,14 @@
 
 #include "LuaEngine.hpp"
 #include "Helpers.hpp"
+#include <memory>
 
-class Component;
+class Node;
 class Script
 {
 public:
 	Script(std::string scriptfile, LuaEngine* L);
-	virtual ~Script();
+    Script(const char* source, LuaEngine* L, bool lf);
 
 	void compile();
 	void init();
@@ -23,8 +24,15 @@ public:
 
 	LuaEngine* getEngine() { return m_L; }
 
-    void setOwner(Component* own);
-    Component* getOwner() const;
+    void setOwner(Node* own)
+    {
+        m_owner = own;
+    }
+
+    Node* getOwner() const
+    {
+        return m_owner;
+    }
 
 private:
 	void operator=(Script s) {}
@@ -37,7 +45,7 @@ private:
 	luabridge::LuaRef on_destroy;
 	luabridge::LuaRef on_update;
 
-    Component* m_owner;
+    Node* m_owner;
 };
 
 #endif //__NIX_SCRIPT__

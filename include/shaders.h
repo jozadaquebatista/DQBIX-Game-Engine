@@ -73,7 +73,7 @@ const std::string default_frag = _ST( #version 120\n
 
                                          float intensity = 1.0 / ( u_lightFalloff.x + (u_lightFalloff.y*D) + (u_lightFalloff.z*D*D));
 
-                                         vec3 N = normalize((2.0 * normal_tex.xyz) - 1.0);
+                                         vec3 N = normalize((2.0 * (normal_tex.xyz * normal_tex.w)) - 1.0);
                                          N *= m_normalPower;
                                          vec3 L = normalize(lightPos - vertPos);
 

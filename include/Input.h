@@ -25,7 +25,7 @@ public:
 	static bool getMouse(int btncode);
 	static bool getMouseDown(int btncode);
 	static bool getMouseUp(int btncode);
-	static point getMousePosition();
+    static Vector3 getMousePosition();
 	static void setMousePosition(float x, float y);
 	static void setCursor(bool cur);
 

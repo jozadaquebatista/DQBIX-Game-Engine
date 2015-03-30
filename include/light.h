@@ -19,19 +19,16 @@ public:
         _castshadow = false;
 
         intens = 160.0f;
-        m_radius = 2.0f;
-	}
 
-    Color getColor() const { return _color; }
-    void setColor(float r=1.0f, float g=1.0f, float b=1.0f, float a=1.0f)
-    {
-        _color.r = r;
-        _color.g = g;
-        _color.b = b;
-        _color.a = a;
         fx = 0.0f;
         fy = 0.0f;
         fz = 0.02f;
+	}
+
+    Color getColor() const { return _color; }
+    void setColor(float h=1.0f, float s=1.0f, float v=1.0f, float a=1.0f)
+    {
+        _color = Color(h, s, v, a);
     }
 
 	bool getCastshadow() const { return _castshadow; }
@@ -53,25 +50,20 @@ public:
 	{
 		using namespace luabridge;
 		getGlobalNamespace(L)
-            .beginClass<Light>("light")
+            .deriveClass<Light, Component>("Light")
             .addConstructor<void(*)(float, float, float, float)>()
             .addFunction("setcolor", &Light::setColor)
             .addFunction("getcolor", &Light::getColor)
-            .addProperty("constant", &Light::getConstant, &Light::setConstant)
-            .addProperty("linear", &Light::getLinear, &Light::setLinear)
-            .addProperty("quadratic", &Light::getQuadratic, &Light::setQuadratic)
             .addProperty("intensity", &Light::getIntensity, &Light::setIntensity)
 			.endClass();
 	}
-    float getRadius() const;
-    void setRadius(float getRadius);
 
 private:
     Color _color;
     bool _castshadow;
 
     float fx, fy, fz;
-    float intens, m_radius;
+    float intens;
 };
 
 #endif //__IX_LIGHT__

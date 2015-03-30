@@ -16,6 +16,8 @@
 
 #include "lua.hpp"
 
+#include "imageloader.h"
+
 typedef struct  
 {
 	int x, y, w, h, frame, cols, rows;

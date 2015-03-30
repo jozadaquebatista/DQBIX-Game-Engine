@@ -17,13 +17,15 @@ INCLUDEPATH += $$PWD/depends/bass/src \
     $$PWD/depends/Lua52/include \
     $$PWD/depends/LuaBridge \
     $$PWD/depends/SDL12/include \
+    $PWD/depends/PhysFS \
     $$PWD/depends
 
 LIBS += -lglu32 \
     -lopengl32 \
     -lgdi32 \
     -luser32 \
-    -lshell32
+    -lshell32 \
+    -ladvapi32
 
 DEPENDPATH += $$PWD/depends
 MOC_DIR += $$PWD/GeneratedFiles/debug
@@ -39,7 +41,9 @@ LIBS += -L$$PWD/depends/libdrawtext/lib/ -llibdrawtext
 LIBS += -L$$PWD/depends/glew/lib/ -lglew32s
 LIBS += -L$$PWD/depends/Lua52/ -llua52
 LIBS += -L$$PWD/depends/SDL12/lib/ -lSDL -lSDLmain
+LIBS += -L$$PWD/depends/PhysFS/lib/ -lphysfs
 
 PRE_TARGETDEPS += $$PWD/depends/freeglut/lib/freeglut.lib
 PRE_TARGETDEPS += $$PWD/depends/glew/lib/glew32s.lib
 PRE_TARGETDEPS += $$PWD/depends/libdrawtext/lib/libdrawtext.lib
+PRE_TARGETDEPS += $$PWD/depends/PhysFS/lib/physfs.lib

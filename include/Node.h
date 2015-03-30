@@ -22,14 +22,14 @@ public:
 	~Node();
 
 	Node* addChild(Node* obj);
-    Node* addComponent(Component* comp);
+    Node* addComponent(std::string name, Component* comp);
 
 	Transform* getTransform() const { return m_transform; }
 
     void drawAll(SceneTree* tree);
     virtual void draw(SceneTree* tree);
 	virtual void update(float delta);
-    virtual bool hovered(point mousepos) {return false;}
+    virtual bool hovered(Vector3 mousepos) {return false;}
 
 	void create();
     void createAll();
@@ -47,16 +47,22 @@ public:
     void setEngine(GameWindow* win);
     GameWindow* getEngine();
 
-    luabridge::LuaRef getChildren(lua_State* L) const;
+    void attachScript(Script *scr);
 
-	static void RegisterObject(lua_State* L);
+    luabridge::LuaRef getChildren(lua_State* L) const;
+    luabridge::LuaRef getComponents(lua_State* L) const;
+
+    static void RegisterObject(lua_State* L);
+
 private:
 	Node* m_parentnode;
 	Transform* m_transform;
 	std::vector<Node*> m_children;
-    std::vector<Component*> m_components;
+    std::map<std::string, Component*> m_components;
     std::string name;
     GameWindow* win;
+
+    Script* m_script;
 };
 
 #endif //__NIX_NODE__

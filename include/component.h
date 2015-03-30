@@ -8,6 +8,7 @@
 class SceneTree;
 class GameWindow;
 class Node;
+
 class Component
 {
 public:
@@ -18,14 +19,12 @@ public:
     Node* getOwner();
     Transform* getTransform() const;
 
-    virtual void create();
-    virtual void destroy();
-    virtual void draw(SceneTree* tree) {}
-    virtual void update(float delta);
+    virtual void create() {}
+    virtual void destroy() {}
+    virtual void update(float delta) {}
+    virtual void draw(SceneTree* tree) {}    
 
     virtual void addToEngine(GameWindow* eng) {}
-
-    void attachScript(Script* scr);
 
     static void RegisterObject(lua_State* L)
     {
@@ -38,7 +37,6 @@ public:
             .endClass();
     }
 private:
-    Script* m_script;
     Node* m_owner;
 };
 

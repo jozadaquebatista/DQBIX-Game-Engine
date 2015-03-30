@@ -1,5 +1,5 @@
 #include "../include/Script.h"
-#include "../include/component.h"
+#include "../include/Node.h"
 
 Script::Script(std::string scriptfile, LuaEngine* L)
     : m_L(L),
@@ -8,12 +8,17 @@ Script::Script(std::string scriptfile, LuaEngine* L)
     on_update(m_L->getState()),
 	m_owner(0)
 {
-	m_source = readFile(scriptfile);
+    m_source = readFile(scriptfile);
 }
 
-Script::~Script()
+Script::Script(const char *source, LuaEngine *L, bool lf)
+    : m_L(L),
+    on_destroy(m_L->getState()),
+    on_create(m_L->getState()),
+    on_update(m_L->getState()),
+    m_owner(0)
 {
-
+    m_source = std::string(source);
 }
 
 void Script::compile()
@@ -41,14 +46,4 @@ void Script::destroy()
 {
 	if (on_destroy.isFunction())
 		on_destroy(m_owner);
-}
-
-void Script::setOwner(Component* own)
-{
-	m_owner = own;
-}
-
-Component* Script::getOwner() const
-{
-	return m_owner;
 }

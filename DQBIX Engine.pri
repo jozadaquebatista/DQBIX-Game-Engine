@@ -33,7 +33,11 @@ HEADERS += ./include/AnimatedSprite.h \
     ./include/vertex.h \
     $$PWD/include/control.h \
     $$PWD/include/component.h \
-    $$PWD/include/simplemove.h
+    $$PWD/include/simplemove.h \
+    $$PWD/include/assetpackage.h \
+    $$PWD/include/stbimage.h \
+    $$PWD/include/imageloader.h \
+    $$PWD/include/font.h
 SOURCES += ./src/AnimatedSprite.cpp \
     ./src/audio.cpp \
     ./src/collisiondetection.cpp \
@@ -62,7 +66,10 @@ SOURCES += ./src/AnimatedSprite.cpp \
     ./src/Transform.cpp \
     ./src/vertex.cpp \
     $$PWD/src/component.cpp \
-    $$PWD/src/simplemove.cpp
+    $$PWD/src/simplemove.cpp \
+    $$PWD/src/assetpackage.cpp \
+    $$PWD/src/imageloader.cpp \
+    $$PWD/src/font.cpp
 
 DISTFILES += \
     $$PWD/res/dfont.ttf

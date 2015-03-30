@@ -208,7 +208,9 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	Input::RegisterObject(eng->getState());
     SceneTree::RegisterObject(eng->getState());
     Component::RegisterObject(eng->getState());
+    Light::RegisterObject(eng->getState());
     AudioClip::RegisterObject(eng->getState());
+    Color::RegisterObject(eng->getState());    
 }
 
 bool GameWindow::closed()

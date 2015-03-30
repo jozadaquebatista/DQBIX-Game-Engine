@@ -2,19 +2,22 @@
 #include "../include/GameWindow.h"
 #include "../include/SceneTree.h"
 
+#include <typeinfo>
+
 Node::Node()
 {
 	m_transform = new Transform();
     m_parentnode = NULL;
+    m_script = NULL;
 }
 
 Node::~Node()
 {
-//    if (m_script != NULL)
-//        m_script->destroy();
+    if (m_script != NULL)
+        m_script->destroy();
     for (auto& comp : m_components)
     {
-        comp->destroy();
+        comp.second->destroy();
     }
 
     for (auto& ob : m_children)
@@ -23,10 +26,11 @@ Node::~Node()
 	}
     for (auto& comp : m_components)
     {
-        SAFE_DELETE(comp);
+        SAFE_DELETE(comp.second);
     }
 
 	SAFE_DELETE(m_transform);
+    SAFE_DELETE(m_script);
 }
 
 Node* Node::addChild(Node* obj)
@@ -38,11 +42,16 @@ Node* Node::addChild(Node* obj)
     return this;
 }
 
-Node* Node::addComponent(Component *comp)
+Node* Node::addComponent(std::string name, Component *comp)
 {
-    comp->setOwner(this);
-    m_components.push_back(comp);
-    return this;
+    std::map<std::string, Component*>::const_iterator pos = m_components.find(name);
+    if (pos == m_components.cend())
+    {
+        comp->setOwner(this);
+        m_components.insert({name, comp});
+        return this;
+    }
+    return NULL;
 }
 
 void Node::drawAll(SceneTree* tree)
@@ -60,7 +69,7 @@ void Node::draw(SceneTree* tree)
 {
     for (auto& comp : m_components)
     {
-        comp->draw(tree);
+        comp.second->draw(tree);
     }
 }
 
@@ -95,7 +104,7 @@ void Node::setEngine(GameWindow *win)
 
     for (auto& comp : m_components)
     {
-        comp->addToEngine(win);
+        comp.second->addToEngine(win);
     }
     for (auto& n : m_children)
     {
@@ -120,24 +129,41 @@ luabridge::LuaRef Node::getChildren(lua_State* L) const
     return ret;
 }
 
+luabridge::LuaRef Node::getComponents(lua_State *L) const
+{
+    using namespace luabridge;
+    LuaRef ret = newTable(L);
+    for (auto& c : m_components)
+    {
+        auto sec = c.second;
+        if (IsType<Light>(sec))
+            ret[c.first] = (Light*)c.second;
+        else if (IsType<AudioClip>(sec))
+            ret[c.first] = (AudioClip*)c.second;
+        else
+            ret[c.first] = c.second;
+    }
+    return ret;
+}
+
 void Node::update(float delta)
 {
 	getTransform()->update();
-//    if (m_script != NULL)
-//		m_script->update(delta);
+    if (m_script != NULL)
+        m_script->update(delta);
     for (auto& comp : m_components)
     {
-        comp->update(delta);
+        comp.second->update(delta);
     }
 }
 
 void Node::create()
 {
-//    if (m_script != NULL)
-//        m_script->init();
+    if (m_script != NULL)
+        m_script->init();
     for (auto& comp : m_components)
     {
-        comp->create();
+        comp.second->create();
     }
 }
 
@@ -151,6 +177,17 @@ void Node::createAll()
     }
 }
 
+void Node::attachScript(Script *scr)
+{
+    if (scr != nullptr)
+    {
+        m_script = new Script(*scr);
+        m_script->setOwner(this);
+        m_script->compile();
+    }
+    else { m_script = nullptr; }
+}
+
 void Node::RegisterObject(lua_State* L)
 {
     using namespace luabridge;
@@ -158,13 +195,14 @@ void Node::RegisterObject(lua_State* L)
     getGlobalNamespace(L)
         .beginClass<Node>("Node")
         .addConstructor<void(*)(void)>()
-        .addFunction("addChild", &Node::addChild)
-        .addFunction("getNode", &Node::getNode)
+        .addFunction("addchild", &Node::addChild)
+        .addFunction("getnode", &Node::getNode)
         .addProperty("transform", &Node::getTransform)
         .addFunction("getname", &Node::getName)
         .addFunction("rename", &Node::setName)
         .addFunction("getparent", &Node::getParentNode)
         .addFunction("setparent", &Node::setParentNode)
         .addFunction("getchildren", &Node::getChildren)
+        .addFunction("getcomponents", &Node::getComponents)
         .endClass();
 }

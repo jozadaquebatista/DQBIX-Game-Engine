@@ -5,21 +5,21 @@
 #include "point.hpp"
 #include "Node.h"
 
-#include <drawtext.h>
+#include "font.h"
 
 class Text : public Node
 {
 public:
 	Text(std::string fontfile = "", int sz = 18);
-
-	point* measure_string(std::string str);
-	void set_range(int from, int to);
-	void use();
+    Text(Font* f);
 
     void draw(SceneTree* tree);
 
 	std::string getText() const { return m_text; }
 	void setText(std::string t) { m_text = t; }
+
+    Font *getFont() const;
+    void setFont(Font *getFont);
 
 	Color getColor() const { return m_color; }
 	void setColor(Color c) { m_color = c; }
@@ -34,11 +34,10 @@ public:
 	virtual ~Text();
 
 private:
-	void operator=(Text f) {}
-        Text(Text&) {}
+    void operator=(Text f) {}
+    Text(Text&) {}
 
-	int sz;
-	struct dtx_font* fnth;
+    Font* m_font;
 	Shader* m_shader;
 	Color m_color;
 	std::string m_text;
