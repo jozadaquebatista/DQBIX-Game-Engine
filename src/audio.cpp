@@ -11,9 +11,21 @@ AudioClip::AudioClip(std::string filename)
 
 	std::wstring fname(filename.begin(), filename.end());
 	hm = BASS_StreamCreateFile(FALSE, fname.c_str(), NULL, NULL, BASS_STREAM_DECODE);
-	hm = BASS_FX_TempoCreate(hm, BASS_FX_FREESOURCE);
+    hm = BASS_FX_TempoCreate(hm, BASS_FX_FREESOURCE);
 }
 
+AudioClip::AudioClip(unsigned char *data)
+{
+    pan = 0.0f;
+    volume = 1.0f;
+    pitch = 0.0f;
+    loop = false;
+    play_once = false;
+    oshot = false;
+
+    hm = BASS_StreamCreate(44100, 2, BASS_STREAM_DECODE, NULL, (void*)data);
+    hm = BASS_FX_TempoCreate(hm, BASS_FX_FREESOURCE);
+}
 
 AudioClip::~AudioClip()
 {

@@ -99,9 +99,9 @@ bool Input::getMouseUp(int btncode)
 	return upMouse[btncode];
 }
 
-point Input::getMousePosition()
+Vector3 Input::getMousePosition()
 {
-	return point((float)mX, (float)mY);
+    return Vector3((float)mX, (float)mY, 0.0f);
 }
 
 void Input::setMousePosition(float x, float y)

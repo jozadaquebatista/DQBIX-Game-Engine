@@ -1,8 +1,5 @@
 #include "../include/Texture.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 Texture::Texture(int w, int h, unsigned char* data, int target, int filter, int internalFmt, int format, bool clamp, int attachment)
 {
     init(w, h, data, target, filter, internalFmt, format, clamp, attachment, "");
@@ -14,11 +11,11 @@ Texture::Texture(const std::string filename, int target, int filter)
 	this->filter = filter;
 
     int w, h, comp;
-    unsigned char* data = stbi_load(filename.c_str(), &w, &h, &comp, 4);
+    unsigned char* data = ImageLoader::loadRawDataFromFile(filename.c_str(), &w, &h, &comp);
     if (data != NULL)
     {
         init(w, h, data, target, filter, GL_RGBA, GL_RGBA, false, GL_COLOR_ATTACHMENT0, filename);
-        stbi_image_free(data);
+        ImageLoader::free_data(data);
     }
 }
 

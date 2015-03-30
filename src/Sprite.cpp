@@ -1,58 +1,35 @@
 #include "../include/Sprite.h"
 #include "../include/GameWindow.h"
 
-Sprite::Sprite(std::string filename)
+Sprite::Sprite()
+    : m_material(new Material())
+{
+    load_shader();
+}
+
+Sprite::Sprite(std::string filename) : Sprite()
 {
     m_material = new Material(new Texture(filename));
-
-#ifdef MODERN_OPENGL
-	m_shader = new Shader();
-	m_shader->fromString(default_vert, default_frag);
-
-	m_shader->compile();
-	m_shader->addCommonUniforms();
-    m_shader->addUniform("diffuse");
-    if (m_material->getNormalTexture() != NULL)
-        m_shader->addUniform("normal");
-	m_shader->addUniform("cliprect");
-    m_shader->addUniform("u_lightPos");
-    m_shader->addUniform("u_lightColor");
-    m_shader->addUniform("u_lightIntens");
-    m_shader->addUniform("u_ambientColor");
-    m_shader->addUniform("m_specularPower");
-    m_shader->addUniform("m_normalPower");
-    m_shader->addUniform("m_diffuseColor");
-    m_shader->addUniform("m_specularColor");
-    m_shader->addUniform("u_lightFalloff");
-#endif
 }
 
 Sprite::Sprite(std::string filename, std::string normal_filename)
 {
     m_material = new Material(new Texture(filename), new Texture(normal_filename));
 
-#ifdef MODERN_OPENGL
-    m_shader = new Shader();
-    m_shader->fromString(default_vert, default_frag);
-
-    m_shader->compile();
-    m_shader->addCommonUniforms();
-    m_shader->addUniform("diffuse");
-    if (m_material->getNormalTexture() != NULL)
-        m_shader->addUniform("normal");
-    m_shader->addUniform("cliprect");
-    m_shader->addUniform("u_lightPos");
-    m_shader->addUniform("u_lightColor");
-    m_shader->addUniform("u_lightIntens");
-    m_shader->addUniform("u_ambientColor");
-    m_shader->addUniform("m_specularPower");
-    m_shader->addUniform("m_normalPower");
-    m_shader->addUniform("m_diffuseColor");
-    m_shader->addUniform("m_specularColor");
-    m_shader->addUniform("u_lightFalloff");
-#endif
+    load_shader();
 }
 
+Sprite::Sprite(Texture *diff)
+{
+    m_material = new Material(diff);
+    load_shader();
+}
+
+Sprite::Sprite(Texture *diff, Texture *norm)
+{
+    m_material = new Material(diff, norm);
+    load_shader();
+}
 
 Sprite::~Sprite()
 {
@@ -188,5 +165,27 @@ Material *Sprite::getMaterial() const
 void Sprite::setMaterial(Material *material)
 {
     m_material = material;
+}
+
+void Sprite::load_shader()
+{
+    m_shader = new Shader();
+    m_shader->fromString(default_vert, default_frag);
+
+    m_shader->compile();
+    m_shader->addCommonUniforms();
+    m_shader->addUniform("diffuse");
+    if (m_material->getNormalTexture() != NULL)
+        m_shader->addUniform("normal");
+    m_shader->addUniform("cliprect");
+    m_shader->addUniform("u_lightPos");
+    m_shader->addUniform("u_lightColor");
+    m_shader->addUniform("u_lightIntens");
+    m_shader->addUniform("u_ambientColor");
+    m_shader->addUniform("m_specularPower");
+    m_shader->addUniform("m_normalPower");
+    m_shader->addUniform("m_diffuseColor");
+    m_shader->addUniform("m_specularColor");
+    m_shader->addUniform("u_lightFalloff");
 }
 

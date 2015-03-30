@@ -13,8 +13,11 @@
 class Sprite : public Node
 {
 public:
+    Sprite();
 	Sprite(std::string filename);
     Sprite(std::string filename, std::string normal_filename);
+    Sprite(Texture* diff);
+    Sprite(Texture* diff, Texture* norm);
 	virtual ~Sprite();
 
     void draw(SceneTree* tree);
@@ -28,6 +31,8 @@ public:
 private:
     Material* m_material;
     Shader* m_shader;
+
+    void load_shader();
 };
 
 #endif //__NIX_SPRITE__

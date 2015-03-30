@@ -11,6 +11,7 @@ class AudioClip : public Component
 {
 public:
     AudioClip(std::string filename = "");
+    AudioClip(unsigned char* data = 0);
         AudioClip(const AudioClip&) {}
     void operator=(AudioClip other) {}
 
