@@ -5,7 +5,7 @@ See: [Wiki](https://github.com/DCubix/DQBIX-Game-Engine/wiki) ( old version )
 ## Engine Redesign Project
 Progress: [ 65% ]. Current Task: [ Rendering Optimizations ]
 
-![Screenshot](http://i.imgur.com/tQVrcRD.gif)
+[![Demo](http://img.youtube.com/vi/Zp1q-85L7sw/0.jpg)](http://www.youtube.com/watch?v=Zp1q-85L7sw)
 
 Features
 -------------------------------------
