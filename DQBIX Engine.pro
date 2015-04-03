@@ -16,6 +16,7 @@ INCLUDEPATH += $$PWD/depends/bass/src \
     $$PWD/depends/libdrawtext/include \
     $$PWD/depends/Lua52/include \
     $$PWD/depends/LuaBridge \
+    $$PWD/depends/xmlc \
     $$PWD/depends/SDL12/include \
     $PWD/depends/PhysFS \
     $$PWD/depends

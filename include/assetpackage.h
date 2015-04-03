@@ -19,8 +19,14 @@ class AssetPackage
 public:
     AssetPackage(std::string package_file = "")
         : m_filename(package_file)
-    { }
-    ~AssetPackage() {}
+    {
+        PHYSFS_init(NULL);
+    }
+    ~AssetPackage()
+    {
+        this->DisposeTempFiles();
+        PHYSFS_deinit();
+    }
 
     void DisposeTempFiles();
 

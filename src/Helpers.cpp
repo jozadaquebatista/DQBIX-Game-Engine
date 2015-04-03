@@ -7,3 +7,9 @@ std::string readFile(std::string filepath)
                      std::istreambuf_iterator<char>());
     return str;
 }
+
+
+std::string uint8_tToString(uint8_t *text, size_t len)
+{
+    return std::string(text, text+len);
+}

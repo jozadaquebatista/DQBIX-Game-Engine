@@ -49,6 +49,7 @@ const std::string default_vert = _ST( #version 120\n
 const std::string default_frag = _ST( #version 120\n
                                      uniform sampler2D diffuse;
                                      uniform sampler2D normal;
+                                     uniform int NOSHAD;
                                      uniform vec3 u_lightPos;
                                      uniform vec4 u_lightColor;
                                      uniform vec3 u_lightFalloff;
@@ -91,8 +92,10 @@ const std::string default_frag = _ST( #version 120\n
 
                                          vec3 linearColor = u_ambientColor.rgb + intensity * (diffuseComponent + specularComponent);
                                          vec3 finalColor = u_lightColor.rgb * color_tex.rgb * linearColor;
-
-                                         gl_FragColor = vec4(finalColor, color_tex.a);
+                                         if (NOSHAD == 0)
+                                            gl_FragColor = vec4(finalColor, color_tex.a);
+                                         else
+                                            gl_FragColor = m_diffuseColor * color_tex;
                                      } );
 
 #endif //__IX_SHADERS__

@@ -71,8 +71,18 @@ public:
 
         return vec4(crx * getCliprect().cols, cry * getCliprect().rows, crw, crh);
 	}
+    inline vec4 transformRect(rect rec)
+    {
+        float crw = (float)rec.w / (float)getResource()->getWidth();
+        float crh = (float)rec.h / (float)getResource()->getHeight();
+        float crx = (float)rec.x / (float)getResource()->getWidth();
+        float cry = (float)rec.y / (float)getResource()->getHeight();
+
+        return vec4(crx * 1, cry * 1, crw, crh);
+    }
 
 	Mesh* getShape() const { return m_quad; }
+    void setShape(Mesh* m) { m_quad = m; }
 
 	imageResource* getResource() const { return m_resource; }
 

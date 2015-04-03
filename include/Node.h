@@ -19,12 +19,13 @@ class Node
 {
 public:
 	Node();
-	~Node();
+    virtual ~Node();
 
 	Node* addChild(Node* obj);
     Node* addComponent(std::string name, Component* comp);
 
 	Transform* getTransform() const { return m_transform; }
+    void setTransform(Transform* nt) { m_transform = nt; }
 
     void drawAll(SceneTree* tree);
     virtual void draw(SceneTree* tree);

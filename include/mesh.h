@@ -15,6 +15,12 @@ public:
 		glGenBuffers(1, &ibo);
 	}
 
+    ~Mesh()
+    {
+        glDeleteBuffers(1, &vbo);
+        glDeleteBuffers(1, &ibo);
+    }
+
 	void addVertices(std::vector<vertex> vertices, std::vector<int> indices);
 	void draw(int mode);
 

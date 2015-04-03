@@ -15,6 +15,7 @@ Node::~Node()
 {
     if (m_script != NULL)
         m_script->destroy();
+
     for (auto& comp : m_components)
     {
         comp.second->destroy();

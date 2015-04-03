@@ -2,14 +2,15 @@
 #include "../include/GameWindow.h"
 
 Sprite::Sprite()
-    : m_material(new Material())
 {
-    load_shader();
+
 }
 
 Sprite::Sprite(std::string filename) : Sprite()
 {
     m_material = new Material(new Texture(filename));
+
+    load_shader();
 }
 
 Sprite::Sprite(std::string filename, std::string normal_filename)
@@ -33,7 +34,7 @@ Sprite::Sprite(Texture *diff, Texture *norm)
 
 Sprite::~Sprite()
 {
-	SAFE_DELETE(m_shader);
+    SAFE_DELETE(m_shader);
     SAFE_DELETE(m_material);
 }
 
@@ -47,7 +48,6 @@ void Sprite::draw(SceneTree* tree)
 
     vec4 tr = m_material->getDiffuseTexture()->getTransformedClipRect();
 
-#ifdef MODERN_OPENGL
     std::vector<Light*> lights = tree->getLights();
 	if (m_shader != nullptr)
 	{
@@ -61,11 +61,17 @@ void Sprite::draw(SceneTree* tree)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         if (m_material->getIsSshadeless())
         {
+            m_shader->setInt("NOSHAD", 1);
+            m_shader->setVec4("m_diffuseColor", m_material->dR,
+                                                m_material->dG,
+                                                m_material->dB,
+                                                m_material->dA);
             m_shader->setVec4("u_ambientColor", 1.0f, 1.0f, 1.0f, 1.0f);
-            m_material->getDiffuseTexture()->getShape()->draw(GL_TRIANGLE_STRIP);
+            m_material->getDiffuseTexture()->getShape()->draw(GL_QUADS);
         }
         else
         {
+            m_shader->setInt("NOSHAD", 0);
             if (m_material->getNormalTexture() != NULL)
                 m_shader->setInt("normal", 1);
 
@@ -82,14 +88,14 @@ void Sprite::draw(SceneTree* tree)
             Color ambient = tree->getEngine()->getAmbient();
             m_shader->setVec4("u_ambientColor", ambient.r, ambient.g, ambient.b, ambient.a);
 
+            m_material->getDiffuseTexture()->getShape()->draw(GL_QUADS);
+
             if (lights.size() > 0)
             {
-
-                glBlendFunc(GL_ONE, GL_ONE);
-                glBlendEquation(GL_FUNC_ADD);
-
                 for (Light*& l : lights)
                 {
+                    glBlendFunc(GL_ONE, GL_ONE);
+
                     Vector3 lpos = l->getTransform()->getTranslation();
                     Color lcol = l->getColor();
                     m_shader->setVec3("u_lightPos", lpos.x, lpos.y, lpos.z);
@@ -97,42 +103,15 @@ void Sprite::draw(SceneTree* tree)
                     m_shader->setFloat("u_lightIntens", l->getIntensity());
                     m_shader->setVec3("u_lightFalloff", l->getConstant(), l->getLinear(), l->getQuadratic());
 
-                    m_material->getDiffuseTexture()->getShape()->draw(GL_TRIANGLE_STRIP);
+                    m_material->getDiffuseTexture()->getShape()->draw(GL_QUADS);
                 }
-            }
-            else
-            {
-                m_material->getDiffuseTexture()->getShape()->draw(GL_TRIANGLE_STRIP);
             }
         }
         glDisable(GL_BLEND);
 	}
 
     glUseProgram(0);
-#else
-    float w2 = (float)m_texture->getWidth() / 2.0f;
-    float h2 = (float)m_texture->getHeight() / 2.0f;
 
-    float crx = tr.x / m_texture->getCliprect().cols;
-    float cry = tr.y / m_texture->getCliprect().rows;
-    float crw = tr.z;
-    float crh = tr.w;
-
-    glPushMatrix();
-
-    glMultMatrixf(value_ptr(getTransform()->getTransformation()));
-
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(crx,         cry); glVertex2f(-1.0f*w2, -1.0f*h2);
-    glTexCoord2f(crx+crw,     cry); glVertex2f( 1.0f*w2, -1.0f*h2);
-    glTexCoord2f(crx+crw, cry+crh); glVertex2f( 1.0f*w2,  1.0f*h2);
-    glTexCoord2f(crx,     cry+crh); glVertex2f(-1.0f*w2,  1.0f*h2);
-
-    glEnd();
-
-    glPopMatrix();
-#endif
 }
 
 // This is a bad thing, but it's okay for now.
@@ -187,5 +166,6 @@ void Sprite::load_shader()
     m_shader->addUniform("m_diffuseColor");
     m_shader->addUniform("m_specularColor");
     m_shader->addUniform("u_lightFalloff");
+    m_shader->addUniform("NOSHAD");
 }
 

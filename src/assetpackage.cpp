@@ -8,8 +8,6 @@ void AssetPackage::loadRAWDataFromArchive(const char* fname, PHYSFS_sint64* file
 {
     if (m_filename == "") return;
 
-    PHYSFS_init(NULL);
-
     PHYSFS_addToSearchPath(m_filename.c_str(), 1);
 
     if (!PHYSFS_exists(fname))
@@ -51,7 +49,6 @@ void AssetPackage::loadRAWDataFromArchive(const char* fname, PHYSFS_sint64* file
 
     PHYSFS_close(m_file);
 
-    PHYSFS_deinit();
 }
 
 void AssetPackage::AP_write(const char* file, const void *data, int size, int num)
@@ -114,6 +111,8 @@ Texture *AssetPackage::loadTexture(std::string filename)
 
     ImageLoader::free_data(texture_data);
 
+    PHYSFS_deinit();
+
     return ret;
 }
 
@@ -122,6 +121,8 @@ AudioClip *AssetPackage::loadAudioClip(std::string filename)
     unsigned char* data;
     PHYSFS_sint64 file_size;
     loadRAWDataFromArchive(filename.c_str(), &file_size, &data);
+
+    PHYSFS_deinit();
 
     return new AudioClip(data);
 }
@@ -132,6 +133,8 @@ std::string AssetPackage::loadText(std::string filename)
     PHYSFS_sint64 file_size;
     loadRAWDataFromArchive(filename.c_str(), &file_size, &data);
 
+    PHYSFS_deinit();
+
     return std::string(reinterpret_cast<char*>(data));
 }
 
@@ -140,6 +143,8 @@ Script *AssetPackage::loadScript(std::string filename, LuaEngine* eng)
     unsigned char* data;
     PHYSFS_sint64 file_size;
     loadRAWDataFromArchive(filename.c_str(), &file_size, &data);
+
+    PHYSFS_deinit();
 
     std::string txt(data, data+file_size);
     return new Script(txt.c_str(), eng, true);
@@ -150,6 +155,8 @@ Font *AssetPackage::loadFont(std::string filename)
     unsigned char* data;
     PHYSFS_sint64 file_size;
     loadRAWDataFromArchive(filename.c_str(), &file_size, &data);
+
+    PHYSFS_deinit();
 
     std::ofstream fout;
     try
