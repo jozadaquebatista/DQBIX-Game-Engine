@@ -26,12 +26,10 @@ Features
 HELP NEEDED (For the new engine [NIX])
 -------------------------------------
 Since this is not perfect, here's a todo list. I really want some help!
-  - Add normal map support
-  - Build a SceneTree system (I'm already doing it, but I accept any help)
+  - Fix SceneTree bugs ( you can parent 1 node to another, but you can't parent a node to a child node... )
   - Particle systems
-  - Optimizations
+  - Optimize! Yay!
   - Android support ( OpenGL ES 2.0 )
-  - Lighting
   - ?????
   
 If you want to help me, you'll need QtCreator ( Windows Only =( ) with VS 2013 compiler. You can port to other compilers if you want!
