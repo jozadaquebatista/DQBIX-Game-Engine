@@ -20,8 +20,8 @@ Features
   - Lighting
   - Normal maps
   - Shaders
-  - TrueType text
-  - Support for multiple image and audio formats (thanks std_image)
+  - TrueType fonts
+  - Support for multiple image and audio formats (thanks stb_image)
 
 HELP NEEDED (For the new engine [NIX])
 -------------------------------------
