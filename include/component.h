@@ -19,6 +19,9 @@ public:
     Node* getOwner();
     Transform* getTransform() const;
 
+    Vector3 getOffset() const { return m_offset; }
+    void setOffset(Vector3 of) { m_offset = of; }
+
     virtual void create() {}
     virtual void destroy() {}
     virtual void update(float delta) {}
@@ -38,6 +41,7 @@ public:
     }
 private:
     Node* m_owner;
+    Vector3 m_offset;
 };
 
 #endif // COMPONENT_H

@@ -3,14 +3,12 @@
 #pragma once
 
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <streambuf>
-#include <map>
 
-#include "../include/lua.hpp"
-#include "../include/graphics.h"
-#include "../include/shaders.h"
+#include "lua.hpp"
+#include "shaderresource.h"
+#include "shaders.h"
 
 struct StringHelper {
 	const char *p;
@@ -21,7 +19,7 @@ struct StringHelper {
 class Shader
 {
 public:
-	Shader() : Shader("")
+    Shader() : Shader(default_frag)
 	{
 
 	}
@@ -67,11 +65,13 @@ public:
 private:
     Shader(Shader&) {}
     void operator=(Shader s) {}
-	std::map<std::string, int> uniforms;
 
-	GLuint m_vs, m_fs, m_program;
+    std::map<std::string, shaderResource*> loadedshaders;
+    shaderResource* m_resource;
+
 	std::string loadShaderData(std::string filename);
-	static int linecount(std::string t);
+
+    void addShader(std::string text, int type);
 };
 
 #endif //__IX_SHADER__

@@ -57,6 +57,7 @@ void imageResource::initRenderTargets(int attachment)
 
     GLenum drawBuffers[1] = {attachment};
 
+    glReadBuffer(GL_NONE);
     glDrawBuffers(1, drawBuffers);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -64,7 +65,8 @@ void imageResource::initRenderTargets(int attachment)
         printf("Could not create render targets.");
 		exit(EXIT_FAILURE);
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindTexture(getTarget(), 0);
 }
 
 void imageResource::use()

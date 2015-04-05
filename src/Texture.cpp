@@ -70,7 +70,7 @@ void Texture::create_mesh()
         vertex(vec3(-1.0f * w2,  1.0f * h2, 0.0f), vec2(0.0f, 1.0f))
     };
     std::vector<int> ind = {
-        3, 0, 2, 1
+        0,1,2,3
     };
     m_quad->addVertices(verts, ind);
 }
@@ -102,8 +102,7 @@ Texture::~Texture()
 			m_loadedImages.erase(filename);
 
 		SAFE_DELETE(m_resource);
-	}
-	SAFE_DELETE(m_quad);
+    }
 }
 
 void Texture::setFilter(int val)

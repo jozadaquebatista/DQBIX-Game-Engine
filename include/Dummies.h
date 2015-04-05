@@ -19,6 +19,11 @@ typedef struct Vector3
 	{
 		return sqrtf(x * x + y * y + z * z);
 	}
+    Vector3 sum(Vector3 o)
+    {
+        return Vector3(x+o.x,y+o.y,z+o.z);
+    }
+
 	Vector3() {}
 	Vector3(float vx, float vy, float vz)
 		: x(vx), y(vy), z(vz)

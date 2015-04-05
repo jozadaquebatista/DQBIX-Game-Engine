@@ -18,6 +18,7 @@ public:
     Sprite(std::string filename, std::string normal_filename);
     Sprite(Texture* diff);
     Sprite(Texture* diff, Texture* norm);
+
 	virtual ~Sprite();
 
     void draw(SceneTree* tree);

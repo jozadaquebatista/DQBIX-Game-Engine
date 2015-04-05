@@ -48,7 +48,6 @@ void GameWindow::setAmbient(const Color &ambient)
     m_ambient = ambient;
 }
 
-
 void GameWindow::mainloop()
 {
     running = true;
@@ -61,7 +60,9 @@ void GameWindow::mainloop()
 	int frames = 0;
 	int frameCounter = 0;
 
-	if (init) init();
+    if (init)
+        init();
+
     m_tree->create();
 
 	while (running)
@@ -110,7 +111,6 @@ void GameWindow::mainloop()
 		else
 			SDL_Delay(1);
     }
-    SAFE_DELETE(m_tree);
     SDL_Quit();
 }
 

@@ -3,12 +3,9 @@
 
 void Shader::addUniform(std::string name)
 {
-	int uloc = glGetUniformLocation(m_program, name.c_str());
-	if (uloc == -1)
-	{
-		printf("Could not find uniform: %s\n", name.c_str());
-	}
-	uniforms.insert({ name, uloc });
+    if (!m_resource) return;
+
+    m_resource->addUniform(name);
 }
 
 
@@ -27,9 +24,7 @@ void Shader::loadUniforms()
 
 Shader::~Shader()
 {
-	if (m_vs) glDeleteShader(m_vs);
-	if (m_fs) glDeleteShader(m_fs);
-	if (m_program) glDeleteProgram(m_program);
+    SAFE_DELETE(m_resource);
 }
 
 Shader::Shader(std::string fs)
@@ -39,141 +34,66 @@ Shader::Shader(std::string fs)
 
 Shader* Shader::fromString(std::string vs, std::string fs)
 {
-	m_program = glCreateProgram();
-	if (vs != "")
-	{
-		const GLchar* v[1];
-		v[0] = vs.c_str();
-		GLint vlengths[1];
-		vlengths[0] = vs.size();
+    std::map<std::string, shaderResource*>::const_iterator pos = loadedshaders.find(vs + "|||" + fs);
+    if (pos == loadedshaders.cend())
+    {
+        m_resource = new shaderResource();
 
-		m_vs = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(m_vs, 1, v, vlengths);
-		glCompileShader(m_vs);
+        addShader(vs, GL_VERTEX_SHADER);
+        addShader(fs, GL_FRAGMENT_SHADER);
 
-		GLint status;
-		glGetShaderiv(m_vs, GL_COMPILE_STATUS, &status);
-		if (!status)
-		{
-			GLchar log[1024];
-			glGetShaderInfoLog(m_vs, 1024, NULL, log);
-			fprintf(stderr, "Vertex Shader Error:\n%s", log);
-			exit(EXIT_FAILURE);
-		}
-		glAttachShader(m_program, m_vs);
-	}
+        if (vs == "" && fs == "") return NULL;
 
-	if (fs != "")
-	{
-		const GLchar* f[1];
-		f[0] = fs.c_str();
-		GLint flengths[1];
-		flengths[0] = fs.size();
+        compile();
 
-		m_fs = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(m_fs, 1, f, flengths);
-		glCompileShader(m_fs);
-
-		GLint status;
-		glGetShaderiv(m_fs, GL_COMPILE_STATUS, &status);
-		if (!status)
-		{
-			GLchar log[1024];
-			glGetShaderInfoLog(m_fs, 1024, NULL, log);
-			fprintf(stderr, "Fragment Shader Error:\n%s", log);
-			exit(EXIT_FAILURE);
-		}
-		glAttachShader(m_program, m_fs);
-	}
-	if (vs == "" && fs == "") return NULL;
-
-	compile();
-
-	return this;
+        loadedshaders.insert( {vs + "|" + fs, m_resource} );
+    }
+    else
+    {
+        m_resource = pos->second;
+        m_resource->addReference();
+    }
+    return this;
 }
 
 Shader::Shader(std::string vs /*= ""*/, std::string fs /*= ""*/)
 {
-	if (vs == "" || fs == "") return;
-	m_program = glCreateProgram();
-	if (vs != "")
-	{
-		std::string vss = loadShaderData(vs);
-		const GLchar* v[1];
-		v[0] = vss.c_str();
-		GLint vlengths[1];
-		vlengths[0] = vss.size();
-
-		m_vs = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(m_vs, 1, v, vlengths);
-		glCompileShader(m_vs);
-
-		GLint status;
-		glGetShaderiv(m_vs, GL_COMPILE_STATUS, &status);
-		if (!status)
-		{
-			GLchar log[1024];
-			glGetShaderInfoLog(m_vs, 1024, NULL, log);
-			fprintf(stderr, "Vertex Shader Error:\n%s", log);
-			exit(EXIT_FAILURE);
-		}
-		glAttachShader(m_program, m_vs);
-	}
-
-	if (fs != "")
-	{
-		std::string fss = loadShaderData(fs);
-		const GLchar* f[1];
-		f[0] = fss.c_str();
-		GLint flengths[1];
-		flengths[0] = fss.size();
-
-		m_fs = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(m_fs, 1, f, flengths);
-		glCompileShader(m_fs);
-
-		GLint status;
-		glGetShaderiv(m_fs, GL_COMPILE_STATUS, &status);
-		if (!status)
-		{
-			GLchar log[1024];
-			glGetShaderInfoLog(m_fs, 1024, NULL, log);
-			fprintf(stderr, "Fragment Shader Error:\n%s", log);
-			exit(EXIT_FAILURE);
-		}
-		glAttachShader(m_program, m_fs);
-	}
-	
-	compile();
+    std::string svs = loadShaderData(vs);
+    std::string sfs = loadShaderData(fs);
+    fromString(svs, sfs);
 }
 
 void Shader::use()
 {
-	glUseProgram(m_program);
+    if (!m_resource) return;
+    glUseProgram(m_resource->getProgram());
 }
 
 void Shader::compile()
 {
-	GLint status;	
+    if (!m_resource) return;
 
-	glLinkProgram(m_program);
-	glGetProgramiv(m_program, GL_LINK_STATUS, &status);
+    GLint status;
+    GLuint program = m_resource->getProgram();
+
+    glLinkProgram(program);
+    glGetProgramiv(program, GL_LINK_STATUS, &status);
 
 	if (!status)
 	{
 		GLchar log[1024];
-		glGetProgramInfoLog(m_program, 1024, NULL, log);
+        glGetProgramInfoLog(program, 1024, NULL, log);
 		fprintf(stderr, "Program Error:\n%s", log);
 		exit(EXIT_FAILURE);
 	}
 
-	glValidateProgram(m_program);
+    glValidateProgram(program);
 
-	glGetProgramiv(m_program, GL_VALIDATE_STATUS, &status);
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
 	if (!status)
 	{
 		GLchar log[1024];
-		glGetShaderInfoLog(m_program, 1024, NULL, log);
+        glGetShaderInfoLog(program, 1024, NULL, log);
 		printf("Shader Error:\n%s", log);
 		exit(EXIT_FAILURE);
 	}
@@ -181,79 +101,79 @@ void Shader::compile()
 
 void Shader::setFloat(std::string name, float val)
 {
-	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
-	if (pos != uniforms.end())
+    int unif = m_resource->findUniform(name);
+    if (unif != -1)
 	{
-		glUniform1f(pos->second, val);
+        glUniform1f(unif, val);
 	}
 	else
 	{
-		printf("Could not find uniform: %s.\n", name.c_str());
+        printf("Could not find FLOAT uniform: %s.\n", name.c_str());
 	}
 }
 
 void Shader::setInt(std::string name, int val)
 {
-	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
-	if (pos != uniforms.end())
+    int unif = m_resource->findUniform(name);
+    if (unif != -1)
 	{
-		glUniform1iv(pos->second, 1, &val);
+        glUniform1iv(unif, 1, &val);
 	}
 	else
 	{
-		printf("Could not find uniform: %s.\n", name.c_str());
+        printf("Could not find INT uniform: %s.\n", name.c_str());
 	}
 }
 
 void Shader::setVec2(std::string name, float x, float y)
 {
-	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
-	if (pos != uniforms.end())
+    int unif = m_resource->findUniform(name);
+    if (unif != -1)
 	{
-		glUniform2f(pos->second, x, y);
+        glUniform2f(unif, x, y);
 	}
 	else
 	{
-		printf("Could not find uniform: %s.\n", name.c_str());
+        printf("Could not find VEC2 uniform: %s.\n", name.c_str());
 	}
 }
 
 void Shader::setVec3(std::string name, float x, float y, float z)
 {
-	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
-	if (pos != uniforms.end())
+    int unif = m_resource->findUniform(name);
+    if (unif != -1)
 	{
-		glUniform3f(pos->second, x, y, z);
+        glUniform3f(unif, x, y, z);
 	}
 	else
 	{
-		printf("Could not find uniform: %s.\n", name.c_str());
+        printf("Could not find VEC3 uniform: %s.\n", name.c_str());
 	}
 }
 
 void Shader::setVec4(std::string name, float x, float y, float z, float w)
 {
-	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
-	if (pos != uniforms.end())
+    int unif = m_resource->findUniform(name);
+    if (unif != -1)
 	{
-		glUniform4f(pos->second, x, y, z, w);
+        glUniform4f(unif, x, y, z, w);
 	}
 	else
 	{
-		printf("Could not find uniform: %s.\n", name.c_str());
+        printf("Could not find VEC4 uniform: %s.\n", name.c_str());
 	}
 }
 
 void Shader::setMatrix(std::string name, mat4 mat)
 {
-	std::map<std::string, int>::const_iterator pos = uniforms.find(name);
-	if (pos != uniforms.end())
+    int unif = m_resource->findUniform(name);
+    if (unif != -1)
 	{
-		glUniformMatrix4fv(pos->second, 1, false, value_ptr(mat));		
+        glUniformMatrix4fv(unif, 1, false, value_ptr(mat));
 	}
 	else
 	{
-		printf("Could not find uniform: %s.\n", name.c_str());
+        printf("Could not find MATRIX uniform: %s.\n", name.c_str());
 	}
 }
 
@@ -265,15 +185,29 @@ std::string Shader::loadShaderData(std::string filename)
 	return str;
 }
 
-int Shader::linecount(std::string t)
+void Shader::addShader(std::string text, int type)
 {
-	int count = 0;
-	for (unsigned int i = 0; i < t.size(); i++)
-	{
-		if (t[i] == '\n')
-		{
-			count++;
-		}
-	}
-	return count;
+    if (!m_resource) return;
+    if (text != "")
+    {
+        const GLchar* v[1];
+        v[0] = text.c_str();
+        GLint vlengths[1];
+        vlengths[0] = text.size();
+
+        GLuint m_shad = glCreateShader(type);
+        glShaderSource(m_shad, 1, v, vlengths);
+        glCompileShader(m_shad);
+
+        GLint status;
+        glGetShaderiv(m_shad, GL_COMPILE_STATUS, &status);
+        if (!status)
+        {
+            GLchar log[1024];
+            glGetShaderInfoLog(m_shad, 1024, NULL, log);
+            fprintf(stderr, "Shader Error:\n%s", log);
+            exit(EXIT_FAILURE);
+        }
+        glAttachShader(m_resource->getProgram(), m_shad);
+    }
 }

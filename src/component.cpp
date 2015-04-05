@@ -16,4 +16,7 @@ void Component::setOwner(Node *own) { m_owner = own; }
 
 Node *Component::getOwner() { return m_owner; }
 
-Transform *Component::getTransform() const { return m_owner->getTransform(); }
+Transform *Component::getTransform() const
+{
+    return m_owner->getTransform();
+}

@@ -15,6 +15,7 @@ Node::~Node()
 {
     if (m_script != NULL)
         m_script->destroy();
+
     for (auto& comp : m_components)
     {
         comp.second->destroy();
@@ -35,10 +36,10 @@ Node::~Node()
 
 Node* Node::addChild(Node* obj)
 {
-	m_children.push_back(obj);
     obj->setEngine(this->win);
 	obj->setParentNode(this);
-	obj->getTransform()->setParent(getTransform());
+    obj->getTransform()->setParent(this->getTransform());
+    m_children.push_back(obj);
     return this;
 }
 
@@ -62,7 +63,6 @@ void Node::drawAll(SceneTree* tree)
 	{
         ob->drawAll(tree);
 	}
-
 }
 
 void Node::draw(SceneTree* tree)
@@ -149,6 +149,7 @@ luabridge::LuaRef Node::getComponents(lua_State *L) const
 void Node::update(float delta)
 {
 	getTransform()->update();
+
     if (m_script != NULL)
         m_script->update(delta);
     for (auto& comp : m_components)
@@ -161,6 +162,7 @@ void Node::create()
 {
     if (m_script != NULL)
         m_script->init();
+
     for (auto& comp : m_components)
     {
         comp.second->create();
@@ -171,7 +173,7 @@ void Node::createAll()
 {
     create();
 
-    for (auto& ob : m_children)
+    for (Node*& ob : m_children)
     {
         ob->createAll();
     }
@@ -197,7 +199,7 @@ void Node::RegisterObject(lua_State* L)
         .addConstructor<void(*)(void)>()
         .addFunction("addchild", &Node::addChild)
         .addFunction("getnode", &Node::getNode)
-        .addProperty("transform", &Node::getTransform)
+        .addFunction("gettransform", &Node::getTransform)
         .addFunction("getname", &Node::getName)
         .addFunction("rename", &Node::setName)
         .addFunction("getparent", &Node::getParentNode)

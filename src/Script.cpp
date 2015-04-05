@@ -1,24 +1,15 @@
 #include "../include/Script.h"
 #include "../include/Node.h"
+#include "../include/AnimatedSprite.h"
 
-Script::Script(std::string scriptfile, LuaEngine* L)
+Script::Script(std::string scriptsource, LuaEngine* L)
     : m_L(L),
     on_destroy(m_L->getState()),
     on_create(m_L->getState()),
     on_update(m_L->getState()),
 	m_owner(0)
 {
-    m_source = readFile(scriptfile);
-}
-
-Script::Script(const char *source, LuaEngine *L, bool lf)
-    : m_L(L),
-    on_destroy(m_L->getState()),
-    on_create(m_L->getState()),
-    on_update(m_L->getState()),
-    m_owner(0)
-{
-    m_source = std::string(source);
+    m_source = scriptsource;
 }
 
 void Script::compile()
@@ -33,17 +24,32 @@ void Script::compile()
 void Script::init()
 {
 	if (on_create.isFunction())
-		on_create(m_owner);
+    {
+        if (IsType<AnimatedSprite>(m_owner))
+            on_create((AnimatedSprite*)m_owner);
+        else
+            on_create(m_owner);
+    }
 }
 
 void Script::update(float delta)
 {
 	if (on_update.isFunction())
-		on_update(m_owner, delta);
+    {
+        if (IsType<AnimatedSprite>(m_owner))
+            on_update((AnimatedSprite*)m_owner, delta);
+        else
+            on_update(m_owner, delta);
+    }
 }
 
 void Script::destroy()
 {
 	if (on_destroy.isFunction())
-		on_destroy(m_owner);
+    {
+        if (IsType<AnimatedSprite>(m_owner))
+            on_destroy((AnimatedSprite*)m_owner);
+        else
+            on_destroy(m_owner);
+    }
 }

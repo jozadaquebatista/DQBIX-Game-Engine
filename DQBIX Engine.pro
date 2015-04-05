@@ -3,8 +3,6 @@ TEMPLATE = app
 TARGET = DQBIX Engine
 DESTDIR = $$PWD/debug
 CONFIG -= qt
-CONFIG -= windows
-CONFIG += console
 CONFIG += c++11
 DEFINES -= UNICODE QT_LARGEFILE_SUPPORT
 DEFINES += _WINDOWS
@@ -16,6 +14,7 @@ INCLUDEPATH += $$PWD/depends/bass/src \
     $$PWD/depends/libdrawtext/include \
     $$PWD/depends/Lua52/include \
     $$PWD/depends/LuaBridge \
+    $$PWD/depends/xmlc \
     $$PWD/depends/SDL12/include \
     $PWD/depends/PhysFS \
     $$PWD/depends

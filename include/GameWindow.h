@@ -38,6 +38,12 @@ public:
 	static mat4 Projection;
 
 	SceneTree* getTree() { return m_tree; }
+    Node* createNode()
+    {
+        Node* ret = new Node();
+        ret->setEngine(this);
+        return ret;
+    }
 
 	LuaEngine* getLuaEngine() { return eng; }
 

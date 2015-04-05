@@ -37,7 +37,9 @@ HEADERS += ./include/AnimatedSprite.h \
     $$PWD/include/assetpackage.h \
     $$PWD/include/stbimage.h \
     $$PWD/include/imageloader.h \
-    $$PWD/include/font.h
+    $$PWD/include/font.h \
+    $$PWD/include/shaderresource.h \
+    $$PWD/include/tilemap.h
 SOURCES += ./src/AnimatedSprite.cpp \
     ./src/audio.cpp \
     ./src/collisiondetection.cpp \
@@ -69,7 +71,9 @@ SOURCES += ./src/AnimatedSprite.cpp \
     $$PWD/src/simplemove.cpp \
     $$PWD/src/assetpackage.cpp \
     $$PWD/src/imageloader.cpp \
-    $$PWD/src/font.cpp
+    $$PWD/src/font.cpp \
+    $$PWD/src/shaderresource.cpp \
+    $$PWD/src/tilemap.cpp
 
 DISTFILES += \
     $$PWD/res/dfont.ttf
