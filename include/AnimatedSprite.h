@@ -8,22 +8,43 @@
 
 #include "Sprite.h"
 #include "Stopwatch.h"
+#include <initializer_list>
+
+class Animation
+{
+public:
+    Animation(std::string name = "anim",
+              std::initializer_list<int> frames = {},
+              float speed = 0.04f,
+              bool loop = false)
+        : m_name(name), m_frames(frames), m_speed(speed), m_loop(loop)
+    {}
+
+    friend class AnimatedSprite;
+private:
+    std::vector<int> m_frames;
+    float m_speed;
+    bool m_loop;
+    std::string m_name;
+};
 
 class AnimatedSprite :
     public Sprite
 {
 public:
-	AnimatedSprite(Texture* sheet = 0, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
-    AnimatedSprite(Texture* sheet = 0, Texture* sheet_norm = 0, int rows = 1, int cols = 1, float speed = 0, bool loop = false);
+    AnimatedSprite(Texture* sheet = 0, int rows = 1, int cols = 1);
+    AnimatedSprite(Texture* sheet = 0, Texture* sheet_norm = 0, int rows = 1, int cols = 1);
+
+    ~AnimatedSprite()
+    {
+        for (auto& a : m_animations)
+            SAFE_DELETE(a.second);
+    }
 
 	int getRows() const { return m_rows; }
 	void setRows(int val) { m_rows = val; }
 	int getCols() const { return m_cols; }
 	void setCols(int val) { m_cols = val; }
-	float getSpeed() const { return m_speed; }
-	void setSpeed(float val) { m_speed = val; }
-	bool getLoop() const { return m_loop; }
-	void setLoop(bool val) { m_loop = val; }
 	int getIndex() const { return m_index; }
 
 	void step();
@@ -31,14 +52,21 @@ public:
 	void update(float delta);
     bool hovered(point mousepos);
 
+    void addAnimation(Animation* anim);
+    bool removeAnimation(std::string name);
+    void setCurrentAnimation(std::string name);
+
 	static void RegisterObject(lua_State* L);
+
+    friend class Animation;
 private:
 	int m_rows, m_cols;
 	int m_index;
-	float m_speed;
-	bool m_loop;
 
 	Stopwatch m_clock;
+
+    std::map<std::string, Animation*> m_animations;
+    Animation* m_currentAnim;
 
     AnimatedSprite(AnimatedSprite&) {}
 	void operator=(AnimatedSprite texture) {}

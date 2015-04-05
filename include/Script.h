@@ -14,8 +14,7 @@ class Node;
 class Script
 {
 public:
-	Script(std::string scriptfile, LuaEngine* L);
-    Script(const char* source, LuaEngine* L, bool lf);
+    Script(std::string scriptsource = "", LuaEngine* L = 0);
 
 	void compile();
 	void init();

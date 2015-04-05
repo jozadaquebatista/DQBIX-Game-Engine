@@ -29,10 +29,11 @@ public:
 	Texture(const Texture& texture);
 	void operator=(Texture texture);
 
+    Texture() {}
     Texture(int w, int h,
             unsigned char* data = 0,
             int target = GL_TEXTURE_2D,
-            int filter = GL_LINEAR,
+            int filter = GL_NEAREST,
             int internalFmt = 0,
             int format = 0,
             bool clamp = false,

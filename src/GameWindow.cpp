@@ -60,7 +60,9 @@ void GameWindow::mainloop()
 	int frames = 0;
 	int frameCounter = 0;
 
-	if (init) init();
+    if (init)
+        init();
+
     m_tree->create();
 
 	while (running)

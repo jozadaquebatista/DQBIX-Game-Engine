@@ -15,7 +15,7 @@ class Transform
 public:
 	Transform();
 
-	Vector3 getTranslation()
+    Vector3 getTranslation() const
 	{
 		Vector3 ret;
 		ret.x = m_translation.x;
@@ -85,8 +85,8 @@ public:
 			.addFunction("rotate", &Transform::rotate_transform)
 			.addFunction("scale", &Transform::scale_transform)
 			.addFunction("move", &Transform::move)
-			.addFunction("getposition", &Transform::getTranslation)
-			.addFunction("setposition", &Transform::setTranslation)
+            .addFunction("getposition", &Transform::getTranslation)
+            .addFunction("setposition", &Transform::setTranslation)
 			.addFunction("getscale", &Transform::getScale)
 			.addFunction("setscale", &Transform::setScale)
 			.addFunction("getrotation", &Transform::getRotation)

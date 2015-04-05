@@ -147,7 +147,7 @@ Script *AssetPackage::loadScript(std::string filename, LuaEngine* eng)
     PHYSFS_deinit();
 
     std::string txt(data, data+file_size);
-    return new Script(txt.c_str(), eng, true);
+    return new Script(txt, eng);
 }
 
 Font *AssetPackage::loadFont(std::string filename)
