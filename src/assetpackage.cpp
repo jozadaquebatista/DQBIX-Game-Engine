@@ -1,7 +1,7 @@
 #include "../include/assetpackage.h"
 
 #include <fstream>
-#include <windows.h>
+
 // Load RAW data of the file. Works with everything.
 // Returns the file size and the file data
 void AssetPackage::loadRAWDataFromArchive(const char* fname, PHYSFS_sint64* file_size, unsigned char** data)
@@ -75,22 +75,7 @@ void AssetPackage::DisposeTempFiles()
         char* filename = (char*)malloc(file.size()+1);
         strcpy(filename, file.c_str());
 
-        if (!DeleteFile(filename))
-        {
-            DWORD   err = GetLastError();
-            TCHAR   lpBuffer[256] = "?";
-            if (err != 0)
-            {
-                FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
-                              0,
-                              err,
-                              0,
-                              lpBuffer,
-                              256,
-                              0);
-                printf("ERROR(%s): %s", filename, lpBuffer);
-            }
-        }
+        remove(filename);
     }
 }
 

@@ -2,7 +2,6 @@
 #define ASSETPACKAGE_H
 
 #include <string>
-#include <windows.h>
 #include <PhysFS/physfs.h>
 
 #include "Texture.h"
