@@ -35,11 +35,11 @@ HEADERS += ./include/AnimatedSprite.h \
     $$PWD/include/component.h \
     $$PWD/include/simplemove.h \
     $$PWD/include/assetpackage.h \
-    $$PWD/include/stbimage.h \
     $$PWD/include/imageloader.h \
     $$PWD/include/font.h \
     $$PWD/include/shaderresource.h \
-    $$PWD/include/tilemap.h
+    $$PWD/include/tilemap.h \
+    $$PWD/include/image_io.h
 SOURCES += ./src/AnimatedSprite.cpp \
     ./src/audio.cpp \
     ./src/collisiondetection.cpp \
