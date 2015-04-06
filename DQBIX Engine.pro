@@ -14,9 +14,9 @@ INCLUDEPATH += $$PWD/depends/bass/src \
     $$PWD/depends/libdrawtext/include \
     $$PWD/depends/Lua52/include \
     $$PWD/depends/LuaBridge \
-    $$PWD/depends/xmlc \
     $$PWD/depends/SDL12/include \
-    $PWD/depends/PhysFS \
+    $$PWD/depends/PhysFS \
+    $$PWD/depends/SOIL/src \
     $$PWD/depends
 
 LIBS += -lglu32 \
@@ -41,8 +41,10 @@ LIBS += -L$$PWD/depends/glew/lib/ -lglew32s
 LIBS += -L$$PWD/depends/Lua52/ -llua52
 LIBS += -L$$PWD/depends/SDL12/lib/ -lSDL -lSDLmain
 LIBS += -L$$PWD/depends/PhysFS/lib/ -lphysfs
+LIBS += -L$$PWD/depends/SOIL/lib/ -lSOIL
 
 PRE_TARGETDEPS += $$PWD/depends/freeglut/lib/freeglut.lib
 PRE_TARGETDEPS += $$PWD/depends/glew/lib/glew32s.lib
 PRE_TARGETDEPS += $$PWD/depends/libdrawtext/lib/libdrawtext.lib
 PRE_TARGETDEPS += $$PWD/depends/PhysFS/lib/physfs.lib
+PRE_TARGETDEPS += $$PWD/depends/SOIL/lib/SOIL.lib

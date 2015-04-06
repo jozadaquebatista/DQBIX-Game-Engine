@@ -23,8 +23,8 @@ public:
     void addUniform(std::string name);
 
 private:
-    shaderResource(shaderResource& s) {}
-    void operator=(shaderResource s) {}
+    shaderResource(shaderResource&) {}
+    void operator=(shaderResource) {}
 
     std::map<std::string, int> uniforms;
     int refCount;
