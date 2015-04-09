@@ -1,4 +1,4 @@
-#include "include/font.h"
+#include "../include/font.h"
 
 Font::Font()
     : fnth(0)

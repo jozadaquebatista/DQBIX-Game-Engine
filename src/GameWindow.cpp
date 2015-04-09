@@ -1,4 +1,4 @@
-#include "..\include\GameWindow.h"
+#include "../include/GameWindow.h"
 
 static float FRAME_CAP = 60.0f;
 static bool quit = false;
@@ -38,6 +38,7 @@ void GameWindow::ortho_2d(float* mat, int left, int right, int bottom, int top)
 	*mat++ = (-(zFar + zNear)*inv_z);
 	*mat++ = (1.0f);
 }
+
 Color GameWindow::getAmbient() const
 {
     return m_ambient;
@@ -105,7 +106,7 @@ void GameWindow::mainloop()
 			m_tree->render();
 
 			if (!quit)
-				SDL_GL_SwapBuffers();
+                SDL_GL_SwapBuffers();
 			frames++;
 		}
 		else
@@ -142,41 +143,43 @@ GameWindow::~GameWindow()
 
 void GameWindow::createWindow(int width, int height, std::string title)
 {
-	//// Recycled code from Screen.cpp ////
-	// Init SDL
+    // Init SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
-		fprintf(stderr, "Window creation error: %s\n", SDL_GetError());
-		SDL_Quit();
-		exit(EXIT_FAILURE);
-	}
+        IXLOG("Error: ", LOG_ERROR, false);
+        IXLOG(SDL_GetError(), LOG_ERROR, true);
+        std::exit(-1);
+    }
+    if (!BASS_Init(-1, 44100, 0, NULL, NULL))
+    {
+        IXLOG("Cannot init audio.", LOG_ERROR, true);
+        SDL_Quit();
+        std::exit(-1);
+    }
 
-	SDL_WM_SetCaption(title.c_str(), NULL);
+    if (SDL_SetVideoMode(width, height, 32, SDL_OPENGL) == NULL)
+    {
+        IXLOG("Cannot create context.", LOG_ERROR, true);
+        SDL_Quit();
+        std::exit(-1);
+    }
+    SDL_WM_SetCaption(title.c_str(), NULL);
 
-	// Set OpenGL attributes
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	// Create a Video Mode as an OpenGL context
-	if (SDL_SetVideoMode(width, height, 32, SDL_OPENGL) == 0)
-	{
-		fprintf(stderr, "Set Video Mode error: %s\n", SDL_GetError());
-		SDL_Quit();
-		exit(EXIT_FAILURE);
-	}
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+    SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	// Init GLEW
 	glewExperimental = TRUE;
 	if (glewInit() != GLEW_OK)
 	{
-		printf("OpenGL Extensions initialization failed.");
-		SDL_Quit();
-		exit(EXIT_FAILURE);
+        IXLOG("Cannot init extensions.", LOG_ERROR, true);
+        SDL_Quit();
+        std::exit(-1);
 	}
 
 	float mat[16];
@@ -184,13 +187,6 @@ void GameWindow::createWindow(int width, int height, std::string title)
 	Projection = make_mat4(mat);
 
 	RenderUtil::initGraphics(GameWindow::getWidth(), GameWindow::getHeight());
-
-#ifndef MODERN_OPENGL
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glLoadMatrixf(mat);
-    glMatrixMode(GL_MODELVIEW);
-#endif
 
 	m_tree = new SceneTree();
     m_tree->setEngine(this);
@@ -226,15 +222,15 @@ bool GameWindow::closed()
 
 int GameWindow::getWidth()
 {
-	const SDL_VideoInfo* info;
-	info = SDL_GetVideoInfo();
-	return info->current_w;
+    const SDL_VideoInfo* info;
+    info = SDL_GetVideoInfo();
+    return info->current_w;
 }
 int GameWindow::getHeight()
 {
-	const SDL_VideoInfo* info;
-	info = SDL_GetVideoInfo();
-	return info->current_h;
+    const SDL_VideoInfo* info;
+    info = SDL_GetVideoInfo();
+    return info->current_h;
 }
 
 float GameWindow::getAspect()
@@ -244,7 +240,12 @@ float GameWindow::getAspect()
 
 std::string GameWindow::getTitle()
 {
-	char* title;
-	SDL_WM_GetCaption(&title, NULL);
-	return std::string(title);
+    char* title;
+    SDL_WM_GetCaption(&title, NULL);
+    return std::string(title);
+}
+
+void GameWindow::setTitle(std::string newtitle)
+{
+    SDL_WM_SetCaption(newtitle.c_str(), NULL);
 }

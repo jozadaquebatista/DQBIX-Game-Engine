@@ -9,8 +9,8 @@ AudioClip::AudioClip(std::string filename)
 	play_once = false;
 	oshot = false;
 
-	std::wstring fname(filename.begin(), filename.end());
-	hm = BASS_StreamCreateFile(FALSE, fname.c_str(), NULL, NULL, BASS_STREAM_DECODE);
+    std::wstring fname(filename.begin(), filename.end());
+    hm = BASS_StreamCreateFile(FALSE, fname.c_str(), 0, 0, BASS_STREAM_DECODE);
     hm = BASS_FX_TempoCreate(hm, BASS_FX_FREESOURCE);
 }
 
@@ -23,7 +23,7 @@ AudioClip::AudioClip(unsigned char *data)
     play_once = false;
     oshot = false;
 
-    hm = BASS_StreamCreate(44100, 2, BASS_STREAM_DECODE, NULL, (void*)data);
+    hm = BASS_StreamCreate(44100, 2, BASS_STREAM_DECODE, 0, (void*)data);
     hm = BASS_FX_TempoCreate(hm, BASS_FX_FREESOURCE);
 }
 
@@ -37,7 +37,7 @@ void AudioClip::play()
 	if (loop)
 		BASS_ChannelFlags(hm, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP);
 	else
-		BASS_ChannelFlags(hm, NULL, BASS_SAMPLE_LOOP);
+        BASS_ChannelFlags(hm, 0, BASS_SAMPLE_LOOP);
 
 	if (play_once)
 	{

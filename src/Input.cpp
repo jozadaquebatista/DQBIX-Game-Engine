@@ -1,4 +1,4 @@
-#include "..\include\Input.h"
+#include "../include/Input.h"
 #include "../include/GameWindow.h"
 
 GameWindow* Input::win = 0;
@@ -40,10 +40,10 @@ void Input::update()
 
 		if (evt.type == SDL_KEYDOWN)
 		{
-			int value = evt.key.keysym.sym;
+            int value = evt.key.keysym.sym;
 
-			inputs[value] = true;
-			downKeys[value] = true;
+            inputs[value] = true;
+            downKeys[value] = true;
 		}
 		if (evt.type == SDL_KEYUP)
 		{
@@ -106,7 +106,7 @@ Vector3 Input::getMousePosition()
 
 void Input::setMousePosition(float x, float y)
 {
-	SDL_WarpMouse((int)x, (int)y);
+    SDL_WarpMouse((int)x, (int)y);
 }
 
 void Input::setCursor(bool cur)
@@ -140,8 +140,8 @@ void Input::RegisterObject(lua_State* L)
 			.addStaticFunction("getMouse", &Input::getMouse)
 			.addStaticFunction("getMouseDown", &Input::getMouseDown)
 			.addStaticFunction("getMouseUp", &Input::getMouseUp)
-			.addStaticFunction("getMousePosition", &Input::getMousePosition)
-			.addStaticFunction("setMousePosition", &Input::setMousePosition)
+            .addStaticFunction("getMousePosition", &Input::getMousePosition)
+            .addStaticFunction("setMousePosition", &Input::setMousePosition)
 			.addStaticFunction("setCursor", &Input::setCursor)
 		.endClass();
 }

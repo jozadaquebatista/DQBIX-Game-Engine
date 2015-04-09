@@ -1,4 +1,4 @@
-#include "..\include\RenderUtil.h"
+#include "../include/RenderUtil.h"
 
 void RenderUtil::clearScreen()
 {

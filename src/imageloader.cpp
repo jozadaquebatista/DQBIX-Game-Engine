@@ -17,7 +17,7 @@ unsigned char *ImageLoader::loadRawDataFromMemory(const void *data, int len, int
     const unsigned char* buffer = static_cast<const unsigned char*>(data);
     unsigned char* texdata = 0;
 #ifdef DQBIX_USE_STB_IMAGE
-    texdata = stbi_load_from_memory(buffer, len, w, h, comp, req_comp)
+    texdata = stbi_load_from_memory(buffer, len, w, h, comp, req_comp);
 #else
     texdata = SOIL_load_image_from_memory(buffer, len, w, h, comp, req_comp);
 #endif

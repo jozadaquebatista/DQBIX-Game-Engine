@@ -45,7 +45,7 @@ void imageResource::initTextures(unsigned char* data, int filter, int internalFo
 
 void imageResource::initRenderTargets(int attachment)
 {
-	if (attachment == NULL) return;
+    if (attachment == 0) return;
 
 	if (m_fbo == 0)
 	{
@@ -55,7 +55,7 @@ void imageResource::initRenderTargets(int attachment)
 	glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, getTarget(), m_id, 0);
 	if (m_fbo == 0) return;
 
-    GLenum drawBuffers[1] = {attachment};
+    GLenum drawBuffers[1] = { (GLenum)attachment };
 
     glReadBuffer(GL_NONE);
     glDrawBuffers(1, drawBuffers);

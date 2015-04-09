@@ -181,13 +181,13 @@ void Node::createAll()
 
 void Node::attachScript(Script *scr)
 {
-    if (scr != nullptr)
+    if (scr != NULL)
     {
-        m_script = new Script(*scr);
+        m_script = scr;
         m_script->setOwner(this);
         m_script->compile();
     }
-    else { m_script = nullptr; }
+    else { m_script = NULL; }
 }
 
 void Node::RegisterObject(lua_State* L)

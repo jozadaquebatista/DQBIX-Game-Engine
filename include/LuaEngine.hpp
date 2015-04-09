@@ -6,6 +6,7 @@
 
 #include "lua.hpp"
 #include <cstdlib>
+#include "Helpers.hpp"
 
 class LuaEngine
 {

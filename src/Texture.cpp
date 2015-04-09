@@ -1,5 +1,5 @@
 #include "../include/Texture.h"
-
+#include "../include/Helpers.hpp"
 Texture::Texture(int w, int h, unsigned char* data, int target, int filter, int internalFmt, int format, bool clamp, int attachment)
 {
     init(w, h, data, target, filter, internalFmt, format, clamp, attachment, "");
@@ -7,6 +7,14 @@ Texture::Texture(int w, int h, unsigned char* data, int target, int filter, int 
 
 Texture::Texture(const std::string filename, int target, int filter)
 {
+    if (!std::ifstream(filename))
+    {
+        IXLOG("IO Error: ", LOG_ERROR, false);
+        IXLOG(filename.c_str(), LOG_INFO, false);
+        IXLOG(" - No such file or directory.", LOG_PLAIN, true);
+        std::exit(-1);
+    }
+
 	this->filename = filename;
 	this->filter = filter;
 
@@ -21,6 +29,7 @@ Texture::Texture(const std::string filename, int target, int filter)
 
 void Texture::init(int w, int h, unsigned char *data, int target, int filter, int internalFmt, int format, bool clamp, int attachment, std::string filename)
 {
+
     this->filename = filename;
     std::map<std::string, imageResource*>::const_iterator pos = m_loadedImages.find(filename);
     if (pos == m_loadedImages.end())

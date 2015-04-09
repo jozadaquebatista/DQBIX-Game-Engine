@@ -31,6 +31,7 @@ public:
 	int getHeight();
 	float getAspect();
 	std::string getTitle();
+    void setTitle(std::string newtitle);
 	
 	void(*init)();
 	void mainloop();
@@ -64,6 +65,7 @@ private:
 	SceneTree* m_tree;
     LuaEngine* eng;
     Color m_ambient;
+
 };
 
 #endif //__NIX_WINDOW__
