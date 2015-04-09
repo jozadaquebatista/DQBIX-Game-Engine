@@ -2,6 +2,7 @@
 #define FONT_H
 
 #include <string>
+#define GL_ES
 #include <drawtext.h>
 class Font
 {

@@ -5,6 +5,10 @@ void Text::draw(SceneTree* tree)
 {
     if (!m_font) return;
 
+    Vector3 sc = getTransform()->getScale();
+    if (!(sc.y < 0))
+        getTransform()->setScale(Vector3(sc.x, sc.y*-1, sc.z));
+
     m_font->use();
     glActiveTexture(GL_TEXTURE0);
 
@@ -41,6 +45,14 @@ void Text::setFont(Font *font)
 
 Text::Text(std::string fontfile /*= ""*/, int sz/*=18*/)
 {
+    if (!std::ifstream(fontfile))
+    {
+        IXLOG("IO Error: ", LOG_ERROR, false);
+        IXLOG(fontfile.c_str(), LOG_INFO, false);
+        IXLOG(" - No such file or directory.", LOG_PLAIN, true);
+        std::exit(-1);
+    }
+
     m_font = new Font(fontfile, sz);
 
     m_shader = new Shader();

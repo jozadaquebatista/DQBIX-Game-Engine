@@ -1,4 +1,4 @@
-#include "..\include\mesh.h"
+#include "../include/mesh.h"
 
 void Mesh::calculateNormals(std::vector<vertex>& vertices)
 {

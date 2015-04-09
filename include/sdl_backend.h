@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <SDL.h>
-//#include <SDL_syswm.h>
+#include <SDL/SDL.h>
 
 #endif //__IX_SDL_BACKEND__

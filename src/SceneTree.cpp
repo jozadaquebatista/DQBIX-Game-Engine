@@ -1,4 +1,4 @@
-#include "..\include\SceneTree.h"
+#include "../include/SceneTree.h"
 #include "../include/GameWindow.h"
 
 SceneTree::SceneTree() : m_root(0)

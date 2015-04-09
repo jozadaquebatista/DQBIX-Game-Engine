@@ -1,13 +1,15 @@
 #ifndef __IX_GRAPHICS__
 #define __IX_GRAPHICS__
 
+#define GL_ES
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 
 #ifdef __APPLE__
     #include <OpenGL/gl.h>
 #else
-    #include <GL/GL.h>
+    #include <GL/gl.h>
 #endif
 
 #define GLM_FORCE_PURE

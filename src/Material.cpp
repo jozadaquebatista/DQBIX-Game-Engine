@@ -1,4 +1,4 @@
-#include "..\include\Material.h"
+#include "../include/Material.h"
 
 Texture* Material::DefaultNormal = 0;
 

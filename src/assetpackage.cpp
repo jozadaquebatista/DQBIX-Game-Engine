@@ -12,7 +12,10 @@ void AssetPackage::loadRAWDataFromArchive(const char* fname, PHYSFS_sint64* file
 
     if (!PHYSFS_exists(fname))
     {
-        printf("AssetPackage Error: '%s' file not found.\n", fname);
+        IXLOG("Package Error: ", LOG_ERROR, false);
+        IXLOG(fname, LOG_INFO, false);
+        IXLOG(" - No such file in ", LOG_PLAIN, false);
+        IXLOG(m_filename.c_str(), LOG_PLAIN, true);
         return;
     }
 
@@ -60,7 +63,7 @@ void AssetPackage::AP_write(const char* file, const void *data, int size, int nu
     PHYSFS_sint64 rc = PHYSFS_write(handle, data, size, num);
     if (rc != num)
     {
-        printf("AssetPackage Error: '%s' could not write file. Err: %d\n", file, rc);
+        printf("AssetPackage Error: '%s' could not write file. Err: %d\n", file, (int)rc);
         return;
     }
 

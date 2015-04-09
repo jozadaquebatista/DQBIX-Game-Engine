@@ -1,4 +1,4 @@
-#include "..\include\Time.h"
+#include "../include/Time.h"
 float Time::m_delta = 0.0f;
 
 int Time::getTime()

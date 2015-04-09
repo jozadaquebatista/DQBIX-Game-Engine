@@ -7,6 +7,7 @@
 #pragma once
 
 #include "LuaEngine.hpp"
+#include <LuaBridge/detail/LuaException.h>
 #include "Helpers.hpp"
 #include <memory>
 

@@ -43,7 +43,7 @@ public:
 	}
 private:
 	bool oshot;
-	HSTREAM hm;
+    HSTREAM hm;
 };
 
 #endif //__IX_AUDIOCLIP__

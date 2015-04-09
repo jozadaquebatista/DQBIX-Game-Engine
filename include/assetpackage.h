@@ -2,7 +2,7 @@
 #define ASSETPACKAGE_H
 
 #include <string>
-#include <PhysFS/physfs.h>
+#include <physfs.h>
 
 #include "Texture.h"
 #include "audio.h"
