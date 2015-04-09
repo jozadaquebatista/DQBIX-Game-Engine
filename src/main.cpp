@@ -4,23 +4,28 @@
 // Vars ///////
 GameWindow* win;
 Sprite* test;
-Text* txt;
+Node* lnode;
+Light* light;
 
 void init()
 {
-    test = new Sprite("logo.png");
+    lnode = win->createNode();
+    lnode->setName("Light1");
+    lnode->getTransform()->setTranslation(Vector3(250.0f, 250.0f, 50.0f));
+
+    light = new Light();
+    light->setIntensity(5.0f);
+    light->setQuadratic(0.005f);
+
+    lnode->addComponent("light_comp", light);
+
+    test = new Sprite("casa_diffuse.png", "casa_normal.png");
     test->setName("logo");
-    test->getMaterial()->setShadeless(true);
     test->getTransform()->setTranslation(Vector3(150.0f, 150.0f, 0.0f));
     test->attachScript(new Script(readFile("move.lua"), win->getLuaEngine()));
 
-    txt = new Text("andy.ttf", 16);
-    txt->setName("Label");
-    txt->setText("Hello World!");
-    txt->getTransform()->setTranslation(Vector3(48.0, 48.0, 0.0));
-
     win->getTree()->addChild(test);
-    win->getTree()->addChild(txt);
+    win->getTree()->addChild(lnode);
 }
 
 int main(int argc, char** argv)

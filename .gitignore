@@ -19,8 +19,6 @@ Release/*.dll
 *.user
 *.obj
 *.tlog
-*.png
 *.pdb
 *.log
 *.idb
-*.zip
