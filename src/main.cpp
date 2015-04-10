@@ -9,6 +9,9 @@ Light* light;
 
 void init()
 {
+
+    /* Initializing Something */
+
     lnode = win->createNode();
     lnode->setName("Light1");
     lnode->getTransform()->setTranslation(Vector3(250.0f, 250.0f, 50.0f));
