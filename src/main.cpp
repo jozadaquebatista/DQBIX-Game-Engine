@@ -10,7 +10,7 @@ Light* light;
 void init()
 {
 
-    /* Initializing Something */
+    /* Test Initializing of something */
 
     lnode = win->createNode();
     lnode->setName("Light1");
