@@ -5,6 +5,7 @@
 #include "sdl_backend.h"
 class Stopwatch
 {
+
 public:
 	Stopwatch();
 
@@ -17,6 +18,7 @@ public:
 private:
 	int s_ticks;
 	bool isRunning;
+	
 };
 
 #endif //__STOPWATCH__

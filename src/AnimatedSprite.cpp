@@ -1,8 +1,7 @@
 #include "../include/AnimatedSprite.h"
 #include "../include/GameWindow.h"
 
-AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols)
-    : Sprite(sheet)
+AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols) : Sprite(sheet)
 {
     setMaterial(new Material(sheet));
 
@@ -13,8 +12,7 @@ AnimatedSprite::AnimatedSprite(Texture* sheet, int rows, int cols)
 
 }
 
-AnimatedSprite::AnimatedSprite(Texture *sheet, Texture *sheet_norm, int rows, int cols)
-    : Sprite(sheet, sheet_norm)
+AnimatedSprite::AnimatedSprite(Texture *sheet, Texture *sheet_norm, int rows, int cols) : Sprite(sheet, sheet_norm)
 {
     setMaterial(new Material(sheet, sheet_norm));
 
@@ -112,7 +110,7 @@ void AnimatedSprite::addAnimation(Animation* anim)
 
 bool AnimatedSprite::removeAnimation(std::string name)
 {
-    std::map<std::string, Animation*>::const_iterator pos = m_animations.find(name);
+    map<string, Animation*>::const_iterator pos = m_animations.find(name);
     if (pos != m_animations.end())
     {
         m_animations.erase(pos);
@@ -123,7 +121,7 @@ bool AnimatedSprite::removeAnimation(std::string name)
 
 void AnimatedSprite::setCurrentAnimation(std::string name)
 {
-    std::map<std::string, Animation*>::const_iterator pos = m_animations.find(name);
+    map<std::string, Animation*>::const_iterator pos = m_animations.find(name);
     if (pos != m_animations.end())
     {
         m_index = 0;

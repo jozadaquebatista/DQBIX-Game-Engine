@@ -38,9 +38,9 @@ public:
             int format = 0,
             bool clamp = false,
             int attachment = 0);
-	Texture(const std::string filename, int target, int filter);
+	Texture(const string filename, int target, int filter);
 
-	Texture(std::string filename);
+	Texture(string filename);
 
 	virtual ~Texture();
 
@@ -99,9 +99,9 @@ public:
 	}
 
 private:
-	std::map<std::string, imageResource*> m_loadedImages;
+	map<std::string, imageResource*> m_loadedImages;
 	imageResource* m_resource;
-	std::string filename;
+	string filename;
 	int filter;
 	rect cliprect;
 	
@@ -116,7 +116,7 @@ private:
               int format = 0,
               bool clamp = false,
               int attachment = 0,
-              std::string filename = "");
+              string filename = "");
 };
 
 #endif //__IX_IMAGE__

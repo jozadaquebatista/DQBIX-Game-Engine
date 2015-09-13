@@ -11,6 +11,7 @@ class Node;
 
 class Component
 {
+
 public:
     Component();
     virtual ~Component();
@@ -39,6 +40,7 @@ public:
             .addFunction("setowner", &Component::setOwner)
             .endClass();
     }
+    
 private:
     Node* m_owner;
     Vector3 m_offset;

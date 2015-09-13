@@ -12,37 +12,38 @@
 
 struct StringHelper {
 	const char *p;
-	StringHelper(const std::string& s) : p(s.c_str()) {}
+	StringHelper(const string& s) : p(s.c_str()) {}
 	operator const char**() { return &p; }
 };
 
 class Shader
 {
+
 public:
     Shader() : Shader(default_frag)
 	{
 
 	}
-	Shader(std::string vs, std::string fs);
-	Shader(std::string fs);
+	Shader(string vs, string fs);
+	Shader(string fs);
 
 	void use();
 	void compile();
 
-	void setFloat(std::string name, float val);
-	void setInt(std::string name, int val);
-	void setVec2(std::string name, float x, float y);
-	void setVec3(std::string name, float x, float y, float z);
-	void setVec4(std::string name, float x, float y, float z, float w);
-	void setMatrix(std::string name, mat4 mat);
+	void setFloat(string name, float val);
+	void setInt(string name, int val);
+	void setVec2(string name, float x, float y);
+	void setVec3(string name, float x, float y, float z);
+	void setVec4(string name, float x, float y, float z, float w);
+	void setMatrix(string name, mat4 mat);
 	
-	void addUniform(std::string name);
+	void addUniform(string name);
 	void addCommonUniforms();
 	void loadUniforms();
 	
 	virtual ~Shader();
 
-	Shader* fromString(std::string vs, std::string fs);
+	Shader* fromString(string vs, std::string fs);
 
 	inline static void lua_reg(lua_State* L)
 	{
@@ -66,12 +67,13 @@ private:
     Shader(Shader&) {}
     void operator=(Shader s) {}
 
-    std::map<std::string, shaderResource*> loadedshaders;
+    map<string, shaderResource*> loadedshaders;
     shaderResource* m_resource;
 
-	std::string loadShaderData(std::string filename);
+	string loadShaderData(string filename);
 
-    void addShader(std::string text, int type);
+    void addShader(string text, int type);
+    
 };
 
 #endif //__IX_SHADER__

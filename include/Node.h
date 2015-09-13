@@ -38,7 +38,7 @@ public:
 	void updateAll(float delta);
 
 	void setName(std::string newname);
-	std::string getName() const { return name; }
+	string getName() const { return name; }
 
 	Node* getNode(std::string name);
 
@@ -58,9 +58,9 @@ public:
 private:
 	Node* m_parentnode;
 	Transform* m_transform;
-	std::vector<Node*> m_children;
-    std::map<std::string, Component*> m_components;
-    std::string name;
+	vector<Node*> m_children;
+    map<std::string, Component*> m_components;
+    string name;
     GameWindow* win;
 
     Script* m_script;

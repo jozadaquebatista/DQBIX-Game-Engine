@@ -17,9 +17,9 @@ typedef struct Tile
     ~Tile() {}
 } Tile;
 
-class TileMap
-        : public Sprite
+class TileMap : public Sprite
 {
+
 public:
 
     TileMap(Texture* tileset = 0, int rows = 0, int cols = 0);
@@ -28,13 +28,14 @@ public:
     void addTile(Tile* ntile);
     void addTiles(std::vector<Tile*> ntiles);
 private:
-    std::vector<Tile*> m_tiles;
+    vector<Tile*> m_tiles;
     Mesh* m_tilemesh;
 
     // TileMap Settings
     int rows, cols;
 
     void generate_mesh();
+    
 };
 
 #endif // TILEMAP_H

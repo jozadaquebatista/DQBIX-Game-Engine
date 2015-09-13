@@ -16,6 +16,7 @@
 class GameWindow;
 class Input
 {
+
 public:
 	static void update();
 
@@ -49,6 +50,7 @@ private:
 
 	static const int NUMKEYS = 512;
 	static const int NUMMOUSEBUTTONS = 256;	
+	
 };
 
 #endif //__NIX_INPUT__

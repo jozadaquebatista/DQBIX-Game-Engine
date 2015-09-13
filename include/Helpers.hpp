@@ -26,9 +26,9 @@
 
 #define IXLOG(x, y, z) { ix_logprint(x, y, z); }
 
-std::string readFile(std::string filepath);
+string readFile(string filepath);
 //
-std::string uint8_tToString(uint8_t* text, size_t len);
+string uint8_tToString(uint8_t* text, size_t len);
 
 void ix_logprint(const char* msg, int type, bool breakln=false);
 

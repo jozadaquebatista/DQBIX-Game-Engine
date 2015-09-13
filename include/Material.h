@@ -10,6 +10,7 @@
 #include "Texture.h"
 class Material
 {
+
 public:
 	Material();
 	Material(Texture* diffuse);
@@ -48,6 +49,7 @@ private:
 
 	Texture* m_diffuse;
     Texture* m_normal;
+    
 };
 
 #endif // __NIX_MATERIAL__

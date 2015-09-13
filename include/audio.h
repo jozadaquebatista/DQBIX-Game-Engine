@@ -9,11 +9,12 @@
 
 class AudioClip : public Component
 {
+
 public:
     AudioClip(std::string filename = "");
     AudioClip(unsigned char* data = 0);
-        AudioClip(const AudioClip&) {}
-    void operator=(AudioClip other) {}
+    AudioClip(const AudioClip&);
+    void operator=(AudioClip other);
 
     virtual ~AudioClip();
 
@@ -26,8 +27,8 @@ public:
 
     inline static void RegisterObject(lua_State* L)
 	{
-		using namespace luabridge;
-		getGlobalNamespace(L)
+	    using namespace luabridge;
+	    getGlobalNamespace(L)
             .beginClass<AudioClip>("AudioClip")
 			.addConstructor<void(*)(std::string)>()
             .addFunction("play", &AudioClip::play)
@@ -41,6 +42,7 @@ public:
             .addData("playing", &AudioClip::playing, false)
 			.endClass();
 	}
+	
 private:
 	bool oshot;
     HSTREAM hm;

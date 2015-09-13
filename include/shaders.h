@@ -6,7 +6,7 @@
 
 #include <string>
 
-const std::string text_vert = "#version 120\n"
+const string text_vert = "#version 120\n"
 "attribute vec2 position;"
 "attribute vec2 coord;"
 "varying vec2 texcoord;"
@@ -18,7 +18,7 @@ const std::string text_vert = "#version 120\n"
 "	texcoord = coord;"
 "}";
 
-const std::string text_frag = "#version 120\n"
+const string text_frag = "#version 120\n"
 "varying vec2 texcoord;"
 "uniform sampler2D image;"
 "uniform vec4 color;"
@@ -29,7 +29,7 @@ const std::string text_frag = "#version 120\n"
 "	gl_FragColor = color * inv;"
 "}";
 
-const std::string default_vert = _ST( #version 120\n
+const string default_vert = _ST( #version 120\n
                                      attribute vec3 v_position;
                                      attribute vec2 v_texcoord;
                                      varying vec2 texcoord;
@@ -46,7 +46,7 @@ const std::string default_vert = _ST( #version 120\n
                                         texcoord.y = (cliprect.y + v_texcoord.y) * cliprect.w;
                                      } );
 
-const std::string default_frag = _ST( #version 120\n
+const string default_frag = _ST( #version 120\n
                                      uniform sampler2D diffuse;
                                      uniform sampler2D normal;
                                      uniform int NOSHAD;
@@ -63,16 +63,16 @@ const std::string default_frag = _ST( #version 120\n
                                      varying vec4 vertex;
                                      void main()
                                      {
-                                         vec3 lightPos = u_lightPos;
-                                         vec3 vertPos = vertex.xyz;
+                                        vec3 lightPos = u_lightPos;
+                                        vec3 vertPos = vertex.xyz;
 
-                                         vec4 color_tex = texture2D(diffuse, texcoord);
-                                         vec4 normal_tex = texture2D(normal, texcoord);
+                                        vec4 color_tex = texture2D(diffuse, texcoord);
+                                        vec4 normal_tex = texture2D(normal, texcoord);
 
                                          // Get the distance
-                                         float D = length(vertPos - lightPos);
+                                        float D = length(vertPos - lightPos);
 
-                                         float intensity = 1.0 / ( u_lightFalloff.x + (u_lightFalloff.y*D) + (u_lightFalloff.z*D*D));
+                                        float intensity = 1.0 / ( u_lightFalloff.x + (u_lightFalloff.y*D) + (u_lightFalloff.z*D*D));
 
                                          vec3 N = normalize((2.0 * (normal_tex.xyz * normal_tex.w)) - 1.0);
                                          N *= m_normalPower;

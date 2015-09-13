@@ -82,7 +82,7 @@ void AssetPackage::DisposeTempFiles()
     }
 }
 
-Texture *AssetPackage::loadTexture(std::string filename)
+Texture *AssetPackage::loadTexture(string filename)
 {
     unsigned char* data;
     PHYSFS_sint64 file_size;

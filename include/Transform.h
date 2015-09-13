@@ -12,6 +12,7 @@
 
 class Transform
 {
+
 public:
 	Transform();
 
@@ -93,6 +94,7 @@ public:
 			.addFunction("setrotation", &Transform::setRotation)
 			.endClass();
 	}
+	
 private:
 	mat4 m_parentMat;
 	vec3 m_translation;

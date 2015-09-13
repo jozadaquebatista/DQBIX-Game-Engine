@@ -8,6 +8,7 @@
 
 class Light : public Component
 {
+
 public:
     Light(float r=1.0f, float g=1.0f, float b=1.0f, float a=1.0f)
 	{
@@ -64,6 +65,7 @@ private:
 
     float fx, fy, fz;
     float intens;
+    
 };
 
 #endif //__IX_LIGHT__

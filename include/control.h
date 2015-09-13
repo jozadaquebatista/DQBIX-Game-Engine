@@ -5,6 +5,7 @@
 
 class Control : public Node
 {
+
 public:
     Control();
     virtual ~Control();

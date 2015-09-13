@@ -6,6 +6,7 @@
 
 class point
 {
+
 public:
 	point() {}
 	point(float px, float py) : x(px), y(py) {}
@@ -23,6 +24,7 @@ public:
 			.addData("y", &point::y, true)
 			.endClass();
 	}
+	
 };
 
 #endif //__IX_POINT__

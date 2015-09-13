@@ -7,8 +7,7 @@
 class vertex
 {
 public:
-	vertex(vec3 pos, vec2 tex) : m_position(pos), m_texcoord(tex)
-	{}
+	vertex(vec3 pos, vec2 tex) : m_position(pos), m_texcoord(tex);
 
 	vec3 getPosition() const { return m_position; }
 	void setPosition(const vec3& pos) { m_position = pos; }

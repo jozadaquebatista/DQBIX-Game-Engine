@@ -12,6 +12,7 @@
 #include <memory>
 
 class Node;
+
 class Script
 {
 public:
@@ -37,7 +38,7 @@ public:
 private:
 	void operator=(Script s) {}
 
-	std::string m_source;
+    string m_source;
 
 	LuaEngine* m_L;
 

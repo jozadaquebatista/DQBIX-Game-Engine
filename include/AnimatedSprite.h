@@ -13,23 +13,18 @@
 class Animation
 {
 public:
-    Animation(std::string name = "anim",
-              std::initializer_list<int> frames = {},
-              float speed = 0.04f,
-              bool loop = false)
-        : m_name(name), m_frames(frames), m_speed(speed), m_loop(loop)
-    {}
+    Animation(string name = "anim", initializer_list<int> frames = {}, float speed = 0.04f, bool loop = false) : m_name(name), m_frames(frames), m_speed(speed), m_loop(loop);
 
     friend class AnimatedSprite;
+    
 private:
-    std::vector<int> m_frames;
+    vector<int> m_frames;
     float m_speed;
     bool m_loop;
-    std::string m_name;
+    string m_name;
 };
 
-class AnimatedSprite :
-    public Sprite
+class AnimatedSprite : public Sprite
 {
 public:
     AnimatedSprite(Texture* sheet = 0, int rows = 1, int cols = 1);
@@ -38,7 +33,9 @@ public:
     ~AnimatedSprite()
     {
         for (auto& a : m_animations)
+        {
             SAFE_DELETE(a.second);
+        }
     }
 
 	int getRows() const { return m_rows; }
@@ -59,13 +56,14 @@ public:
 	static void RegisterObject(lua_State* L);
 
     friend class Animation;
+    
 private:
 	int m_rows, m_cols;
 	int m_index;
 
 	Stopwatch m_clock;
 
-    std::map<std::string, Animation*> m_animations;
+    map<std::string, Animation*> m_animations;
     Animation* m_currentAnim;
 
     AnimatedSprite(AnimatedSprite&) {}

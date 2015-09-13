@@ -9,6 +9,7 @@
 
 class shaderResource
 {
+
 public:
     shaderResource(int program = -1);
     virtual ~shaderResource();
@@ -18,18 +19,19 @@ public:
 
     GLuint getProgram() const;
 
-    std::map<std::string, int> getUniforms();
-    int findUniform(std::string name);
-    void addUniform(std::string name);
+    map<string, int> getUniforms();
+    int findUniform(string name);
+    void addUniform(string name);
 
 private:
     shaderResource(shaderResource&) {}
     void operator=(shaderResource) {}
 
-    std::map<std::string, int> uniforms;
+    map<string, int> uniforms;
     int refCount;
 
     GLuint m_program;
+    
 };
 
 #endif // SHADERRESOURCE_H

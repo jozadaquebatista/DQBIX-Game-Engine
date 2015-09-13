@@ -21,11 +21,11 @@ public:
         glDeleteBuffers(1, &ibo);
     }
 
-	void addVertices(std::vector<vertex> vertices, std::vector<int> indices);
+	void addVertices(vector<vertex> vertices, vector<int> indices);
 	void draw(int mode);
 
-	static void calculateNormals(std::vector<vertex>& vertices);
-	static void calculateTangents(std::vector<vertex>& vertices);
+	static void calculateNormals(vector<vertex>& vertices);
+	static void calculateTangents(vector<vertex>& vertices);
 
 private:
 	GLuint vbo, ibo;

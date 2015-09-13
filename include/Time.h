@@ -13,6 +13,7 @@
 #include "sdl_backend.h"
 class Time
 {
+
 public:
 	static const int SECOND = 1000;
 
@@ -21,6 +22,7 @@ public:
 	static void setDelta(float d);
 private:
 	static float m_delta;
+	
 };
 
 #endif //__NIX_TIME__

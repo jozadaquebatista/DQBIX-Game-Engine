@@ -9,14 +9,15 @@
 
 class Text : public Node
 {
+
 public:
-	Text(std::string fontfile = "", int sz = 18);
+	Text(string fontfile = "", int sz = 18);
     Text(Font* f);
 
     void draw(SceneTree* tree);
 
-	std::string getText() const { return m_text; }
-	void setText(std::string t) { m_text = t; }
+	string getText() const { return m_text; }
+	void setText(string t) { m_text = t; }
 
     Font *getFont() const;
     void setFont(Font *getFont);
@@ -40,7 +41,7 @@ private:
     Font* m_font;
 	Shader* m_shader;
 	Color m_color;
-	std::string m_text;
+	string m_text;
 };
 
 #endif // __IX_FONT__

@@ -14,8 +14,8 @@ class Sprite : public Node
 {
 public:
     Sprite();
-	Sprite(std::string filename);
-    Sprite(std::string filename, std::string normal_filename);
+	Sprite(string filename);
+    Sprite(string filename, string normal_filename);
     Sprite(Texture* diff);
     Sprite(Texture* diff, Texture* norm);
 

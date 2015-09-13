@@ -9,12 +9,13 @@
 
 class collisiondetection
 {
+
 public:
 	static bool box(int x1, int y1, int w1, int h1,
 					int x2, int y2, int w2, int h2);
 	static bool circle(int x1, int y1, int r1, int x2, int y2, int r2);
-	static std::string side(point pos, point sz, point delta, point opos, point osz);
-	static std::string _side(int x, int y, int w, int h, int dx, int dy, int ox, int oy, int ow, int oh);
+	static string side(point pos, point sz, point delta, point opos, point osz);
+	static string _side(int x, int y, int w, int h, int dx, int dy, int ox, int oy, int ow, int oh);
 
 	inline static void lua_reg(lua_State* L)
 	{

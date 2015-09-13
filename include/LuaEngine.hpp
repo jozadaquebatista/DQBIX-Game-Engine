@@ -10,6 +10,7 @@
 
 class LuaEngine
 {
+
 public:
 	LuaEngine() : L(luaL_newstate())
 	{
@@ -28,5 +29,6 @@ public:
 private:
 	lua_State* L;
 	void err_report(int state);
+	
 };
 #endif //__LUA_ENGINE_DQBIX__

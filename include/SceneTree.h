@@ -10,6 +10,7 @@
 #include "light.h"
 class SceneTree
 {
+
 public:
 	SceneTree();
 	virtual ~SceneTree();
@@ -35,15 +36,16 @@ public:
     void setEngine(GameWindow* win);
     GameWindow* getEngine();
 
-    std::vector<Light*> getLights() { return m_lights; }
+    vector<Light*> getLights() { return m_lights; }
     void addLight(Light* l) { m_lights.push_back(l); }
 
     static void RegisterObject(lua_State* L);
 private:
     SceneTree(SceneTree&) {}
 	void operator=(SceneTree s) {}
-    std::vector<Light*> m_lights;
+    vector<Light*> m_lights;
 	Node* m_root;
+	
 };
 
 #endif // __NIX_SCENETREE__

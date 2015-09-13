@@ -5,18 +5,14 @@
 #include <cmath>
 #include "lua.hpp"
 
-class occluder
-{ };
+class occluder;
 
 class boxoccluder : public occluder
 {
-public:
-	boxoccluder(int _x, int _y, int _w, int _h)
-		: x(_x), y(_y), w(_w), h(_h)
-	{
-		
-	}
 
+public:
+    boxoccluder(int _x, int _y, int _w, int _h) : x(_x), y(_y), w(_w), h(_h);
+    
 	int getX() const { return x; }
 	void setX(int val) { x = val; }
 
@@ -44,6 +40,7 @@ public:
 	}
 private:
 	int x, y, w, h;
+	
 };
 
 #endif //__IX_OCCLUDER__

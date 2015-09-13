@@ -8,10 +8,10 @@ class Font
 {
 public:
     Font();
-    Font(std::string filename, int sz);
+    Font(string filename, int sz);
     ~Font();
 
-    void draw(std::string text);
+    void draw(string text);
     void use();
 private:
     int sz;

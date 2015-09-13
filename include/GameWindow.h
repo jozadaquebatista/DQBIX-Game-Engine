@@ -20,18 +20,19 @@
 
 class GameWindow
 {
+
 public:
-    GameWindow() : m_tree(0) {}
+    GameWindow() : m_tree(0);
     ~GameWindow();
 
-	void createWindow(int width, int height, std::string title);
+	void createWindow(int width, int height, string title);
 
 	bool closed();
 	int getWidth();
 	int getHeight();
 	float getAspect();
-	std::string getTitle();
-    void setTitle(std::string newtitle);
+	string getTitle();
+    void setTitle(string newtitle);
 	
 	void(*init)();
 	void mainloop();
